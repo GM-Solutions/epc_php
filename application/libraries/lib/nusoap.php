@@ -5230,7 +5230,8 @@ class wsdl extends nusoap_base {
     	global $HTTP_SERVER_VARS;
 
 		if (isset($_SERVER)) {
-			$PHP_SELF = $_SERVER['PHP_SELF'];
+			$PHP_SELF = $_SERVER['REQUEST_URI'];
+//			$PHP_SELF = $_SERVER['PHP_SELF'];
 		} elseif (isset($HTTP_SERVER_VARS)) {
 			$PHP_SELF = $HTTP_SERVER_VARS['PHP_SELF'];
 		} else {
