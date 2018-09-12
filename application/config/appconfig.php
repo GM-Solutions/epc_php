@@ -1,6 +1,9 @@
 <?php
 
 $setting_type = "qa"; //  $setting_type=  local  /dev / qa/ production 
+$config['wsdlconf']['ordersend'] = "ALL"; // SFA / CDMS / ALL
+$config['wsdlconf']['username'] = "epc"; 
+$config['wsdlconf']['password'] = "epc"; 
 /* countries list */
 $config['countries'] = array(
     'india' => array('key' => 'india', 'lable' => 'India (+91)', 'mobile_validation' => 10, 'flag' => 'india.png', 'base_url' => 'india', 'code' => '91'),
