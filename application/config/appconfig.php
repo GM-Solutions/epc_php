@@ -1,6 +1,21 @@
 <?php
 
 $setting_type = "qa"; //  $setting_type=  local  /dev / qa/ production 
+
+$config['wsdlconf']['ordersend'] = "ALL"; // SFA / CDMS / ALL
+$config['wsdlconf']['username'] = "epc"; 
+$config['wsdlconf']['password'] = "epc"; 
+
+$config['wsdlconf']['log_path'] = $_SERVER['DOCUMENT_ROOT'].'/application/logs/wsdl/'; 
+
+
+$config['wsdl_cdms']['UserName'] = "balcrtest.espl"; 
+$config['wsdl_cdms']['Password'] = "123"; 
+
+
+
+
+
 /* countries list */
 $config['countries'] = array(
     'india' => array('key' => 'india', 'lable' => 'India (+91)', 'mobile_validation' => 10, 'flag' => 'india.png', 'base_url' => 'india', 'code' => '91'),
@@ -38,10 +53,10 @@ $config['sms']['india']['signature'] = 'BJAJFS';
 
 
 /***********************/
-$config['email1']['smtp_user']='pvningalkar@gmail.com';
-$config['email1']['smtp_pass']='mygirlfriend#1';
-$config['email1']['email_from']='pvningalkar@gmail.com';
-$config['email1']['email_from_name']='pvningalkar@gmail.com';
+$config['email1']['smtp_user']='';
+$config['email1']['smtp_pass']='';
+$config['email1']['email_from']='';
+$config['email1']['email_from_name']='';
 $config['email1']['smtp_host']='ssl://smtp.googlemail.com';
 //$config['email']['smtp_host']='smtpout.secureserver.net';
 $config['email1']['smtp_port']="587";

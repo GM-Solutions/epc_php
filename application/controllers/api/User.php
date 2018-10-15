@@ -57,8 +57,8 @@ class User extends REST_Controller {
                     $dtl['last_name'] = $value['last_name'];
                     $dtl['role'][$key]['role_name'] = $value['role_name'];
                     $dtl['role'][$key]['role_id'] = $value['role_id'];
-                    $dtl['vertical'][$key]['vertical_name'] = $value['vertical_name'];
-                    $dtl['vertical'][$key]['vertical_id'] = $value['vertical_id'];
+                    $dtl['role'][$key]['vertical_name'] = $value['vertical_name'];
+                    $dtl['role'][$key]['vertical_id'] = $value['vertical_id'];
                     
                     if($value['vertical_id'] == 1 && $value['role_name'] =="Distributor" ){
                         $dtl1 =$this->Common_model->select_info('gm_sfa_mc_distributor',array('user_id'=>$value['user_id']));                        
