@@ -114,12 +114,12 @@ class EpcSoapLogic extends CI_Controller {
 
                 /* mark sent data as sent to system */
                 try {
-                    $this->CI->db->update_batch('gm_orderpart', $log_mark, 'id');
+         /*           $this->CI->db->update_batch('gm_orderpart', $log_mark, 'id');
                     $error = $this->CI->db->error();
                     if ($error['code'] != 0) {
                         throw new Exception('no data returned ' . $error['message']);
                     }
-
+*/
                     $op['result'] = TRUE;
                     $op['OrderArray'] = $order;
                 } catch (Exception $e) {

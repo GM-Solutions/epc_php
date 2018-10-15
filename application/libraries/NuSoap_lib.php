@@ -7,7 +7,7 @@
 
 */
       class nuSoap_lib{
-          function Nusoap_lib(){
+          function __construct(){
                require_once(APPPATH.'libraries/lib/nusoap.php'); //If we are executing this script on a Windows server
           }
       }

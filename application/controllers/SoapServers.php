@@ -26,17 +26,29 @@ class SoapServers extends CI_Controller {
     public function index() {
         $op = array();
         $this->nusoap_server = new soap_server();
+	$this->nusoap_server->soap_defencoding = 'UTF-8';
+        $this->nusoap_server->decode_utf8 = FALSE;
+        $this->nusoap_server->encode_utf8 = TRUE;
 
-        $this->nusoap_server->configureWSDL("EpcSoap", base_url()."SoapServers?wsdl",base_url()."SoapServers");
+        $this->nusoap_server->configureWSDL("EpcSoap", base_url()."SoapServers?wsdl",base_url()."SoapServers","rpc");
         //WSDL Schema
-        $this->nusoap_server->wsdl->addComplexType(
-                'OrderDetailsArray', 'complexType', 'array', 'all', '', array(
-            'part_number' => array('name' => 'part_number',
+        $this->nusoap_server->wsdl->addComplexType('orderDtlArray','complexType', 'struct', 'all', '',
+                array( 
+                'part_number' => array('name' => 'part_number',
                 'type' => 'xsd:string'),
             'part_quantity' => array('name' => 'part_quantity',
-                'type' => 'xsd:string')
-                )
+                'type' => 'xsd:string'))
+        );        
+        $this->nusoap_server->wsdl->addComplexType(
+                'OrderDetailsArray', 'complexType', 'array', 'sequence', '',array('OrderDetails'=>array('name' => 'OrderDetails', 'type' => 'tns:orderDtlArray',
+                        'minOccurs' => '0', 'maxOccurs' => 'unbounded')) 
+                
         );
+//        $this->nusoap_server->wsdl->addComplexType(
+//                'OrderDetailsArray', 'complexType', 'array', '', 'SOAP-ENC:Array',array() ,array(
+//                    array('ref'=>'SOAP-ENC:arrayType', 'wsdl:arrayType'=>'tns:orderDtlArray[]')),'tns:orderDtlArray'                                
+//                
+//        );
 
         $this->nusoap_server->wsdl->addComplexType(
                 'OrderArray', 'complexType', 'struct', 'all', '', array(
@@ -72,17 +84,22 @@ class SoapServers extends CI_Controller {
         );
 
         $this->nusoap_server->wsdl->addComplexType(
-                'OrderData', 'complexType', 'array', '', 'SOAP-ENC:Array', array(), array(
-            array('ref' => 'SOAP-ENC:arrayType',
-                'wsdl:arrayType' => 'tns:OrderArray[]')
-                ), 'tns:OrderArray'
+                'OrderData', 'complexType', 'array', 'sequence', '', array('OrderDetail'=>array('name' => 'OrderDetail', 'type' => 'tns:OrderArray',
+                        'minOccurs' => '0', 'maxOccurs' => 'unbounded'))
         );
-        
+       
+//        $this->nusoap_server->wsdl->addComplexType(
+//                'OrderData', 'complexType', 'array', '', 'SOAP-ENC:Array', array(), array(
+//            array('ref' => 'SOAP-ENC:arrayType',
+//                'wsdl:arrayType' => 'tns:OrderArray[]')
+//                ), 'tns:OrderArray'
+//        );
+//        
         
         
         
         /*register precess */
-        $this->nusoap_server->register('postEpcOrderInterface', array('UserName' => 'xsd:string', 'Password' => 'xsd:string','Requester'=> 'xsd:string'), array('result' => 'xsd:bool', 'OrderArray' => 'tns:OrderData', 'error' => 'xsd:string'), base_url().'SoapServers', '', 'rpc', 'encoded', 'Order created by dealer group and non-dealer group will flow from  EPC to Bajaj-CDMS.');
+        $this->nusoap_server->register('postEpcOrderInterface', array('UserName' => 'xsd:string', 'Password' => 'xsd:string','Requester'=> 'xsd:string'), array('result' => 'xsd:bool', 'OrderArray' => 'tns:OrderData', 'error' => 'xsd:string'), base_url().'SoapServers', false, 'rpc', 'encoded', 'Order created by dealer group and non-dealer group will flow from  EPC to Bajaj-CDMS.');
         
 
         function postEpcOrderInterface($username, $password, $requester) {

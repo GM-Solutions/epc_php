@@ -133,10 +133,11 @@ class Common {
         }
         return $log_email;
     }
-    public static function generate_booking_no($index,$digit=6){
-            $country_code = 'IN';
+    public static function generate_booking_no($index,$digit=6,$country_code = 'IN'){
+//            $country_code = 'IN';
             $date = date("Y-m-d");
-            $booking_number = date('Ymd', strtotime($date)) . str_pad($index, $digit, 0, STR_PAD_LEFT);
+//            $booking_number = date('Ymd', strtotime($date)) . str_pad($index, $digit, 0, STR_PAD_LEFT);
+		$booking_number = date('Ymd', strtotime($date)) . $index;
             return $country_code . $booking_number ;          
     }
 }
