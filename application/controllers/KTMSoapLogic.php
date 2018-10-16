@@ -17,7 +17,7 @@ class KTMSoapLogic extends CI_Controller {
             
             
             $ktm_wsdl = $this->ci->config->item('ktmwsdlconf');
-            if($ktm_wsdl['username'] != $Credentials['username'] || $ktm_wsdl['username'] != $Credentials['password']){
+            if($ktm_wsdl['username'] != $Credentials['username'] || $ktm_wsdl['password'] != $Credentials['password']){
                 $op['ticket_no'] = "NULL";
                 $op['status'] = FALSE;
                 $op['error'] = "Invalid Credentials";
