@@ -13,7 +13,9 @@ $config['wsdl_cdms']['UserName'] = "balcrtest.espl";
 $config['wsdl_cdms']['Password'] = "123"; 
 
 
-
+/*KTM WSDL COnf*/
+$config['ktmwsdlconf']['username'] = "bajaj"; 
+$config['ktmwsdlconf']['password'] = "gladminds@321"; 
 
 
 /* countries list */

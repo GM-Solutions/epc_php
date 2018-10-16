@@ -9,11 +9,19 @@ class KTMSoapLogic extends CI_Controller {
     function __construct() {   
         $this->ci = & get_instance();
     }
-    function postProductPurchase($PurchaseOrder) {    
+    function postProductPurchase($Credentials,$PurchaseOrder) {    
         try {
             $token_no = '';
             $op =  array();
             $configration = $this->ci->config->item('wsdlconf');
+            
+            $ktm_wsdl = $this->ci->config->item('ktmwsdlconf');
+            if($ktm_wsdl['username'] != $Credentials['username'] || $ktm_wsdl['password'] != $Credentials['password']){
+                $op['ticket_no'] = "NULL";
+                $op['status'] = FALSE;
+                $op['error'] = "Invalid Credentials";
+                return $op;
+            }
             /*sms config*/
             $sms_con = $this->ci->config->item('sms');
             $sms_conf = $sms_con['india'];
@@ -37,7 +45,11 @@ class KTMSoapLogic extends CI_Controller {
                 $master_data['ticket_no'] = $token_no;
                 $master_data['log_status'] = FALSE;
                 $master_data['created_date'] = date('Y-m-d H:i:s');
-                $master_data['feed_data_count'] = count($PurchaseOrder['OrderDetail']);
+                if($this->is_multi2($PurchaseOrder['OrderDetail'])){
+                     $master_data['feed_data_count'] = count($PurchaseOrder['OrderDetail']);
+                 } else {
+                      $master_data['feed_data_count'] = 1;
+                 } 
                 $this->ci->db->insert('gm_cdms_purchase_feed_master', $master_data);  
                 $master_id =  $this->ci->db->insert_id();
                 
