@@ -44,7 +44,11 @@ class KTMServer extends CI_Controller {
         );
 
         
-
+        $this->nusoap_server->wsdl->addComplexType('Credentials', 'complexType', 'struct', 'all', '', array(
+            'username' => array('name' => 'username', 'type' => 'xsd:string'),
+            'password' => array('name' => 'password', 'type' => 'xsd:string')
+        ));
+        
         /* return parameters */
         $this->nusoap_server->wsdl->addComplexType('ResponseDetails', 'complexType', 'struct', 'all', '', array(
             'error' => array('name' => 'error', 'type' => 'xsd:string'),
@@ -57,15 +61,15 @@ class KTMServer extends CI_Controller {
         /* register precess */
         $this->nusoap_server->register(
                 'postProductPurchase',
-                array('PurchaseOrderList' => 'tns:PurchaseOrder'),
+                array('Auth'=>'tns:Credentials','PurchaseOrderList' => 'tns:PurchaseOrder'),
                 array('return' => 'tns:ResponseDetails'),
                 'urn:' . base_url() . 'KTMServer',
                 'urn:' . base_url() . 'KTMServer#postProductPurchase', 'rpc', 
                 'encoded', 'Purchase feed from cdms to gladminds');
 
-        function postProductPurchase($PurchaseOrder) {
+        function postProductPurchase($Credentials,$PurchaseOrder) {
             $logic = new KTMSoapLogic();
-           return $logic->postProductPurchase($PurchaseOrder);
+           return $logic->postProductPurchase($Credentials,$PurchaseOrder);
         }
 
         $this->nusoap_server->service(file_get_contents("php://input")); //shows the standard info about service
