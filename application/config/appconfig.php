@@ -30,6 +30,14 @@ $config['db_group']['india'] = 'default';
 $config['db_group']['uganda'] = 'bajajib';
 $config['db_group']['kenya'] = 'kenya';
 
+if($setting_type == "qa"){
+$config['db_group']['bajaj_db'] = "bajaj_qa";
+}else if($setting_type == "production"){
+$config['db_group']['bajaj_db'] = "bajaj_prod";
+}else{
+$config['db_group']['bajaj_db'] = "bajaj_qa";
+}
+
 /*country role menu config*/
 $config['role_menu']['india'][0] = array('key'=>'asc','value'=>'Authorise Service Center','username'=>TRUE);
 $config['role_menu']['india'][1] = array('key'=>'dealer','value'=>'Dealers','username'=>TRUE);

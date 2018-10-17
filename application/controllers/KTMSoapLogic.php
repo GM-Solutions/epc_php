@@ -23,14 +23,16 @@ class KTMSoapLogic extends CI_Controller {
                 $op['error'] = "Invalid Credentials";
                 return $op;
             }
+            
+            $db_group = $this->ci->config->item('db_group');
+            $this->ci->load->database($db_group['bajaj_db']);
             /*sms config*/
-            $sms_con = $this->ci->config->item('sms');
             $sms_con = $this->ci->config->item('sms');
             $sms_conf = $sms_con['india'];
             $sms_base = $sms_conf['message_url']."?aid=".$sms_conf['aid']."&pin=".$sms_conf['pin']."&signature=".$sms_conf['signature'];
             /*sms config*/
             file_put_contents($configration['log_path'].'wsdl_error_' . date("j.n.Y") . '.log', print_r($PurchaseOrder,TRUE), FILE_APPEND);           
-            $this->ci->load->database('bajaj_qa');
+            
             $this->ci->db->trans_start(); /* start*/
             $order_aray =  array();
             $master_id = NULL;
