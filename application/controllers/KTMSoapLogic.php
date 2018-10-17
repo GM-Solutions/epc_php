@@ -57,41 +57,42 @@ class KTMSoapLogic extends CI_Controller {
                 $master_id =  $this->ci->db->insert_id();
                 
             }
+
             if($this->is_multi2($PurchaseOrder['OrderDetail'])){
             foreach ($PurchaseOrder['OrderDetail'] as $key => $value) {
                 
                 $order_aray[$key]['gm_cdms_purchase_feed_master_id']        =  $master_id;
-                $order_aray[$key]['CUST_MOBILE']        =  ($value['CUST_MOBILE'] == "?" OR empty($value['CUST_MOBILE'] )) ?    NULL : $value['CUST_MOBILE'];
-                $order_aray[$key]['VEH_SL_DLR']         =  ($value['VEH_SL_DLR'] == "?" OR empty($value['VEH_SL_DLR'])) ?       NULL : $value['VEH_SL_DLR'];
-                $order_aray[$key]['ENGINE']             =  ($value['ENGINE'] == "?" OR empty($value['ENGINE'])) ?               NULL : $value['ENGINE'];
-                $order_aray[$key]['CITY']               =  ($value['CITY'] == "?" OR empty($value['CITY'])) ?                   NULL : $value['CITY'];
-                $order_aray[$key]['PIN_CODE']           =  ($value['PIN_CODE'] == "?" OR empty($value['PIN_CODE'])) ?           NULL : $value['PIN_CODE'];
-                $order_aray[$key]['TIMESTAMP']          =  ($value['TIMESTAMP'] == "?" OR empty($value['TIMESTAMP'])) ?         NULL : $value['TIMESTAMP'];
-                $order_aray[$key]['VEH_REG_NO']         =  ($value['VEH_REG_NO'] == "?" OR empty($value['VEH_REG_NO'])) ?       NULL : $value['VEH_REG_NO'];
-                $order_aray[$key]['STATE']              =  ($value['STATE'] == "?" OR empty($value['STATE'])) ?                 NULL : $value['STATE'];
-                $order_aray[$key]['CHASSIS']            =  ($value['CHASSIS'] == "?" OR empty($value['CHASSIS'])) ?             NULL : $value['CHASSIS'];
-                $order_aray[$key]['VEH_SL_DT']          =  ($value['VEH_SL_DT'] == "?" OR empty($value['VEH_SL_DT'])) ?         NULL : $value['VEH_SL_DT'];
-                $order_aray[$key]['CUSTOMER_ID']        =  ($value['CUSTOMER_ID'] == "?" OR empty($value['CUSTOMER_ID'])) ?     NULL : $value['CUSTOMER_ID'];
-                $order_aray[$key]['CUSTOMER_NAME']      =  ($value['CUSTOMER_NAME'] == "?" OR empty($value['CUSTOMER_NAME'])) ? NULL : $value['CUSTOMER_NAME'];
+                $order_aray[$key]['CUST_MOBILE']        =  ($value['CUST_MOBILE'] == "?" OR empty($value['CUST_MOBILE'] )) ?    NULL : $this->clean($value['CUST_MOBILE']);
+                $order_aray[$key]['VEH_SL_DLR']         =  ($value['VEH_SL_DLR'] == "?" OR empty($value['VEH_SL_DLR'])) ?       NULL : $this->clean($value['VEH_SL_DLR']);
+                $order_aray[$key]['ENGINE']             =  ($value['ENGINE'] == "?" OR empty($value['ENGINE'])) ?               NULL : $this->clean($value['ENGINE']);
+                $order_aray[$key]['CITY']               =  ($value['CITY'] == "?" OR empty($value['CITY'])) ?                   NULL : $this->clean($value['CITY']);
+                $order_aray[$key]['PIN_CODE']           =  ($value['PIN_CODE'] == "?" OR empty($value['PIN_CODE'])) ?           NULL : $this->clean($value['PIN_CODE']);
+                $order_aray[$key]['TIMESTAMP']          =  ($value['TIMESTAMP'] == "?" OR empty($value['TIMESTAMP'])) ?         NULL : $this->clean($value['TIMESTAMP']);
+                $order_aray[$key]['VEH_REG_NO']         =  ($value['VEH_REG_NO'] == "?" OR empty($value['VEH_REG_NO'])) ?       NULL : $this->clean($value['VEH_REG_NO']);
+                $order_aray[$key]['STATE']              =  ($value['STATE'] == "?" OR empty($value['STATE'])) ?                 NULL : $this->clean($value['STATE']);
+                $order_aray[$key]['CHASSIS']            =  ($value['CHASSIS'] == "?" OR empty($value['CHASSIS'])) ?             NULL : $this->clean($value['CHASSIS']);
+                $order_aray[$key]['VEH_SL_DT']          =  ($value['VEH_SL_DT'] == "?" OR empty($value['VEH_SL_DT'])) ?         NULL : $this->clean($value['VEH_SL_DT']);
+                $order_aray[$key]['CUSTOMER_ID']        =  ($value['CUSTOMER_ID'] == "?" OR empty($value['CUSTOMER_ID'])) ?     NULL : $this->clean($value['CUSTOMER_ID']);
+                $order_aray[$key]['CUSTOMER_NAME']      =  ($value['CUSTOMER_NAME'] == "?" OR empty($value['CUSTOMER_NAME'])) ? NULL : $this->clean($value['CUSTOMER_NAME']);
             }
             }else {
                 $key =0;
                 $value = $PurchaseOrder['OrderDetail'];
                 $order_aray[$key]['gm_cdms_purchase_feed_master_id']        =  $master_id;
-                $order_aray[$key]['CUST_MOBILE']        =  ($value['CUST_MOBILE'] == "?" OR empty($value['CUST_MOBILE'] )) ?    NULL : $value['CUST_MOBILE'];
-                $order_aray[$key]['VEH_SL_DLR']         =  ($value['VEH_SL_DLR'] == "?" OR empty($value['VEH_SL_DLR'])) ?       NULL : $value['VEH_SL_DLR'];
-                $order_aray[$key]['ENGINE']             =  ($value['ENGINE'] == "?" OR empty($value['ENGINE'])) ?               NULL : $value['ENGINE'];
-                $order_aray[$key]['CITY']               =  ($value['CITY'] == "?" OR empty($value['CITY'])) ?                   NULL : $value['CITY'];
-                $order_aray[$key]['PIN_CODE']           =  ($value['PIN_CODE'] == "?" OR empty($value['PIN_CODE'])) ?           NULL : $value['PIN_CODE'];
-                $order_aray[$key]['TIMESTAMP']          =  ($value['TIMESTAMP'] == "?" OR empty($value['TIMESTAMP'])) ?         NULL : $value['TIMESTAMP'];
-                $order_aray[$key]['VEH_REG_NO']         =  ($value['VEH_REG_NO'] == "?" OR empty($value['VEH_REG_NO'])) ?       NULL : $value['VEH_REG_NO'];
-                $order_aray[$key]['STATE']              =  ($value['STATE'] == "?" OR empty($value['STATE'])) ?                 NULL : $value['STATE'];
-                $order_aray[$key]['CHASSIS']            =  ($value['CHASSIS'] == "?" OR empty($value['CHASSIS'])) ?             NULL : $value['CHASSIS'];
-                $order_aray[$key]['VEH_SL_DT']          =  ($value['VEH_SL_DT'] == "?" OR empty($value['VEH_SL_DT'])) ?         NULL : $value['VEH_SL_DT'];
-                $order_aray[$key]['CUSTOMER_ID']        =  ($value['CUSTOMER_ID'] == "?" OR empty($value['CUSTOMER_ID'])) ?     NULL : $value['CUSTOMER_ID'];
-                $order_aray[$key]['CUSTOMER_NAME']      =  ($value['CUSTOMER_NAME'] == "?" OR empty($value['CUSTOMER_NAME'])) ? NULL : $value['CUSTOMER_NAME'];
+                $order_aray[$key]['CUST_MOBILE']        =  ($value['CUST_MOBILE'] == "?" OR empty($value['CUST_MOBILE'] )) ?    NULL : $this->clean($value['CUST_MOBILE']);
+                $order_aray[$key]['VEH_SL_DLR']         =  ($value['VEH_SL_DLR'] == "?" OR empty($value['VEH_SL_DLR'])) ?       NULL : $this->clean($value['VEH_SL_DLR']);
+                $order_aray[$key]['ENGINE']             =  ($value['ENGINE'] == "?" OR empty($value['ENGINE'])) ?               NULL : $this->clean($value['ENGINE']);
+                $order_aray[$key]['CITY']               =  ($value['CITY'] == "?" OR empty($value['CITY'])) ?                   NULL : $this->clean($value['CITY']);
+                $order_aray[$key]['PIN_CODE']           =  ($value['PIN_CODE'] == "?" OR empty($value['PIN_CODE'])) ?           NULL : $this->clean($value['PIN_CODE']);
+                $order_aray[$key]['TIMESTAMP']          =  ($value['TIMESTAMP'] == "?" OR empty($value['TIMESTAMP'])) ?         NULL : $this->clean($value['TIMESTAMP']);
+                $order_aray[$key]['VEH_REG_NO']         =  ($value['VEH_REG_NO'] == "?" OR empty($value['VEH_REG_NO'])) ?       NULL : $this->clean($value['VEH_REG_NO']);
+                $order_aray[$key]['STATE']              =  ($value['STATE'] == "?" OR empty($value['STATE'])) ?                 NULL : $this->clean($value['STATE']);
+                $order_aray[$key]['CHASSIS']            =  ($value['CHASSIS'] == "?" OR empty($value['CHASSIS'])) ?             NULL : $this->clean($value['CHASSIS']);
+                $order_aray[$key]['VEH_SL_DT']          =  ($value['VEH_SL_DT'] == "?" OR empty($value['VEH_SL_DT'])) ?         NULL : $this->clean($value['VEH_SL_DT']);
+                $order_aray[$key]['CUSTOMER_ID']        =  ($value['CUSTOMER_ID'] == "?" OR empty($value['CUSTOMER_ID'])) ?     NULL : $this->clean($value['CUSTOMER_ID']);
+                $order_aray[$key]['CUSTOMER_NAME']      =  ($value['CUSTOMER_NAME'] == "?" OR empty($value['CUSTOMER_NAME'])) ? NULL : $this->clean($value['CUSTOMER_NAME']);
             }            
-            
+          
             if($order_aray){                               
                 $this->ci->db->insert_batch('gm_cdms_data_purchase_feed',$order_aray);
                 /*dump data in gm_productdata*/
@@ -121,6 +122,7 @@ class KTMSoapLogic extends CI_Controller {
                 $this->ci->db->from('gm_productdata');
                 $this->ci->db->where_in('product_id',$chk_product_id); 
                 
+                
                 $query0 = $this->ci->db->get();
                 $product_array = ($query0->num_rows() > 0)? $query0->result_array():FALSE;
                 if($product_array){ /* if duplicate available filter here*/
@@ -141,7 +143,7 @@ class KTMSoapLogic extends CI_Controller {
                     foreach ($ord_data as $key => $value) {
 
                         $final_ord_data[$i]['product_id'] = $value['product_id'];
-                        $final_ord_data[$i]['customer_id'] = $value['customer_id'];
+                        //$final_ord_data[$i]['customer_id'] = $value['customer_id'];
                         $final_ord_data[$i]['customer_phone_number'] = $value['customer_phone_number'];
                         $final_ord_data[$i]['customer_name'] = $value['customer_name'];
                         $final_ord_data[$i]['customer_city'] = $value['customer_city'];
@@ -156,6 +158,8 @@ class KTMSoapLogic extends CI_Controller {
                         $final_ord_data[$i]['modified_date'] = date('Y-m-d H:i:s');
                         $i++;
                     }
+                    
+                    /*INSERT Data*/
                     $row_count = $this->ci->db->insert_batch('gm_productdata',$final_ord_data);
 
                     if ($row_count ==0) {
@@ -164,9 +168,9 @@ class KTMSoapLogic extends CI_Controller {
                 }
                 /*update data*/
                 $final_new_update_order =  array();
-                if($new_update_order){
+                if($ord_data){ //$new_update_order
                     $i=0;
-                    foreach ($new_update_order as $key => $value) {
+                    foreach ($ord_data as $key => $value) {
                         $final_new_update_order[$i]['product_id'] = $value['product_id'];
                         $final_new_update_order[$i]['customer_id'] = $value['customer_id'];
                         $final_new_update_order[$i]['customer_phone_number'] = $value['customer_phone_number'];
@@ -176,7 +180,7 @@ class KTMSoapLogic extends CI_Controller {
                         $final_new_update_order[$i]['customer_pincode'] = $value['customer_pincode'];
                         $final_new_update_order[$i]['purchase_date'] = $value['purchase_date'];
                         $final_new_update_order[$i]['invoice_date'] = $value['invoice_date'];
-                        $final_new_update_order[$i]['engine'] = $value['engine'];
+                       // $final_new_update_order[$i]['engine'] = $value['engine'];
                         $final_new_update_order[$i]['veh_reg_no'] = $value['veh_reg_no'];
                         $final_new_update_order[$i]['is_active'] = 1;                        
                         $final_new_update_order[$i]['modified_date'] = date('Y-m-d H:i:s');
@@ -188,6 +192,7 @@ class KTMSoapLogic extends CI_Controller {
                 
                 /*send SMS */
                 $i=0;
+                $urls =  array();
                 foreach ($order_aray as $key => $value) {
                     $template = ""; $replacements =  array();
                     /* get template for
@@ -226,7 +231,7 @@ class KTMSoapLogic extends CI_Controller {
                                             );
                     }
                     /*created_date,modified_date,action,message,sender,receiver,status*/
-                    
+                    if($bike_type['is_ktm_duke'] || $bike_type['is_ktm_rc']){
                     $msg = str_replace(array_keys($replacements), $replacements, $template);
                     $urls[] = $sms_base."&mnumber=".$value['CUST_MOBILE']."&message=".urlencode ($msg);
                     
@@ -238,9 +243,12 @@ class KTMSoapLogic extends CI_Controller {
                     $sms_log[$i]['receiver']= $value['CUST_MOBILE'];
                     $sms_log[$i]['status']= 'success';
                     $i++;
+                    }
                 }
+                if($urls){
                 $getter = new CurlAsc($urls);
                 $this->ci->db->insert_batch('gm_smslog',$sms_log);
+                }
             }
       
             $this->ci->db->trans_complete(); /* end*/
@@ -248,7 +256,7 @@ class KTMSoapLogic extends CI_Controller {
             if ($this->ci->db->trans_status() === FALSE) { // error
                 $op['ticket_no'] = $token_no;
                 $op['status'] = FALSE;
-                $op['error'] = "No New Orders Available ";
+                $op['error'] = "Sorry No Update ";
             }else{
                 $this->ci->db->update('gm_cdms_purchase_feed_master', array('log_status'=>TRUE),array('id'=>$master_id)); 
                 $op['ticket_no'] = $token_no;
@@ -287,6 +295,12 @@ private function check_bike_type($vin){
         }
     }
     return array('is_ktm_duke'=>$is_ktm_duke,'is_ktm_rc'=>$is_ktm_rc);
+}
+
+private function clean($string) {
+   $string =  preg_replace('/[^A-Za-z0-9\-]/', ' ', $string); // Removes special chars.  
+
+   return trim($string ," \t\n\x0B\r");
 }
 
 }
