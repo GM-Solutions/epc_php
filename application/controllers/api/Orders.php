@@ -370,17 +370,31 @@ class Orders extends REST_Controller {
     }
     
     public function view_cart_post() {
-        $user_id = $this->post('user_id');
+ 	$user_id = $this->post('user_id');
         $op =$ordtl = array();
         $op['user_id']= $user_id;
-        $order = $this->Common_model->select_info('gm_part_order_cart',array('user_id'=>$user_id,'active'=>1));
+        $this->db->select('cart.bom_plate_part_id');
+        $this->db->select('cart.part_number');
+        $this->db->select('cart.quantity');
+        $this->db->select('cart.line_total');
+        $this->db->select('bpc.description');
+        $this->db->from('gm_part_order_cart AS cart');
+        $this->db->join('gm_bomplatepart AS bpp','cart.bom_plate_part_id = bpp.id','left');
+        $this->db->join('gm_bompart AS bp','bpp.part_id = bp.id','left');
+        $this->db->join('gm_partcoordinates AS bpc','bp.part_number = bpc.part_number','left');
+        $this->db->where('user_id',$user_id);
+        $this->db->where('active',1);
+        $query = $this->db->get();
+        $order = ($query->num_rows() > 0)? $query->result_array():FALSE;
+        
         if($order){
             $op['status'] =  TRUE;
             foreach ($order as $key => $value) {
                 $ordtl[$key]['bom_plate_part_id']= $value['bom_plate_part_id'];
                 $ordtl[$key]['part_number']= $value['part_number'];
-                $ordtl[$key]['quantity']= $value['quantity'];
+                $ordtl[$key]['quantity']= !empty($value['quantity']) ? $value['quantity'] : 0;
                 $ordtl[$key]['line_total']= !empty($value['line_total']) ? $value['line_total'] : 0;
+                $ordtl[$key]['description']= !empty($value['description']) ? $value['description'] : '';
             }
             $order_count = $this->Common_model->select_info('gm_part_order_cart',array('user_id'=>$user_id,'active'=>1));
             $op['cart_count']= count($order_count);
