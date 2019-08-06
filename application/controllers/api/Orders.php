@@ -150,65 +150,7 @@ class Orders extends REST_Controller {
                     $dtl[$key]['distance']= "1 Km";
             }
         } 
-/*        if($vertical_id == 1){
-            $this->db->select('sd.epc_mc_distributor_id,sd.epc_mc_dealer_id,sd.id AS shop_address_id,mcd.email_bajaj AS distributor_email,dlr.email As dealer_email');
-            $this->db->select('mcd.phone_number AS distributor_phone_number, mcd.name');
-            $this->db->select('sd.address');
-            $this->db->select('sd.city');
-            $this->db->select('sd.pin_code');
-            $this->db->select('sd.state');
-            $this->db->select('sd.latitude');
-            $this->db->select('sd.longitude');
-            $this->db->select('dlr.mobile1 AS dealer_phone_number,dlr.dealer_name');
-            $this->db->from('gm_epc_shop_details AS sd');
-            $this->db->join('gm_sfa_mc_distributor AS mcd','sd.epc_mc_distributor_id=mcd.id','left');
-            $this->db->join('gm_mc_dealer AS dlr','sd.epc_mc_dealer_id=dlr.id','left');
-            $this->db->where('sd.active','1');
-            $query = $this->db->get();
-            $shopdetails = ($query->num_rows() > 0)? $query->result_array():FALSE;
-            
-            if($shopdetails){
-                foreach ($shopdetails as $key => $value) {
-                    $dtl[$key]['name']= !empty($value['name']) ? $value['name'] : $value['dealer_name'];
-                    $dtl[$key]['shop_address_id']= $value['shop_address_id'];
-                    $dtl[$key]['distributor_id']= $value['epc_mc_distributor_id'];
-                    $dtl[$key]['dealer_id']= $value['epc_mc_dealer_id'];
-                    
-                    $dtl[$key]['shop_type']= !empty($dtl[$key]['distributor_id']) ? 'Distributor' : 'Dealer';
-                    
-                    $dtl[$key]['email']= !empty($value['distributor_email']) ? $value['distributor_email'] : $value['dealer_email'];
-                    $dtl[$key]['phone_number']= !empty($value['distributor_phone_number']) ? $value['distributor_phone_number'] : $value['dealer_phone_number'];
-                    $dtl[$key]['address']= $value['address'];
-                    $dtl[$key]['city']= $value['city'];
-                    $dtl[$key]['state']= $value['state'];
-                    $dtl[$key]['pin_code']= $value['pin_code'];
-                    $dtl[$key]['latitude']= $value['latitude'];
-                    $dtl[$key]['longitude']= $value['longitude'];
-                    $dtl[$key]['distance']= "1 Km";
-                }
-            } else {
-                $this->db->select('*');
-                $this->db->from('gm_epc_shop_details');
-                $this->db->where('epc_mc_distributor_id',NULL);
-                $this->db->where('epc_mc_dealer_id',NULL);
-                $this->db->where('active','1');
-                $query = $this->db->get();
-                $shopdetails = ($query->num_rows() > 0)? $query->result_array():FALSE;
-                if($shopdetails){
-                foreach ($shopdetails as $key => $value) {
-                    $dtl[$key]['shop_address_id']= $value['shop_address_id'];
-                    $dtl[$key]['address']= $value['address'];
-                    $dtl[$key]['city']= $value['city'];
-                    $dtl[$key]['state']= $value['state'];
-                    $dtl[$key]['pin_code']= $value['pin_code'];
-                    $dtl[$key]['latitude']= $value['latitude'];
-                    $dtl[$key]['longitude']= $value['longitude'];
-                    $dtl[$key]['shop_type']= "HeadQuarter";                    
-                }                
-                }
-            }
-            
-        }*/
+
         if($dtl){
             $op['status']=TRUE;
             $op['data']=$dtl;
@@ -315,6 +257,7 @@ class Orders extends REST_Controller {
         
     }
     public function add_to_cart_post() {
+        file_put_contents(APPPATH.'logs/cart_' . date("j.n.Y") . '.log', print_r($this->post(),true), FILE_APPEND);
         $bom_plate_part_id = $this->post('bom_plate_part_id');
         $part_number = $this->post('part_number');
         $quantity = $this->post('quantity');
@@ -370,9 +313,10 @@ class Orders extends REST_Controller {
     }
     
     public function view_cart_post() {
- 	$user_id = $this->post('user_id');
+        $user_id = $this->post('user_id');
         $op =$ordtl = array();
         $op['user_id']= $user_id;
+        /*sub query*/
         $this->db->select('cart.bom_plate_part_id');
         $this->db->select('cart.part_number');
         $this->db->select('cart.quantity');
@@ -382,6 +326,11 @@ class Orders extends REST_Controller {
         $this->db->join('gm_bomplatepart AS bpp','cart.bom_plate_part_id = bpp.id','left');
         $this->db->join('gm_bompart AS bp','bpp.part_id = bp.id','left');
         $this->db->join('gm_partcoordinates AS bpc','bp.part_number = bpc.part_number','left');
+         $this->db->join('(select 
+                max(id) as id
+            from
+                gm_partcoordinates
+            group by part_number)  AS a','a.id = bpc.id','inner');
         $this->db->where('user_id',$user_id);
         $this->db->where('active',1);
         $query = $this->db->get();
