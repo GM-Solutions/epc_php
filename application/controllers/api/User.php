@@ -336,6 +336,9 @@ class User extends REST_Controller {
                             $registration_fields['gladminds_master']['user_id'] = $new_user_id;
                             /* Add userprofile data */
                             $this->Common_model->insert_info('gm_userprofile', $registration_fields['userprofile']);
+                            /* Add gm_epc_shop_details data */
+                            $registration_fields['shop_dtl']['user_id'] = $new_user_id;
+                            $this->Common_model->insert_info('gm_epc_shop_details', $registration_fields['shop_dtl']);
                             /* Create MC dealer profile */
                             if ($user_type == "Dealer")
                                 $this->Common_model->insert_info('gm_mc_dealer', $registration_fields['gladminds_master']);
@@ -448,6 +451,20 @@ class User extends REST_Controller {
                     $data['gladminds_master']['latitude'] = $this->post('latitude');
                 if (!empty($this->post('longitude')))
                     $data['gladminds_master']['longitude'] = $this->post('longitude');
+                
+                /*gm_epc_shop_details*/
+                if (!empty($this->post('address')))
+                    $data['shop_dtl']['shop_address'] = $this->post('address');
+                if (!empty($this->post('city')))
+                    $data['shop_dtl']['city'] = $this->post('city');
+                if (!empty($this->post('state')))
+                    $data['shop_dtl']['state'] = $this->post('state');
+                if (!empty($this->post('pincode')))
+                    $data['shop_dtl']['pin_code'] = $this->post('pincode');
+                if (!empty($this->post('latitude')))
+                    $data['shop_dtl']['latitude'] = $this->post('latitude');
+                if (!empty($this->post('longitude')))
+                    $data['shop_dtl']['longitude'] = $this->post('longitude');
             }
             if ($type == 'Dealer') {
                 if (!empty($this->post('dealer_id')))
@@ -807,6 +824,8 @@ class User extends REST_Controller {
                 /* update userprofile data */
                 if(count($registration_fields['userprofile']))
                 $this->Common_model->update_info('gm_userprofile', $registration_fields['userprofile'], array('user_id' => $user_id));
+                /* Update gm_epc_shop_details data */                
+                $this->Common_model->update_info('gm_epc_shop_details', $registration_fields['shop_dtl'], array('user_id' => $user_id));
                 /* update MC dealer profile */
                 if ($user_type == "Dealer" && count($registration_fields['gladminds_master']))
                     $this->Common_model->update_info('gm_mc_dealer', $registration_fields['gladminds_master'], array('user_id' => $user_id));
@@ -982,4 +1001,3 @@ class User extends REST_Controller {
     
         
 }
-
