@@ -1,0 +1,364 @@
+Array
+(
+    [user_type] => Dealer
+    [vertical] => Motorcycle
+    [email] => hshs@gmail.com
+    [phone_number] => 6465646646
+    [first_name] => hshe
+    [last_name] => 
+    [dealer_id] => 1313
+    [password] => 1233
+    [land_line] => 9767677667
+    [address] => hshsudud
+    [city] => BEED
+    [state] => Maharashtra
+    [latitude] => 18.5196726
+    [longitude] => 73.9329981
+    [pin_code] => 959466
+)
+Array
+(
+    [user_type] => Dealer
+    [vertical] => Motorcycle
+    [email] => hshs@gmail.com
+    [phone_number] => 6465646646
+    [first_name] => hshe
+    [last_name] => 
+    [dealer_id] => 1313
+    [password] => 1233
+    [land_line] => 9767677667
+    [address] => hshsudud
+    [city] => BEED
+    [state] => Maharashtra
+    [latitude] => 18.5196723
+    [longitude] => 73.9329983
+    [pin_code] => 959466
+)
+Array
+(
+    [user_type] => Dealer
+    [vertical] => Motorcycle
+    [email] => hshs@gmail.com
+    [phone_number] => 6465646646
+    [first_name] => hshe
+    [last_name] => 
+    [dealer_id] => 1313
+    [otp] => 111111
+    [password] => 1233
+    [land_line] => 9767677667
+    [address] => hshsudud
+    [city] => BEED
+    [state] => Maharashtra
+    [latitude] => 18.5196723
+    [longitude] => 73.9329983
+    [pin_code] => 959466
+)
+Array
+(
+    [user_type] => Dealer
+    [vertical] => Motorcycle
+    [email] => cttctc@gmail.com
+    [phone_number] => 8538685885
+    [first_name] => chcyc
+    [last_name] => 
+    [dealer_id] => tctc
+    [password] => 12345678
+    [land_line] => 8558828282
+    [address] => ttdtc
+    [city] => Ahmedabad
+    [state] => Gujarat
+    [latitude] => 0.0
+    [longitude] => 0.0
+    [pin_code] => 302588
+)
+Array
+(
+    [user_type] => Dealer
+    [vertical] => Motorcycle
+    [email] => a@gmail.com
+    [phone_number] => 3698521478
+    [first_name] => 
+    [last_name] => 
+    [dealer_id] => cjjffj
+    [password] => 12345678
+    [land_line] => 
+    [address] => 
+    [city] => Ahmedabad
+    [state] => Gujarat
+    [latitude] => 26.9400493
+    [longitude] => 75.7607972
+    [pin_code] => 369852
+)
+Array
+(
+    [user_type] => Dealer
+    [vertical] => Motorcycle
+    [email] => mdd@gmail.com
+    [phone_number] => 9595986588
+    [first_name] => 
+    [last_name] => 
+    [dealer_id] => vdhsh
+    [password] => 123tyygghbj
+    [land_line] => 
+    [address] => 
+    [city] => Pune
+    [state] => Maharashtra
+    [latitude] => 18.5196729
+    [longitude] => 73.9329984
+    [pin_code] => 664554
+)
+Array
+(
+    [user_type] => Dealer
+    [vertical] => Motorcycle
+    [email] => mdd@gmail.com
+    [phone_number] => 9595986588
+    [first_name] => 
+    [last_name] => 
+    [dealer_id] => vdhsh
+    [otp] => 111111
+    [password] => 123tyygghbj
+    [land_line] => 
+    [address] => 
+    [city] => Pune
+    [state] => Maharashtra
+    [latitude] => 18.5196729
+    [longitude] => 73.9329984
+    [pin_code] => 664554
+)
+Array
+(
+    [user_type] => Dealer
+    [vertical] => Motorcycle
+    [email] => abc@gmail.com
+    [phone_number] => 6484884464
+    [first_name] => 
+    [last_name] => 
+    [dealer_id] => abc
+    [password] => abc123
+    [land_line] => 
+    [address] => 
+    [city] => Pune
+    [state] => Maharashtra
+    [latitude] => 18.5197077
+    [longitude] => 73.9330783
+    [pin_code] => 645434
+)
+Array
+(
+    [user_type] => Dealer
+    [vertical] => Motorcycle
+    [email] => abcd@gmail.com
+    [phone_number] => 6484884464
+    [first_name] => 
+    [last_name] => 
+    [dealer_id] => abc
+    [password] => abc123
+    [land_line] => 
+    [address] => 
+    [city] => Pune
+    [state] => Maharashtra
+    [latitude] => 18.5197077
+    [longitude] => 73.9330783
+    [pin_code] => 645434
+)
+Array
+(
+    [user_type] => Dealer
+    [vertical] => Motorcycle
+    [email] => abcd@gmail.com
+    [phone_number] => 6484884464
+    [first_name] => 
+    [last_name] => 
+    [dealer_id] => abc
+    [password] => abc123
+    [land_line] => 
+    [address] => 
+    [city] => Pune
+    [state] => Maharashtra
+    [latitude] => 18.5196724
+    [longitude] => 73.9329982
+    [pin_code] => 645434
+)
+Array
+(
+    [user_type] => Dealer
+    [vertical] => Motorcycle
+    [email] => abcde@gmail.com
+    [phone_number] => 9789768668
+    [first_name] => 
+    [last_name] => 
+    [dealer_id] => abcd
+    [password] => abcd1234
+    [land_line] => 
+    [address] => 
+    [city] => Gopalganj
+    [state] => Bihar
+    [latitude] => 18.5196726
+    [longitude] => 73.9329981
+    [pin_code] => 664465
+)
+Array
+(
+    [user_type] => Distributor
+    [vertical] => Motorcycle
+    [email] => abcde@gmail.com
+    [phone_number] => 9789768668
+    [first_name] => 
+    [last_name] => 
+    [dealer_id] => abcd
+    [password] => abcd1234
+    [land_line] => 
+    [address] => 
+    [city] => Gopalganj
+    [state] => Bihar
+    [latitude] => 18.5196726
+    [longitude] => 73.9329981
+    [pin_code] => 664465
+)
+Array
+(
+    [user_type] => Dealer
+    [vertical] => Motorcycle
+    [email] => axc@gmail.com
+    [phone_number] => 1478523690
+    [first_name] => 
+    [last_name] => 
+    [dealer_id] => 4447
+    [password] => 12345678
+    [land_line] => 
+    [address] => fiiggk
+    [city] => Ahmedabad
+    [state] => Gujarat
+    [latitude] => 26.9398732
+    [longitude] => 75.7606354
+    [pin_code] => 258963
+)
+Array
+(
+    [user_type] => Dealer
+    [vertical] => Motorcycle
+    [email] => tg@gmail.com
+    [phone_number] => 1472583693
+    [first_name] => gjgjgi
+    [last_name] => 
+    [dealer_id] => e
+    [password] => 12345678
+    [land_line] => 
+    [address] => 
+    [city] => Pune
+    [state] => Maharashtra
+    [latitude] => 26.939877
+    [longitude] => 75.7606325
+    [pin_code] => 525535
+)
+Array
+(
+    [user_type] => Dealer
+    [vertical] => Motorcycle
+    [email] => tg@gmail.com
+    [phone_number] => 1472583693
+    [first_name] => gjgjgi
+    [last_name] => 
+    [dealer_id] => e
+    [password] => 12345678
+    [land_line] => 
+    [address] => 
+    [city] => Pune
+    [state] => Maharashtra
+    [latitude] => 26.939877
+    [longitude] => 75.7606325
+    [pin_code] => 525535
+)
+Array
+(
+    [user_type] => Dealer
+    [vertical] => Motorcycle
+    [email] => 6gh@gmail.com
+    [phone_number] => 3625147890
+    [first_name] => xchxh
+    [last_name] => 
+    [dealer_id] => ryfy
+    [password] => 12345y78
+    [land_line] => 
+    [address] => 
+    [city] => Ahmedabad
+    [state] => Gujarat
+    [latitude] => 26.940013
+    [longitude] => 75.7620409
+    [pin_code] => 147852
+)
+Array
+(
+    [user_type] => Dealer
+    [vertical] => Motorcycle
+    [email] => 3e@gmail.com
+    [phone_number] => 8444545487
+    [first_name] => xdyyd
+    [last_name] => 
+    [dealer_id] => dgd
+    [password] => 12345678
+    [land_line] => 
+    [address] => 
+    [city] => Ahmedabad
+    [state] => Gujarat
+    [latitude] => 26.9398892
+    [longitude] => 75.7606366
+    [pin_code] => 147852
+)
+Array
+(
+    [user_type] => Dealer
+    [vertical] => Motorcycle
+    [email] => 3e@gmail.com
+    [phone_number] => 8444545487
+    [first_name] => xdyyd
+    [last_name] => 
+    [dealer_id] => dgd
+    [otp] => 111111
+    [password] => 12345678
+    [land_line] => 
+    [address] => 
+    [city] => Ahmedabad
+    [state] => Gujarat
+    [latitude] => 26.9398892
+    [longitude] => 75.7606366
+    [pin_code] => 147852
+)
+Array
+(
+    [user_type] => Dealer
+    [vertical] => Motorcycle
+    [email] => cba@gmail.com
+    [phone_number] => 9794997686
+    [first_name] => 
+    [last_name] => 
+    [dealer_id] => cba
+    [password] => cba123
+    [land_line] => 
+    [address] => 
+    [city] => Mangalore
+    [state] => Karnataka
+    [latitude] => 18.5196847
+    [longitude] => 73.9330255
+    [pin_code] => 646454
+)
+Array
+(
+    [user_type] => Dealer
+    [vertical] => Motorcycle
+    [email] => cba@gmail.com
+    [phone_number] => 9794997686
+    [first_name] => 
+    [last_name] => 
+    [dealer_id] => cba
+    [otp] => 111111
+    [password] => cba123
+    [land_line] => 
+    [address] => 
+    [city] => Mangalore
+    [state] => Karnataka
+    [latitude] => 18.5196847
+    [longitude] => 73.9330255
+    [pin_code] => 646454
+)

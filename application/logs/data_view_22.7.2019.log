@@ -1,0 +1,389 @@
+Array
+(
+    [user_type] => Users
+    [email] => manendra@gladminds.co
+    [phone_number] => 7665347070
+    [first_name] => Manendra
+    [last_name] => R
+    [dealer_id] => 
+    [password] => 
+    [land_line] => 
+    [address] => abc
+    [city] => Pune
+    [state] => Maharashtra
+    [latitude] => 
+    [longitude] => 
+    [pin_code] => 765434
+)
+Array
+(
+    [user_type] => Members
+    [email] => manendra@gladminds.co
+    [phone_number] => 9309849477
+    [first_name] => Manendra
+    [last_name] => R
+    [dealer_id] => 
+    [password] => 
+    [land_line] => 
+    [address] => abc
+    [city] => Pune
+    [state] => Maharashtra
+    [latitude] => 
+    [longitude] => 
+    [pin_code] => 765434
+)
+Array
+(
+    [user_type] => Users
+    [email] => chaitanya@gladminds.co
+    [phone_number] => 9521891969
+    [first_name] => Chaitanya
+    [last_name] => -
+    [dealer_id] => 
+    [password] => 
+    [land_line] => 
+    [address] => pune maharashtra
+    [city] => Pune
+    [state] => Maharashtra
+    [latitude] => 
+    [longitude] => 
+    [pin_code] => 411018
+)
+Array
+(
+    [user_type] => Users
+    [email] => chaitanya@gladminds.co
+    [phone_number] => 9521891969
+    [first_name] => Chaitanya
+    [last_name] => -
+    [dealer_id] => 
+    [password] => 
+    [land_line] => 
+    [address] => pune maharashtra
+    [city] => Pune
+    [state] => Maharashtra
+    [latitude] => 
+    [longitude] => 
+    [pin_code] => 411018
+)
+Array
+(
+    [user_type] => Users
+    [email] => chaitanya@gladminds.co
+    [phone_number] => 9521891969
+    [first_name] => Chaitanya
+    [last_name] => -
+    [dealer_id] => 
+    [password] => 
+    [land_line] => 
+    [address] => pune maharashtra
+    [city] => Pune
+    [state] => Maharashtra
+    [latitude] => 
+    [longitude] => 
+    [pin_code] => 411018
+)
+Array
+(
+    [user_type] => Users
+    [email] => chaitanya@gladminds.co
+    [phone_number] => 9521891969
+    [first_name] => Chaitanya
+    [last_name] => -
+    [dealer_id] => 
+    [otp] => 111111
+    [password] => 
+    [land_line] => 
+    [address] => pune maharashtra
+    [city] => Pune
+    [state] => Maharashtra
+    [latitude] => 
+    [longitude] => 
+    [pin_code] => 411018
+)
+Array
+(
+    [user_type] => Users
+    [email] => manendrarathore301@gmail.com
+    [phone_number] => 9309849477
+    [first_name] => Manendra
+    [last_name] => R
+    [dealer_id] => 
+    [password] => 
+    [land_line] => 
+    [address] => abc
+    [city] => Pune
+    [state] => Maharashtra
+    [latitude] => 
+    [longitude] => 
+    [pin_code] => 586645
+)
+Array
+(
+    [user_type] => Users
+    [email] => manendrarathoreq301@gmail.com
+    [phone_number] => 9309849477
+    [first_name] => Manendra
+    [last_name] => R
+    [dealer_id] => 
+    [password] => 
+    [land_line] => 
+    [address] => abc
+    [city] => Pune
+    [state] => Maharashtra
+    [latitude] => 
+    [longitude] => 
+    [pin_code] => 586645
+)
+Array
+(
+    [user_type] => Users
+    [email] => manendra@gladminds.co
+    [phone_number] => 9309849477
+    [first_name] => Manendra
+    [last_name] => R
+    [dealer_id] => 
+    [password] => 
+    [land_line] => 
+    [address] => abc
+    [city] => Pune
+    [state] => Maharashtra
+    [latitude] => 
+    [longitude] => 
+    [pin_code] => 586645
+)
+Array
+(
+    [user_type] => Users
+    [email] => manendra@gladminds.co
+    [phone_number] => 9309849477
+    [first_name] => Manendra
+    [last_name] => R
+    [dealer_id] => 
+    [password] => 
+    [land_line] => 
+    [address] => abc
+    [city] => Pune
+    [state] => Maharashtra
+    [latitude] => 
+    [longitude] => 
+    [pin_code] => 586645
+)
+Array
+(
+    [user_type] => Users
+    [email] => manendra@gladminds.co
+    [phone_number] => 9309849477
+    [first_name] => Manendra
+    [last_name] => R
+    [dealer_id] => 
+    [password] => 
+    [land_line] => 
+    [address] => abc
+    [city] => Pune
+    [state] => Maharashtra
+    [latitude] => 
+    [longitude] => 
+    [pin_code] => 586645
+)
+Array
+(
+    [user_type] => Users
+    [email] => manendra@gladminds.co
+    [phone_number] => 9309849477
+    [first_name] => Manendra
+    [last_name] => R
+    [dealer_id] => 
+    [otp] => 111111
+    [password] => 
+    [land_line] => 
+    [address] => abc
+    [city] => Pune
+    [state] => Maharashtra
+    [latitude] => 
+    [longitude] => 
+    [pin_code] => 586645
+)
+Array
+(
+    [user_type] => Dealer
+    [vertical] => Motorcycle
+    [email] => manendra@gladminds.co
+    [phone_number] => 7665347070
+    [first_name] => Abc
+    [last_name] => 
+    [dealer_id] => 15153
+    [password] => epc@1234
+    [land_line] => 6454634648
+    [address] => abc
+    [city] => Pune
+    [state] => Maharashtra
+    [latitude] => 18.6625298
+    [longitude] => 73.7854426
+    [pin_code] => 756434
+)
+Array
+(
+    [user_type] => Dealer
+    [vertical] => Motorcycle
+    [email] => rathore.manendra@gmail.com
+    [phone_number] => 7665347070
+    [first_name] => Abc
+    [last_name] => 
+    [dealer_id] => 15153
+    [password] => epc@1234
+    [land_line] => 6454634648
+    [address] => abc
+    [city] => Pune
+    [state] => Maharashtra
+    [latitude] => 18.6625298
+    [longitude] => 73.7854426
+    [pin_code] => 756434
+)
+Array
+(
+    [user_type] => Dealer
+    [vertical] => Motorcycle
+    [email] => rathore.manendra@gmail.com
+    [phone_number] => 7665347070
+    [first_name] => Abc
+    [last_name] => 
+    [dealer_id] => 15153
+    [password] => epc@1234
+    [land_line] => 6454634648
+    [address] => abc
+    [city] => Pune
+    [state] => Maharashtra
+    [latitude] => 18.6625298
+    [longitude] => 73.7854426
+    [pin_code] => 756434
+)
+Array
+(
+    [user_type] => Dealer
+    [vertical] => Motorcycle
+    [email] => rathore.manendra@gmail.com
+    [phone_number] => 7665347070
+    [first_name] => Abc
+    [last_name] => 
+    [dealer_id] => 15151
+    [password] => epc@1234
+    [land_line] => 6454634648
+    [address] => abc
+    [city] => Pune
+    [state] => Maharashtra
+    [latitude] => 18.6625298
+    [longitude] => 73.7854426
+    [pin_code] => 756434
+)
+Array
+(
+    [user_type] => Dealer
+    [vertical] => Motorcycle
+    [email] => rathore.manendra@gmail.com
+    [phone_number] => 7665347070
+    [first_name] => Abc
+    [last_name] => 
+    [dealer_id] => 15151
+    [otp] => 111111
+    [password] => epc@1234
+    [land_line] => 6454634648
+    [address] => abc
+    [city] => Pune
+    [state] => Maharashtra
+    [latitude] => 18.6625298
+    [longitude] => 73.7854426
+    [pin_code] => 756434
+)
+Array
+(
+    [user_type] => Distributor
+    [vertical] => Motorcycle
+    [email] => manendrarathore301@gmail.com
+    [phone_number] => 7654342855
+    [first_name] => abc
+    [last_name] => 
+    [dealer_id] => 12345
+    [password] => Epc@1234
+    [land_line] => 7654325588
+    [address] => abc
+    [city] => Pune
+    [state] => Maharashtra
+    [latitude] => 18.6625236
+    [longitude] => 73.7854126
+    [pin_code] => 765434
+)
+Array
+(
+    [user_type] => Distributor
+    [vertical] => Motorcycle
+    [email] => manendrarathore301@gmail.com
+    [phone_number] => 7654342811
+    [first_name] => abc
+    [last_name] => 
+    [dealer_id] => 123451111
+    [password] => Epc@1234
+    [land_line] => 7654325588
+    [address] => abc
+    [city] => Pune
+    [state] => Maharashtra
+    [latitude] => 18.6625236
+    [longitude] => 73.7854126
+    [pin_code] => 765434
+)
+Array
+(
+    [user_type] => Distributor
+    [vertical] => Motorcycle
+    [email] => manendrarathore301@gmail.com
+    [phone_number] => 7654342811
+    [first_name] => abc
+    [last_name] => 
+    [dealer_id] => 123451111
+    [otp] => 111111
+    [password] => Epc@1234
+    [land_line] => 7654325588
+    [address] => abc
+    [city] => Pune
+    [state] => Maharashtra
+    [latitude] => 18.6625236
+    [longitude] => 73.7854126
+    [pin_code] => 765434
+)
+Array
+(
+    [user_type] => Dealer
+    [vertical] => Motorcycle
+    [email] => abcd12@gmail.com
+    [phone_number] => 9797979797
+    [first_name] => abcd12
+    [last_name] => 
+    [dealer_id] => abcd12
+    [password] => abcd12
+    [land_line] => 1212121212
+    [address] => banglore karnatak
+    [city] => Bangalore
+    [state] => Karnataka
+    [latitude] => 18.6625299
+    [longitude] => 73.7854003
+    [pin_code] => 412375
+)
+Array
+(
+    [user_type] => Dealer
+    [vertical] => Motorcycle
+    [email] => abcd12@gmail.com
+    [phone_number] => 9797979797
+    [first_name] => abcd12
+    [last_name] => 
+    [dealer_id] => abcd12
+    [otp] => 111111
+    [password] => abcd12
+    [land_line] => 1212121212
+    [address] => banglore karnatak
+    [city] => Bangalore
+    [state] => Karnataka
+    [latitude] => 18.6625299
+    [longitude] => 73.7854003
+    [pin_code] => 412375
+)
