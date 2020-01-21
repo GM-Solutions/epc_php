@@ -53,3 +53,8 @@ $config['email1']['email_from_name']='info-bajaj@gladminds.co';
 $config['email1']['smtp_host']='ssl://smtp.googlemail.com';
 //$config['email']['smtp_host']='smtpout.secureserver.net';
 $config['email1']['smtp_port']="587";
+
+/*sms Configuration*/
+$config['transactionsms']['india']['message_url']='https://japi.instaalerts.zone/httpapi/QueryStringReceiver?ver=1.0&';
+$config['transactionsms']['india']['key']='nfbeSuLFX5H4jPl1rGm2fw==';
+$config['transactionsms']['india']['send']='BALEP';
