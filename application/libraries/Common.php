@@ -156,7 +156,7 @@ $log_email =  array();
             case "india":
                 $sms_dtl['mobile_no'] = strlen($sms_dtl['mobile_no'])==10 ? "91".$sms_dtl['mobile_no']:$sms_dtl['mobile_no'];
                 $parameters = "key=".$sms_setting[$country]['key']."&encrpt=0&dest=".$sms_dtl['mobile_no']."&send=".$sms_setting[$country]['send']."&text=".urlencode($sms_dtl['message']);
-echo 		$apiurl = $sms_setting[$country]['message_url'].$parameters;
+ 		$apiurl = $sms_setting[$country]['message_url'].$parameters;
 		$ch = curl_init();
 
     curl_setopt($ch, CURLOPT_URL, $apiurl);
