@@ -120,6 +120,7 @@ class Orders extends REST_Controller {
             role.id AS role_id,
             bv.name AS vertical_name,
             bv.id AS vertical_id');
+           $this->db->select('(((acos(sin(("'.$latitude.'"*pi()/180)) * sin((sd.latitude*pi()/180))+cos(("'.$latitude.'"*pi()/180)) * cos((sd.latitude*pi()/180)) * cos((("'.$longitude.'" - sd.longitude)*pi()/180))))*180/pi())*60*1.1515*1609.344) AS 1000ance');
           $this->db->from('gm_epc_shop_details AS sd');
           $this->db->join('auth_user AS au','sd.user_id = au.id','left');
         $this->db->join('gm_epcuserprofileroles AS up','up.userprofile_id = au.id', 'left');
@@ -129,6 +130,7 @@ class Orders extends REST_Controller {
         $this->db->join('gm_mc_dealer AS dlr','sd.user_id=dlr.user_id','left');
         $this->db->where('sd.active','1');
         $this->db->where('sd.address_type is null');
+        $this->db->having('1000ance  <= '.$range);
         $query = $this->db->get();
         $shopdetails = ($query->num_rows() > 0)? $query->result_array():FALSE;
 
@@ -371,7 +373,7 @@ class Orders extends REST_Controller {
         }
         
         $op = $data=$data_raw=  array();
-        if($role == "user"){
+        if($role == "Users"){
         
             $this->db->select('*');
             $this->db->select('order.order_number');

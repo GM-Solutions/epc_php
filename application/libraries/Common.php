@@ -1,5 +1,8 @@
 <?php
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\Exception;
 
+require BASEPATH . '../application/libraries/mailer/vendor/autoload.php';
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
@@ -89,33 +92,36 @@ class Common {
     }
     public static function send_email($email_dtl){
         
-        $CI = & get_instance();
-        $configration = $CI->config->item('email1');        
-        $CI->load->library('email');
-        $config['charset'] = 'iso-8859-1';
-        $config['wordwrap'] = TRUE;
-        $config['protocol'] = "smtp";
-        $config['smtp_host'] = $configration['smtp_host'];
-        $config['smtp_port'] = 465;
-        $config['strictSSL'] = TRUE;
-        $config['smtp_user'] = $configration['smtp_user'];
-        $config['smtp_pass'] = $configration['smtp_pass'];
-        $config['charset'] = "utf-8";
-        $config['mailtype'] = "html";
-        $config['newline'] = "\r\n";
-        $CI->email->initialize($config);
-        $CI->email->from($configration['smtp_user'], $configration['smtp_user']); 
-        $log_email = array();
+$log_email =  array();
         $i=$j=0;
-        foreach ($email_dtl as $key => $value) {
-                   
-            $CI->email->to($value['to']);
-		$CI->email->cc('manendrarathore301@gmail.com, chaitanya@gladminds.co');
-            $CI->email->subject($value['subject']);
-            $CI->email->message($value['message']);
-            $CI->email->set_newline("\r\n");
+        $CI = & get_instance();
+        $configration = $CI->config->item('email');
+        $mail = new PHPMailer(true);
+        try {
             
-            if ($CI->email->send()) {
+            foreach ($email_dtl as $key => $value) {
+                // Specify the SMTP settings.
+               $mail = new PHPMailer(true);
+               $mail->isSMTP();
+               $mail->setFrom($configration['email_from'], $configration['email_from_name']);
+               $mail->Username = $configration['smtp_user'];
+               $mail->Password = $configration['smtp_pass'];
+               $mail->Host = $configration['smtp_host'];
+               $mail->Port = 587;
+               $mail->SMTPAuth = true;
+               $mail->SMTPSecure = 'tls';
+//               $mail->addCustomHeader('X-SES-CONFIGURATION-SET', $configurationSet);
+               // Specify the message recipients.
+               $mail->addAddress($value['to']);
+               $mail->addBCC('chaitanya@gladminds.co');
+               // You can also add CC, BCC, and additional To recipients here.
+               // Specify the content of the message.
+               $mail->isHTML(true);
+               $mail->Subject = $value['subject'];
+               $mail->Body = $value['message'];
+              // $mail->AltBody = $bodyText;
+                  
+               if ($mail->Send()) {
                 $log_email[$i]['to']=$value['to'];
                 $log_email[$i]['from']=$configration['email_from'];
                 $log_email[$i]['message']=$value['message'];
@@ -130,6 +136,13 @@ class Common {
                 $log_email[$j]['status']='nosent';
                 $j++;
             }
+            }
+            
+//            echo "Email sent!", PHP_EOL;
+        } catch (phpmailerException $e) {
+           // echo "An error occurred. {$e->errorMessage()}", PHP_EOL; //Catch errors from PHPMailer.
+        } catch (Exception $e) {
+           // echo "Email not sent. {$mail->ErrorInfo}", PHP_EOL; //Catch errors from Amazon SES.
         }
         return $log_email;
     }

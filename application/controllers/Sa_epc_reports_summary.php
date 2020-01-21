@@ -38,7 +38,8 @@ class Sa_epc_reports_summary extends CI_Controller {
             $query = $this->db->get();
             $vin_codes =  ($query->num_rows() > 0)? $query->result_array():FALSE;
             $data['vin_codes'] = $vin_codes;
-            
+            $catlog_url = $this->config->item('catlog');
+        $data['siteurl']= $catlog_url['url'];
         $this->load->view('sa/vin_detils_summary',$data);
     }
 

@@ -31,6 +31,8 @@ class Sa_epc_sbomb_summary extends CI_Controller {
             $query = $this->db->get();
             $sku_dtl =  ($query->num_rows() > 0)? $query->result_array():FALSE;
             $data['sku_codes'] = $sku_dtl;
+        $catlog_url = $this->config->item('catlog');
+        $data['siteurl']= $catlog_url['url'];
         $this->load->view('sa/sbomb_summary_detils',$data);
     }
     public function sbomb_ajax() {        

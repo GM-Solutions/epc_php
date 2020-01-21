@@ -25,7 +25,6 @@ class Sa_vin_search_dealers extends CI_Controller {
 
     }
     public function Vindetails() {
-         
         $data =  array();
         $catlog_url = $this->config->item('catlog');
         $data['siteurl']= $catlog_url['url'];
@@ -166,7 +165,6 @@ WHERE
 
         $query0 = $this->vindetails_db($serviceable ,$plant,$sku_code,$component,$description, $dates_to_from,null,null);
         $data_set =  ($query0->num_rows() > 0)? $query0->result_array():FALSE;
-        
         $catlog_url = $this->config->item('catlog');
        if($data_set){
         foreach ($data_set as $key => $value) {
@@ -178,9 +176,13 @@ WHERE
            
             $op['data'][$key]['current_service_tag'] = $value['new_tag'];
             $op['data'][$key]['status'] = $value['status'];
-            $txt =!empty($value['plate_txt']) ? $value['plate_txt'] : "--";
-            $url = !empty($value['plate_approve_id']) ? "<a target='_blank' href='".$catlog_url['url']."/plates/" . $value['plate_approve_id']."/sbom?sku_list=".$value['sku_code']."'><u>".$value['plate_txt']."</u></a>" : $txt ;
-            $op['data'][$key]['plate'] = array('pl_id'=> $url );
+            $url = !empty($value['plate_approve_id']) ? $catlog_url['url']."/plates/" . $value['plate_approve_id'] . "/sbom" : "#" ;
+            $multi = !empty($value['part_number']) ? $catlog_url['url']."/multiplates/" . $sku_code ."/". $value['part_number'] : "#" ;
+            $op['data'][$key]['plate'] = array('pl_id'=> $url,
+                'desc'=>
+                !empty($value['plate_txt']) ? $value['plate_txt'] : "--",
+                'multiplate' => $multi
+                    );
         
         }
         
@@ -227,9 +229,7 @@ WHERE
         $query = $this->vindetails_db($serviceable,$plant, $sku_code,$component,$description, $dates_to_from,NULL,null);
         
         $target_dtl =  ($query->num_rows() > 0)? $query->result_array():FALSE;
-        
-//        print_r($target_dtl); die;
-           /* start spreadsheet here*/
+        /* start spreadsheet here*/
         $spreadsheet = new Spreadsheet();
         $spreadsheet->getProperties()->setCreator('bajaj')
                 ->setLastModifiedBy('gladminds')
@@ -347,7 +347,6 @@ WHERE
             
             $query = $this->db->get();
             $data_set =  ($query->num_rows() > 0)? $query->result_array():FALSE;
-            
             if($data_set == FALSE){
                 /*after date */
             $plant_q = (!empty($plant) and $plant != 'all') ?  "AND plant = '".$plant."'": "";
@@ -363,7 +362,10 @@ WHERE
             $query = $this->db->get();
             $data_set =  ($query->num_rows() > 0)? $query->result_array():FALSE;
                 if($data_set == FALSE){
-                    echo "No BOM  With SKU ".$sku_code." AND Plant ".$plant; die; return false;
+//                    echo "No BOM  With SKU ".$sku_code." AND Plant ".$plant;
+$op['data']['message']= "No BOM  With SKU ".$sku_code." AND Plant ".$plant;
+echo  json_encode($op);
+                     die; return false;
                 }
             }
             foreach ($data_set as $key => $value) {

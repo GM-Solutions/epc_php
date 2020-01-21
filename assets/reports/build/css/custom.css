@@ -772,7 +772,7 @@ a:focus {
 }
 .nav.side-menu>li>a,
 .nav.child_menu>li>a {
-    color:#fff;
+   // color:#fff;
     font-weight: 500
 }
 .nav.child_menu li li:hover,

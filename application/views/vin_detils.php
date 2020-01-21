@@ -6,7 +6,7 @@
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-
+        <link rel="icon" type="image/png" sizes="16x16" href="//epc.gladminds.co/static/epc/img/favicon/favicon-16x16.png">
         <title>EPC Reports</title>
 
         <!-- Bootstrap -->
@@ -24,8 +24,8 @@
 
         <!-- Custom Theme Style -->
         <link href="../assets/reports/build/css/custom.css" rel="stylesheet" type="text/css"/>
-        
-        
+
+
         <!-- jQuery -->
         <script src="../assets/reports/vendors/jquery/dist/jquery.min.js" type="text/javascript"></script>
         <!-- Bootstrap -->
@@ -42,6 +42,7 @@
 	
 	
         <script src="https://code.highcharts.com/highcharts.js"></script>
+	<link href="../assets/css/epccss.css" rel="stylesheet" type="text/css"/>
 <script src="https://code.highcharts.com/modules/exporting.js"></script>
 <script src="https://code.highcharts.com/modules/offline-exporting.js"></script>
     </head>
@@ -163,6 +164,9 @@
         <!-- Custom Theme Scripts -->
         <script src="../assets/reports/build/js/custom.js" type="text/javascript"></script>
         <script >
+                $(window).load(function() {
+     $('#loading').hide();
+  });
         var today = moment();
                 $('#reportrange_right').datetimepicker({
                         ignoreReadonly: true,
@@ -195,10 +199,12 @@ var date_filer = e.value;
         data:'page='+page_num+'&sku_code='+sku_code+'&vin_no='+vin_no+'&month_year='+date+'&plant='+plant+'&date_filter='+date_filer,
         beforeSend: function () {
             //start loader 
+            $('#loading').show();
         },
         success: function (html) {
             $('#t12get').html(html);
             //stop loader 
+            $('#loading').hide();
         }
     });
 }
@@ -220,5 +226,6 @@ function e7858xport(){
     document.location.href = "<?php echo base_url().'epc_reports/download_vindetails/'; ?>?sku_code="+sku_code+'&vin_no='+vin_no+'&month_year='+date+'&plant='+plant+'&date_filter='+date_filer;
                   }
         </script>
+        <div id="loading" ><div class="loader"></div></div>
     </body>
 </html>

@@ -23,8 +23,9 @@ class Sa_material_servisibility_history extends CI_Controller {
 
     }
     public function index() {
-        
-        $this->load->view('sa/material_servisibility_history');
+        $catlog_url = $this->config->item('catlog');
+        $data['siteurl']= $catlog_url['url'];
+        $this->load->view('sa/material_servisibility_history',$data);
     }
     public function servisibility_ajax() {        
         $material_code =$this->input->post('material_code');           

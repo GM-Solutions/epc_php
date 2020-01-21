@@ -22,14 +22,17 @@ class V1 extends CI_Controller {
         }
 
          $this->db->select('au.id AS user_id,
+au.email,
             au.first_name,
             au.last_name,
             au.username,
             role.name AS role_name,
             role.id AS role_id,
             bv.name AS vertical_name,
+up1.phone_number,
             bv.id AS vertical_id');
         $this->db->from('auth_user AS au');
+$this->db->join('gm_userprofile AS up1','au.id = up1.user_id','left');
         $this->db->join('gm_epcuserprofileroles AS up','up.userprofile_id = au.id', 'left');
         $this->db->join('gm_epcroles AS role','role.id = up.role_id', 'left');
         $this->db->join('gm_brandvertical AS bv','bv.id = role.vertical_id', 'left');
@@ -38,17 +41,18 @@ class V1 extends CI_Controller {
         $query = $this->db->get();
         
         $user_info = ($query->num_rows() > 0) ? $query->result_array() : FALSE;
-//        print_r($user_info); die;
         if ($query->num_rows() > 1) { /* more than one record */
                 $data['message'] = "More than one account";
                 $this->load->view('login', $data);
                 return true;
             } else {
                 foreach ($user_info as $key => $value) { 
+$dtl['email'] = $value['email'];
                         $dtl['user_id'] = $value['user_id'];
                         $dtl['username'] = $value['username'];
                         $dtl['first_name'] = $value['first_name'];
                         $dtl['last_name'] = $value['last_name'];
+    $dtl['phone_number'] = $value['phone_number'];
                         $dtl['role'][$key]['role_name'] = $value['role_name'];
                         $dtl['role'][$key]['role_id'] = $value['role_id'];
                         $dtl['role'][$key]['vertical_name'] = $value['vertical_name'];
@@ -66,6 +70,7 @@ class V1 extends CI_Controller {
 
                     $this->session->set_userdata($dtl);
                     $rol = $this->session->userdata('role');
+                    sleep(3);
                     if($rol[0]['role_name'] == "Distributor" OR $rol[0]['role_name'] == "Dealer"){
                        redirect(base_url()."Sa_vin_search_dealers/Vindetails?select_type=".$filter);    
                     } else {

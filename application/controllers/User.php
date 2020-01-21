@@ -23,11 +23,13 @@ class User extends CI_Controller {
             $this->db->select('au.id AS user_id,
             au.first_name,
             au.last_name,
+            au.email,
             au.password,
             au.username,
             role.name AS role_name,
             role.id AS role_id,
             bv.name AS vertical_name,
+            up1.phone_number,
             up1.image_url,
             bv.id AS vertical_id');
         $this->db->from('auth_user AS au');
@@ -48,10 +50,12 @@ class User extends CI_Controller {
             } else {
                 if (Common::django_pwd_verify($user_info[0]['password'], $password)) {
                     foreach ($user_info as $key => $value) { 
+                        $dtl['email'] = $value['email'];
                         $dtl['user_id'] = $value['user_id'];
                         $dtl['username'] = $value['username'];
                         $dtl['first_name'] = $value['first_name'];
                         $dtl['last_name'] = $value['last_name'];
+                        $dtl['phone_number'] = $value['phone_number'];
                         $dtl['image_url'] = $value['image_url'];
                         $dtl['role'][$key]['role_name'] = $value['role_name'];
                         $dtl['role'][$key]['role_id'] = $value['role_id'];
@@ -109,7 +113,12 @@ class User extends CI_Controller {
 //     redirect(base_url()."User",'refresh');
      redirect($catlog_url['url']."/user-logout");
     }
-
+public function email_test() {
+        $email_dtl[0]['to']='pavaningalkar@gladminds.co';
+        $email_dtl[0]['subject']='Its a testing mail';
+        $email_dtl[0]['message']='<h1>Its a testing mail</h1>';
+        Common::send_email($email_dtl);
+    }
 }
 
 ?>

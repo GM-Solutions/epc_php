@@ -19,27 +19,39 @@ class Sa_vin_search extends CI_Controller {
         parent::__construct();
         $this->load->library("session");
         $this->load->helper('url');
-        $this->load->library('breadcrumbs'); /*for breadcrumbs*/
+        //$this->load->library('breadcrumbs'); /*for breadcrumbs*/
         $this->load->database();
-        $this->load->library('S3');/* for AWS S3 bucket Transactions */
-        
-        
-       /*check  role and set session*/
-        
+        //$this->load->library('S3');/* for AWS S3 bucket Transactions */
 
     }
     public function Vindetails() {
         $data =  array();
+        $catlog_url = $this->config->item('catlog');
+        $data['siteurl']= $catlog_url['url'];
+        
         $data['select_type'] = $this->input->get('select_type');
 //        echo $data['select_type']; 
         /*get sku details */
          $this->db->select('sk.sku_code,sk.sku_description');
-            $this->db->from('gm_skudetails_custom  AS sk');
+            $this->db->from('gm_productbrands AS pb');
+            $this->db->join('gm_skudetails AS sk', 'sk.brand_id = pb.id', 'left');
             $this->db->join('gm_bomheader AS bh','bh.sku_code = sk.sku_code');
             $this->db->group_by('sk.sku_code');
+            $this->db->where('pb.brand_vertical_id','1');
             $query = $this->db->get();
             $sku_dtl =  ($query->num_rows() > 0)? $query->result_array():FALSE;
             $data['sku_codes'] = $sku_dtl;
+		
+	    $this->db->select('sg.sub_brand_name,sg.id');
+//            $this->db->from('gm_brand_subgroup');
+            $this->db->from('gm_productbrands AS pb');
+            $this->db->join('gm_skudetails AS sk', 'sk.brand_id = pb.id', 'left');
+            $this->db->join('gm_brand_subgroup  sg','sg.id= sk.sub_brand_id','left');
+            $this->db->group_by('sg.id');
+            $this->db->where('pb.brand_vertical_id','1');
+            $query = $this->db->get();
+            $sku_dtl =  ($query->num_rows() > 0)? $query->result_array():FALSE;
+            $data['sub_brand'] = $sku_dtl;
             
          $this->db->select('*');
             $this->db->from('gm_plant_details');
@@ -110,8 +122,8 @@ WHERE
        echo json_encode($op);
        return TRUE;
     }
-    public function Vindetails_ajax() {
-        $applications = $this->input->post();
+    public function Vindetails_ajax() {        
+         $applications = $this->input->post();
         $applications = $applications['applications'];
         $serviceable =$applications['serviceable'];
         $vin_no =$applications['vin_no'];
@@ -121,12 +133,11 @@ WHERE
         $description =$applications['description'];
         $month_year =$applications['month_year'];
         
-//        $dates_to_from = (!empty($this->input->post('month_year'))) ? $this->input->post('month_year') : "";
-         $dates = (!empty($month_year)) ? $month_year : "";
+        $dates = (!empty($month_year)) ? $month_year : "";
         $dates_to_from = explode("-",$dates);
         if(!empty($vin_no)){
             /*take bom header creation date*/
-        $this->db->select('*');
+           $this->db->select('*');
         $this->db->from("(SELECT 
             bh.created_date,
             `bh`.`plant`,
@@ -149,19 +160,13 @@ WHERE
                 }
         }
         
-        
-//        $this->load->library('Ajax_pagination');
-//        $this->perPage = 20;
-//        $page = $this->input->post('page');
-//        $offset = !empty($page) ? $page : 0;
+
         /*make database Connection  and assign result to $data_set */
 
         $query0 = $this->vindetails_db($serviceable ,$plant,$sku_code,$component,$description, $dates_to_from,null,null);
         $data_set =  ($query0->num_rows() > 0)? $query0->result_array():FALSE;
-//        print_r($data_set);
-        
         $catlog_url = $this->config->item('catlog');
-        if($data_set){
+       if($data_set){
         foreach ($data_set as $key => $value) {
             $op['data'][$key]['part_number'] = $value['part_number'];
             $op['data'][$key]['part_description'] = $value['material_description'];
@@ -175,17 +180,17 @@ WHERE
             $op['data'][$key]['change_date'] = $value['change_date'];
             $op['data'][$key]['status'] = $value['status'];
             $url = !empty($value['plate_approve_id']) ? $catlog_url['url']."/plates/" . $value['plate_approve_id'] . "/sbom" : "#" ;
+            $multi = !empty($value['part_number']) ? $catlog_url['url']."/multiplates/" . $sku_code ."/". $value['part_number'] : "#" ;
             $op['data'][$key]['plate'] = array('pl_id'=> $url,
                 'desc'=>
-                !empty($value['plate_txt']) ? $value['plate_txt'] : "--"
+                !empty($value['plate_txt']) ? $value['plate_txt'] : "--",
+                'multiplate' => $multi
                     );
         
         }
         
         } else {  $op['data'] = "";}
-        
-       echo json_encode($op);
-        
+        echo json_encode($op);
     }
     public function download_vindetails() {
         $serviceable =$this->input->get('serviceable');
@@ -223,8 +228,7 @@ WHERE
                    
                 }
         }
-        
-        
+       
         $query = $this->vindetails_db($serviceable,$plant, $sku_code,$component,$description, $dates_to_from,NULL,null);
         
         $target_dtl =  ($query->num_rows() > 0)? $query->result_array():FALSE;
@@ -326,39 +330,51 @@ WHERE
         header('Cache-Control: max-age=0');
 
         $writer->save('php://output'); // download file 
-    
         
     }
     private function vindetails_db($serviceable,$plant,$sku_code,$component,$description,$dates,$offset,$perpage ) {
-        $ver = 0; //STR_TO_DATE('".$dates[0]."', '%M %d, %Y')
-        if(!empty($sku_code)){
+        $ver = array(0); //STR_TO_DATE('".$dates[0]."', '%M %d, %Y')
+        $skcd = "'".str_replace(",","','",$sku_code)."'";
+        
+        if(!empty($sku_code)){ 
             /*previous date before 2019-01-23*/
-            $this->db->select('id As version');
-            $this->db->from('gm_bomheader AS bh');
-            $this->db->where('sku_code',$sku_code);
-//            $this->db->where('plant',$plant);
-            (!empty($plant) and $plant != 'all') ?  $this->db->where('bh.plant',$plant) : "";
-            $this->db->where("created_date <= '2019-01-23'");
-            $this->db->order_by('created_date','DESC');
-            $this->db->limit(1);
+            
+            $plant_q = (!empty($plant))  ? " AND plant ='".$plant."'" : ""; 
+            $this->db->select('a.id As version,  `a`.`sku_code`');
+            $this->db->from(" 
+                (SELECT 
+                *
+            FROM
+                gm_bomheader
+            WHERE
+                sku_code IN (".$skcd.")
+            AND created_date <= '2019-01-23' ".$plant_q."
+            ORDER BY created_date DESC) AS a ");
+            $this->db->group_by('a.sku_code');
+            
             $query = $this->db->get();
             $data_set =  ($query->num_rows() > 0)? $query->result_array():FALSE;
             if($data_set == FALSE){
                 /*after date */
-            $this->db->select('id As version');
-            $this->db->from('gm_bomheader AS bh');
-            $this->db->where('sku_code',$sku_code);
-//            $this->db->where('plant',$plant);
-            (!empty($plant) and $plant != 'all') ?  $this->db->where('bh.plant',$plant) : "";
-            $this->db->order_by('created_date','DESC');
-            $this->db->limit(1);
+            $plant_q = (!empty($plant) and $plant != 'all') ?  "AND plant = '".$plant."'": "";
+            $this->db->select('a.id As version, a.sku_code');
+            $this->db->from("(SELECT 
+                *
+            FROM
+                gm_bomheader
+            WHERE
+                sku_code IN (".$skcd.") ".$plant_q."
+            ORDER BY created_date DESC) AS a");
+            $this->db->group_by('a.sku_code');
             $query = $this->db->get();
             $data_set =  ($query->num_rows() > 0)? $query->result_array():FALSE;
                 if($data_set == FALSE){
                     echo "No BOM  With SKU ".$sku_code." AND Plant ".$plant; die; return false;
                 }
             }
-            $ver = $data_set[0]['version'];
+            foreach ($data_set as $key => $value) {
+                $ver[] = $value['version'];
+            }             
         } else { 
             //echo "NO DATA Found"; 
             return false;
@@ -378,9 +394,9 @@ WHERE
     $this->db->select("bi.item_id AS node_id");
     $this->db->select("bi.part_number");
     $this->db->select("bi.material_description");
-    $this->db->select("FORMAT(FLOOR(bi.quantity),0) AS quantity");
+    $this->db->select("FORMAT(FLOOR(max(bi.quantity)),0) AS quantity");
     $this->db->select("bh.plant");
-     $this->db->select("DATE_FORMAT(bi.valid_from, '%d-%m-%Y') AS valid_from");
+    $this->db->select("DATE_FORMAT(MIN(bi.valid_from), '%d-%m-%Y') AS valid_from");
     $this->db->select("DATE_FORMAT(bi.valid_to, '%d-%m-%Y') AS valid_to");
     $this->db->select("bi.serial_number");
     $this->db->select("CONCAT_WS('-',locater.main_group,locater.sub_group) AS locators_description");
@@ -391,11 +407,14 @@ WHERE
     $this->db->select("plat_approv.plate_code"); 
     $this->db->select("plat_approv.plate_txt"); 
     $this->db->select("plat_approv.plate_approve_id"); 
+    $this->db->select("GROUP_CONCAT(bh.sku_code) AS sku_code"); 
     $this->db->from("gm_bomitem AS bi");
 //    $this->db->join("gm_bomheader AS bh","bi.bom_id = bh.id","left");
-    
-    !empty($sku_code) && !empty($plant) ? $this->db->join('gm_bomheader AS bh ',' bi.bom_id = bh.id AND bh.id = '.$ver,'left') : $this->db->join('gm_bomheader AS bh ',' bi.bom_id = bh.id','left');
-    
+    $version_ids = "'".str_replace(",","','", implode(',',$ver))."'";
+     $this->db->join('gm_bomheader AS bh ',' bi.bom_id = bh.id AND bh.id in ('.$version_ids.')','left',FALSE) ;
+    if($plant == 'all'){
+            $plant = '';
+    }
     $this->db->join('gm_skudetails_custom AS skd','skd.sku_code = bh.sku_code','left');
     $this->db->join('
         (SELECT 
@@ -431,11 +450,13 @@ FROM
     
 //        !empty($dates) ?  $this->db->where("(bi.valid_from <= '".$dates."' AND ( bi.valid_to = '9999-12-31' OR '".$dates."' <= bi.valid_to)) ") : "";
         !empty($dates) ?  $this->db->where("(bi.valid_from >= STR_TO_DATE('".$dates[0]."', '%M %d, %Y') AND ( bi.valid_to = '9999-12-31' OR STR_TO_DATE('".$dates[1]."', '%M %d, %Y') <= bi.valid_to)) ") : "";
-        !empty($sku_code) ?  $this->db->where('bh.sku_code',$sku_code) : "";
+        !empty($sku_code) ?  $this->db->where_in('bh.sku_code', explode(",", $sku_code)) : "";
         !empty($component) ?  $this->db->where('bi.part_number',$component) : "";
         !empty($description) ?  $this->db->like('bi.material_description',$description) : "";
         !empty($plant) ?  $this->db->where('bh.plant',$plant) : "";
         !empty($serviceable) AND ($serviceable == "serviceable") ?  $this->db->where('(h.old_tag is not null or h.new_tag is not null)') : "";
+        $this->db->group_by('bi.part_number,bi.valid_to');
+//        $this->db->order_by('bi.part_number ASC');
         (!empty($offset) || $offset == 0) ? $this->db->limit($perpage,$offset) : "";
      //  $this->db->limit(10) ;
         $query0 = $this->db->get();

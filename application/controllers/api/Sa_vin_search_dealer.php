@@ -181,23 +181,49 @@ class Sa_vin_search_dealer extends REST_Controller {
     }
     
     private function vindetails_db($serviceable,$plant,$sku_code,$component,$description,$dates,$offset,$perpage ) {
-        $ver = 0; //STR_TO_DATE('".$dates[0]."', '%M %d, %Y')
-        if(!empty($sku_code)){
-            $this->db->select('id As version');
-            $this->db->from('gm_bomheader AS bh');
-            $this->db->where('sku_code',$sku_code);
-            (!empty($plant) and $plant != 'all') ?  $this->db->where('bh.plant',$plant) : "";
-            $this->db->order_by('created_date','DESC');
-            $this->db->limit(1);
+   
+        $ver = array(0); //STR_TO_DATE('".$dates[0]."', '%M %d, %Y')
+        $skcd = "'".str_replace(",","','",$sku_code)."'";
+        if(!empty($sku_code)){ 
+            /*previous date before 2019-01-23*/
+            
+            $plant_q = (!empty($plant))  ? " AND plant ='".$plant."'" : ""; 
+            $this->db->select('a.id As version,  `a`.`sku_code`');
+            $this->db->from(" 
+                (SELECT 
+                *
+            FROM
+                gm_bomheader
+            WHERE
+                sku_code IN (".$skcd.")
+            AND created_date <= '2019-01-23' ".$plant_q."
+            ORDER BY created_date DESC) AS a ");
+            $this->db->group_by('a.sku_code');
+            
             $query = $this->db->get();
             $data_set =  ($query->num_rows() > 0)? $query->result_array():FALSE;
+            
             if($data_set == FALSE){
-		$op['status'] =  FALSE;
-                $op['message'] =  "No BOM  With SKU ".$sku_code." AND Plant ".$plant;
-		echo json_encode($op);
-                die; return false;
-	}
-            $ver = $data_set[0]['version'];
+                /*after date */
+            $plant_q = (!empty($plant) and $plant != 'all') ?  "AND plant = '".$plant."'": "";
+            $this->db->select('a.id As version, a.sku_code');
+            $this->db->from("(SELECT 
+                *
+            FROM
+                gm_bomheader
+            WHERE
+                sku_code IN (".$skcd.") ".$plant_q."
+            ORDER BY created_date DESC) AS a");
+            $this->db->group_by('a.sku_code');
+            $query = $this->db->get();
+            $data_set =  ($query->num_rows() > 0)? $query->result_array():FALSE;
+                if($data_set == FALSE){
+                    echo "No BOM  With SKU ".$sku_code." AND Plant ".$plant; die; return false;
+                }
+            }
+            foreach ($data_set as $key => $value) {
+                $ver[] = $value['version'];
+            }             
         } else { 
 		 $data['status']= FALSE;
             $data['message']= "NO DATA Found";
@@ -214,26 +240,36 @@ class Sa_vin_search_dealer extends REST_Controller {
         if($plant == 'all'){
             $plant = '';
         }
+            
+      //  $this->db->select("md.product_id,DATE_FORMAT(md.vehicle_off_line_date, '%d-%m-%Y') AS vehicle_off_line_date,md.plant ,skd.sku_description,CONCAT(SUBSTRING(material_number, 1, CHAR_LENGTH(md.material_number) - 2),'ZZ') AS sku_code ");
     $this->db->select(" DISTINCT '".$dates[0]."-".$dates[1]."' AS manufacturing_date");
     $this->db->select("bh.sku_code");
     $this->db->select("skd.sku_description");
     $this->db->select("bi.item_id AS node_id");
     $this->db->select("bi.part_number");
     $this->db->select("bi.material_description");
-    $this->db->select("FORMAT(FLOOR(bi.quantity),0) AS quantity");
+    $this->db->select("FORMAT(FLOOR(max(bi.quantity)),0) AS quantity");
     $this->db->select("bh.plant");
-    $this->db->select("DATE_FORMAT(bi.valid_from, '%d-%m-%Y') AS valid_from");
+    $this->db->select("DATE_FORMAT(MIN(bi.valid_from), '%d-%m-%Y') AS valid_from");
     $this->db->select("DATE_FORMAT(bi.valid_to, '%d-%m-%Y') AS valid_to");
+//    $this->db->select("bi.serial_number");
+//    $this->db->select("CONCAT_WS('-',locater.main_group,locater.sub_group) AS locators_description");
+//    $this->db->select("IFNULL(h.old_tag, '--') AS old_tag");
     $this->db->select("IFNULL(h.new_tag, '--') AS new_tag");
+//    $this->db->select("IFNULL(h.change_date, '--') AS change_date"); 
     $this->db->select("case  when bi.status is null  then 'INITIAL' else bi.status END AS status");
     $this->db->select("plat_approv.plate_code"); 
     $this->db->select("plat_approv.plate_txt"); 
     $this->db->select("plat_approv.plate_approve_id"); 
-    $this->db->select("plat_approv.bom_plate_part_id");
+    $this->db->select("GROUP_CONCAT(bh.sku_code) AS sku_code"); 
     $this->db->from("gm_bomitem AS bi");
-    
-    !empty($sku_code) && !empty($plant) ? $this->db->join('gm_bomheader AS bh ',' bi.bom_id = bh.id AND bh.id = '.$ver,'left') : $this->db->join('gm_bomheader AS bh ',' bi.bom_id = bh.id','left');
-    
+//    $this->db->join("gm_bomheader AS bh","bi.bom_id = bh.id","left");
+    $version_ids = "'".str_replace(",","','", implode(',',$ver))."'";
+//    echo  $sku_code." / ".$plant." / / ids ".$version_ids; die;
+     $this->db->join('gm_bomheader AS bh ',' bi.bom_id = bh.id AND bh.id in ('.$version_ids.')','left',FALSE) ;
+    if($plant == 'all'){
+            $plant = '';
+    }
     $this->db->join('gm_skudetails_custom AS skd','skd.sku_code = bh.sku_code','left');
     $this->db->join('
         (SELECT 
@@ -246,15 +282,15 @@ class Sa_vin_search_dealer extends REST_Controller {
         ORDER BY change_date DESC , change_time DESC) AS h1
         GROUP BY h1.material_number) AS h','h.material_number = bi.part_number','left');
     $this->db->join('gm_locator_desc AS locater ',' bi.serial_number = locater.locator_codes','left');
+	$append = !empty($sku_code) && !empty($plant) ? " ,bh.sku_code,bh.plant ":" ,bh.sku_code,bh.plant ";
     $this->db->join(" (SELECT 
     bh.sku_code,
     bh.plant,
     bp.part_number AS material_code,
     plate.plate_id AS plate_code,
     plap.id AS plate_approve_id,
-    plate.plate_txt,
-    bpp.id AS bom_plate_part_id
-        FROM
+    plate.plate_txt
+FROM
     gm_bomheader AS bh
         LEFT JOIN
     gm_bomplatepart AS bpp ON bpp.bom_id = bh.id 
@@ -263,21 +299,25 @@ class Sa_vin_search_dealer extends REST_Controller {
         LEFT JOIN
     gm_bomplate AS plate ON bpp.plate_id = plate.id
         LEFT JOIN
-    gm_epc_plateimages AS plap ON plap.plate_id = plate.id AND plap.`status` = 'Approved' group by material_code  ) AS plat_approv","bi.part_number=plat_approv.material_code AND bh.plant= plat_approv.plant AND bh.sku_code = plat_approv.sku_code ","left");
+    gm_epc_plateimages AS plap ON plap.plate_id = plate.id AND plap.`status` = 'Approved' group by material_code ".$append." ) AS plat_approv","bi.part_number=plat_approv.material_code AND bh.plant= plat_approv.plant AND bh.sku_code = plat_approv.sku_code ","left");
     
     
     
+//        !empty($dates) ?  $this->db->where("(bi.valid_from <= '".$dates."' AND ( bi.valid_to = '9999-12-31' OR '".$dates."' <= bi.valid_to)) ") : "";
         $this->db->where('h.new_tag','S');
         !empty($dates) ?  $this->db->where("(bi.valid_from >= STR_TO_DATE('".$dates[0]."', '%M %d, %Y') AND ( bi.valid_to = '9999-12-31' OR STR_TO_DATE('".$dates[1]."', '%M %d, %Y') <= bi.valid_to)) ") : "";
-        !empty($sku_code) ?  $this->db->where('bh.sku_code',$sku_code) : "";
+        !empty($sku_code) ?  $this->db->where_in('bh.sku_code', explode(",", $sku_code)) : "";
         !empty($component) ?  $this->db->where('bi.part_number',$component) : "";
         !empty($description) ?  $this->db->like('bi.material_description',$description) : "";
         !empty($plant) ?  $this->db->where('bh.plant',$plant) : "";
         !empty($serviceable) AND ($serviceable == "serviceable") ?  $this->db->where('(h.old_tag is not null or h.new_tag is not null)') : "";
+        $this->db->group_by('bi.part_number,bi.valid_to');
+//        $this->db->order_by('bi.part_number ASC');
         (!empty($offset) || $offset == 0) ? $this->db->limit($perpage,$offset) : "";
+     //  $this->db->limit(10) ;
         $query0 = $this->db->get();
         
         return $query0;
-    }
+        }
 }
 

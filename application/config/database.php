@@ -67,7 +67,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');/*
 |
 | The $query_builder variables lets you determine whether or not to load
 | the query builder class.
-*/$active_group = 'default';
+*/$active_group = 'prod';
 $query_builder = TRUE;$db['default'] = array(
 	'dsn'	=> '',
 	'hostname' => 'gladminds-qa-2.chnnvvffqwop.us-east-1.rds.amazonaws.com',

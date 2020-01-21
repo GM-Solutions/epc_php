@@ -424,7 +424,7 @@ class User extends REST_Controller {
         $msg = "Dear Mr {user_name} <br/>Use OTP: {otp} to complete your registration process.<br/>Regards<br/>Bajaj Auto<br/><br/><br/><br/>Power By Gladminds";
         $email_dtl[0]['subject'] = "Verify your account";
         $email_dtl[0]['message'] = str_replace(array("{user_name}", "{otp}"), array($user_name, $otp_no), $msg);
-        $email_dtl[0]['to'] = "pvningalkar@gmail.com";
+        $email_dtl[0]['to'] = $email;
         
         /* send Email */
         Common::send_email($email_dtl);

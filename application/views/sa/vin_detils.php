@@ -6,7 +6,7 @@
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-
+        <link rel="icon" type="image/png" sizes="16x16" href="//epc.gladminds.co/static/epc/img/favicon/favicon-16x16.png">
         <title>EPC Reports</title>
 
         <!-- Bootstrap -->
@@ -42,6 +42,7 @@
 	
 	
         <script src="https://code.highcharts.com/highcharts.js"></script>
+	<link href="../assets/css/epccss.css" rel="stylesheet" type="text/css"/>
 <script src="https://code.highcharts.com/modules/exporting.js"></script>
 <script src="https://code.highcharts.com/modules/offline-exporting.js"></script>
 
@@ -221,6 +222,6 @@ function e7858xport(){
     document.location.href = "<?php echo base_url().'epc_reports/download_vindetails/'; ?>?sku_code="+sku_code+'&vin_no='+vin_no+'&month_year='+date+'&plant='+plant+'&date_filter='+date_filer;
                   }
         </script>
-        
+        <div id="loading" ><div class="loader"></div></div>
     </body>
 </html>

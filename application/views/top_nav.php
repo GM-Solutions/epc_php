@@ -9,6 +9,16 @@ if(!empty($user_data)){
     
 }
 ?>
+<?php 
+                                $url="first_name=".$this->session->userdata('first_name');
+                                $url .="&last_name=".$this->session->userdata('last_name');
+                                $url .="&product_name=EPC";
+                                $url .="&model_name=BajajEpc";
+                                $url .="&model_number=epc".date('Y');
+                                $url .="&serial_number=epc".$this->session->userdata('phone_number');
+                                $url .="&email=".$this->session->userdata('email');
+                                $url .="&mobile=".$this->session->userdata('phone_number');
+                                ?>
 <div class="col-md-3 left_col">
                     <div class="left_col scroll-view">
                         <div class="navbar nav_title" style="border: 0;">
@@ -83,7 +93,9 @@ if(!empty($user_data)){
                                         <a href="<?php echo base_url() . "index.php/epc_sbomb_summary"; ?>"><i class="fa fa-file"></i>SBOM Summary Report</a>
                                     </li>
                                     <li>-----------</li>-->
-                                    
+                                    <li>
+                                        <a href="<?php echo "//afterbuy.care/Thirdparty/support?".$url; ?>"><i class="fa fa-file"></i>support</a>
+                                    </li>
                                 </ul>
                             </div>
 

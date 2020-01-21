@@ -7,7 +7,6 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="icon" type="image/png" sizes="16x16" href="//epc.gladminds.co/static/epc/img/favicon/favicon-16x16.png">
-
         <title>EPC Reports</title>
 
         <!-- Bootstrap -->
@@ -157,7 +156,6 @@
     <div  class="col-md-6" aria-hidden="false">
     <label for="select2-single-input-sm" class="control-label">SKU code / Description</label><br/>
 
-
     <select id="skucodes" style="width:400px;" >
 			<!-- Dropdown List Option -->
     </select>
@@ -194,7 +192,7 @@
                                                     <input id="description" class="form-control" type="text" name="description" value="" placeholder="Part Description"/>
                                                 </div>
 </div>
-                                            <div class="row">
+<div class="row">
                                                 <div  class="col-md-3" aria-hidden="false">
 <label>First Vehicle <span id="lbl">Manufacture</span> Date On:</label>
 <input type="text" id="first_manufacturing_date" class="form-control" placeholder="First Vehicle Manufacturing Date" name="first_manufacturing_date" value="" readonly="" /></div>
@@ -205,13 +203,8 @@
                                                 <div  class="col-md-3" aria-hidden="false"><br/>
                                                     
                                                     <button type="button" onclick="e7858xport()" class="btn btn-dark btn-block" name="get_rpt" >Download Spare Parts</button>
-                                                </div>
-                                                
-                                                
-                                            
+                                                </div>     
                                             </div>
-
-
                                             <div class="row">
                                                 <div  class="col-md-12">                                                    
                                                     <h4>Vin Data</h4>
@@ -391,10 +384,7 @@ $('#loading').hide();
             }
 
             function searchFilter(page_num) {
-            
-            
             var date = '';
-            
                 var filter =$('#filter_selection').find(":selected").val();
                 if(filter == "with_vin"){
                     date =  $('#hidden_mfdt').val();
@@ -421,11 +411,9 @@ $('#loading').hide();
                 var vin_no = e.value;
                 /*sku_code*/
                 
-                
                 var sku_code = $('#skucodes').select2().val();
                if(typeof sku_code === "undefined" || sku_code == ""){$('#alrt').html('<div class="alert alert-danger alert-dismissible"> <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>  <strong>Error!</strong> Please Select SKU code / Description.</div>');        
                     return  true}
-                
                 /*component*/
                 var e = document.getElementById('component');
                 var component = e.value;
@@ -433,10 +421,8 @@ $('#loading').hide();
                 /*sku_code*/
                 var e = document.getElementById('description');
                 var description = e.value;
-                
                 /*date_filer*/
                 $('.alert').hide();
-                
                 $('#example').DataTable( {
                 "ajax":{
                 "url" : "<?php echo base_url() . 'Sa_vin_search_dealers/Vindetails_ajax'; ?>/",
@@ -458,12 +444,15 @@ $('#loading').hide();
                     { "data": "status" },
                     { "data": "plate",
                         "render": function(data, type, row, meta){
-
+                            var data1='';
                             if(type === 'display'){
-                                data = data.pl_id;                                
+                                
+                                data1 = '<a  target="_blank" href="' + data.pl_id + '">' + data.desc + '</a>';
+                                data1 += '<br><a  target="_blank" href="' + data.multiplate + '">More Plates</a>';
+                                
                             }
 
-                            return data;
+                            return data1;
                          }
                     }
                 ],

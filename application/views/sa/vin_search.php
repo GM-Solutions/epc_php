@@ -6,7 +6,7 @@
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-
+        <link rel="icon" type="image/png" sizes="16x16" href="//epc.gladminds.co/static/epc/img/favicon/favicon-16x16.png">
         <title>EPC Reports</title>
 
         <!-- Bootstrap -->
@@ -42,93 +42,29 @@
 <!--                 bootstrap-datetimepicker  -->
             <script src="../assets/reports/vendors/bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
                 <link href="../assets/reports/vendors/pnotify/dist/pnotify.css" rel="stylesheet">
-        <script type="text/javascript" src="http://www.google.com/jsapi"></script>
+        <script type="text/javascript" src="http://www.google.com/jsapi"></script> 
 
-         <!-- Datatables -->
+<!-- Datatables -->
     <link href="../assets/reports/vendors/datatables.net-bs/css/dataTables.bootstrap.min.css" rel="stylesheet">
     <link href="../assets/reports/vendors/datatables.net-buttons-bs/css/buttons.bootstrap.min.css" rel="stylesheet">
     <link href="../assets/reports/vendors/datatables.net-fixedheader-bs/css/fixedHeader.bootstrap.min.css" rel="stylesheet">
     <link href="../assets/reports/vendors/datatables.net-responsive-bs/css/responsive.bootstrap.min.css" rel="stylesheet">
     <link href="../assets/reports/vendors/datatables.net-scroller-bs/css/scroller.bootstrap.min.css" rel="stylesheet">
-
         <script src="https://code.highcharts.com/highcharts.js"></script>
         <script src="https://code.highcharts.com/modules/exporting.js"></script>
         <script src="https://code.highcharts.com/modules/offline-exporting.js"></script>
-        
+        <link href="../assets/css/epccss.css" rel="stylesheet" type="text/css"/>
         <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.1/css/select2.min.css" rel="stylesheet" />
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.1/js/select2.min.js"></script>
-        <style>
-                    
-select[readonly].select2 + .select2-container {
-  pointer-events: none;
-  touch-action: none;
-
-  .select2-selection {
-    background: #eee;
-    box-shadow: none;
-  }
-
-  .select2-selection__arrow,
-  .select2-selection__clear {
-    display: none;
-  }
-}</style>
-                <style>
-            
-            .hide_me{
-                        pointer-events: none;
-                        touch-action: none;
-                        background: #eee !important;
-                        box-shadow: none;
-                        
-                    }
-                    
-            
-            #load, #loading {
-                width: 100%;
-                height: 100%;
-                top: 0;
-                left: 0;
-                position: fixed;
-                display: block;
-                opacity: 0.7;
-                background-color: #fff;
-                z-index: 99;
-                text-align: center;
-            }
-
-            .loader {
-                position: absolute;
-                top: 30%;
-                left: 48%;
-                z-index: 100;
-                border: 16px solid #f3f3f3;
-                border-radius: 50%;
-                border-top: 16px solid blue;
-                border-bottom: 16px solid blue;
-                width: 120px;
-                height: 120px;
-                -webkit-animation: spin 2s linear infinite;
-                animation: spin 2s linear infinite;
-            }
-
-            @-webkit-keyframes spin {
-                0% { -webkit-transform: rotate(0deg); }
-                100% { -webkit-transform: rotate(360deg); }
-            }
-
-            @keyframes spin {
-                0% { transform: rotate(0deg); }
-                100% { transform: rotate(360deg); }
-            }
-        </style>
+   
+               
 <!--        <link href="../assets/search_select/selectstyle.css" rel="stylesheet" type="text/css">-->
     </head>
 
     <body class="nav-md">
         <div class="container body">
             <div class="main_container">
-
+            
 
                 <!-- top navigation -->
                 <?php $this->load->view('top_nav'); ?>
@@ -137,13 +73,29 @@ select[readonly].select2 + .select2-container {
                 <!-- page content -->
                 <div class="right_col" role="main">
                     <div class="">
-                        <div class="page-title row">
-                            <div class=" col-md-3">
-                                <h3>VIN Search</h3>
+                        
+                        <div class="row">
+                            <div class="tophadding-bg">
+                                
+                                <div class="col-md-12"><h3>VIN Search</h3></div>
+                                
+                            
                             </div>
-                            <div id="alrt" class="col-md-8"></div>
+                            
+                            
                         </div>
-
+                        
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="menulists">
+                                    <ul>
+                                        <li><a href="<?php echo $siteurl."/verticals/"; ?>">Home</a></li>
+                                        <li><a href="#">Vin search</a></li>                                        
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                            
                         <div class="clearfix"></div>
 
                         <div class="row">
@@ -181,13 +133,23 @@ select[readonly].select2 + .select2-container {
                                                         <option value="other" aria-hidden="true" style=""> Other </option>                                                                                                                                  
                                                     </select>
                                                 </div>
+                                                
+
                                                 <div  class="col-md-3" aria-hidden="false">
                                                     <label for="filter_selection" class="control-label">Serviceable or Not</label>
                                                     <br/>
                                                     <input type="radio" name="serviceable" value="serviceable" checked> Serviceable<br>
                                                     <input type="radio" name="serviceable" value="all" > All<br>
+						</div>
+<div  class="col-md-6" aria-hidden="false">
+                                                    <label for="select2-single-input-sm" class="control-label">All Models</label><br/>
+                                                    <select id="allmodel" style="width:600px;" >`
+                                                    
+                                                    </select>
                                                 </div>
-
+<div  class="col-md-offset-3 col-md-3" aria-hidden="false"><br>
+                                                    <button type="button" id="clrform" class="btn btn-danger btn-block">Clear Form</button>
+						</div>
                                             </div>
                                             <div class="row">
                                                 <div  class="col-md-5" aria-hidden="false">
@@ -219,10 +181,9 @@ select[readonly].select2 + .select2-container {
                                <span class="glyphicon glyphicon-calendar"></span>
                             </span>
                         </div>
-                    </div>
-                                                </div>
+            <input type="hidden" id="hidden_mfdt" />
+                    </div></div>
                                                 <div class="col-sm-3">
-                                                    
                                                     <div class="form-group">
                                                         <label><span id="lbl">Manufacture</span> Date To</label>
                         <div class='input-group date' id='myDatepickerto'>
@@ -233,7 +194,6 @@ select[readonly].select2 + .select2-container {
                         </div>
                     </div>
                                                 </div>
-
                                                 <div  class="col-md-2" aria-hidden="false"><br/>
                                                     <input id="component" class="form-control" type="text" name="component" value="" placeholder="Part Number"/>
                                                 </div>
@@ -246,7 +206,7 @@ select[readonly].select2 + .select2-container {
 <label>First Vehicle <span id="lbl">Manufacture</span> Date On:</label>
 <input type="text" id="first_manufacturing_date" class="form-control" placeholder="First Vehicle Manufacturing Date" name="first_manufacturing_date" value="" readonly="" /></div>
                                                 <div  class="col-md-3" aria-hidden="false"><br/>
-                                                    <button type="button"  onclick="searchFilter(0)" class="btn btn-primary btn-block" name="get_rpt" >Get Spare Parts</button>
+                                                    <button type="button" id="get_rpt" onclick="searchFilter(0)" class="btn btn-primary btn-block" name="get_rpt" >Get Spare Parts</button>
                                                     
                                                 </div>
                                                 <div  class="col-md-3" aria-hidden="false"><br/>
@@ -258,9 +218,6 @@ select[readonly].select2 + .select2-container {
                                                 <div  class="col-md-12">                                                    
                                                     <h4>Vin Data</h4>
                                                     <div id="t12get">
-                                                        
-                                                        
-<!--                                                        <table id="datatable" class="table table-striped table-bordered"></table>-->
                                                         <table id="example" class="display table table-striped table-bordered " style="width:100%">
         <thead>
             <tr>
@@ -323,7 +280,7 @@ select[readonly].select2 + .select2-container {
         <script src="../assets/reports/vendors/pnotify/dist/pnotify.js"></script>
 
 
-<!--        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/css/bootstrap-datepicker.css">-->
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.8.0/css/bootstrap-datepicker.css">
         <!--        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.7.14/css/bootstrap-datetimepicker.min.css">-->
         <!-- Custom Theme Scripts -->
         
@@ -332,23 +289,20 @@ $(window).load(function () {
     <?php if($select_type == "other"){ ?>
 //        $('.dtrng').removeClass('hide_me');  
         document.getElementById("vin_no").readOnly = true;
-        $('#filter_selection').val('other');   
-//        $('#myDatepickerto > .form-control').prop('disabled', false);
-//        $('#myDatepickerfrom > .form-control').prop('disabled', false);
-
-        $('#myDatepickerfrom').data("DateTimePicker").enable();
-        $('#myDatepickerto').data("DateTimePicker").enable();
+        $('#filter_selection').val('other');      
+         $('#myDatepickerfrom').data("DateTimePicker").enable();
+        $('#myDatepickerto').data("DateTimePicker").enable();        
+        $('#allmodel').prop("disabled", false);
    <?php } else { ?>       
-
 document.getElementById("vin_no").readOnly = false;
 $('#filter_selection').val('with_vin');
-//$('#myDatepickerfrom > .form-control').prop('disabled', true);
-//$('#myDatepickerto > .form-control').prop('disabled', true);
+//$('.dtrng').addClass('hide_me'); 
 $('#myDatepickerfrom').data("DateTimePicker").disable();
 $('#myDatepickerto').data("DateTimePicker").disable();
 $("#skucodes").empty(); 
 $("#skucodes").select2({disabled:true});
 $('#plant').prop("disabled", true);
+$('#allmodel').prop("disabled", true);
   <?php } ?>
 $('#loading').hide();
 });
@@ -358,15 +312,28 @@ $('#loading').hide();
 </script>
 <script>
             function  change_filter(e) {
-                if (e.value == "other") {  
+                if (e.value == "other") {
                     $('#myDatepickerfrom').data("DateTimePicker").enable();
                     $('#myDatepickerto').data("DateTimePicker").enable();
-                    document.getElementById("vin_no").readOnly = true;
+                    $('#myDatepickerto').data("DateTimePicker").defaultDate(moment(new Date()));
+//                    $('.dtrng').removeClass('hide_me');                    
+                     //document.getElementById("vin_no").value = "";
+
+                   document.getElementById("vin_no").readOnly = true;
+                    
                     $('#plant').prop("disabled", false);
+                    $('#allmodel').prop("disabled", false);
+                    //--$('#plant').val('');
                     $('#plant').trigger('change');
+
                     $("#skucodes").select2({disabled:false});
+                     //--$("#skucodes").empty(); 
+//                    $("#skucodes").select2({data:''});
+                    //--$('#skucodes').val('');
                     $('#skucodes').trigger('change');
-                } else { 
+                    
+                } else {
+                    $('#allmodel').prop("disabled", true);
                     $('#myDatepickerfrom').data("DateTimePicker").disable();
                     $('#myDatepickerto').data("DateTimePicker").disable();
                     $('#myDatepickerfrom').data("DateTimePicker").clear();
@@ -380,7 +347,8 @@ $('#loading').hide();
                     $("#skucodes").select2({disabled:true});
                     $("#skucodes").empty(); 
                     $('#skucodes').trigger('change');
-
+//                    $('.dtrng').addClass('hide_me');
+                                         
                     document.getElementById("vin_no").readOnly = false;
                 }
 
@@ -406,13 +374,10 @@ $('#loading').hide();
                             $(".search_sku").hide();
                             $(".sho_sku").show();
                             
-                            var start = moment(returnedData.data.vehicle_off_line_date).format("DD/MM/YYYY");
-                            var end = moment(returnedData.data.vehicle_off_line_date).format("DD/MM/YYYY");
+                            var start = moment(returnedData.data.vehicle_off_line_date).format('ll');
+                            var end = moment(returnedData.data.vehicle_off_line_date).format('ll');
                             
-                            $('#myDatepickerfrom').data("DateTimePicker").date(start);
-                            $('#myDatepickerto').data("DateTimePicker").date(end);
-                         
-
+                            $('#hidden_mfdt').val(start+' - '+end);
                             $("#skucodes").select2({data:returnedData.data.sku_code});
                             $('#skucodes').val(returnedData.data.sku_code[0].id);
                             $('#skucodes').trigger('change');  
@@ -421,7 +386,7 @@ $('#loading').hide();
                             $('#plant').val(returnedData.data.plant);
                             $('#plant').trigger('change');   
                             $("#plant").select2({disabled:true})
-                            $("#first_manufacturing_date").val(moment(returnedData.data.first_manufacturing_date).format('LL'));
+                            $("#first_manufacturing_date").val(moment(returnedData.data.first_manufacturing_date).format('MMMM YYYY'));
 
                         } else {
                             alert("No VIN detail found.");
@@ -433,16 +398,26 @@ $('#loading').hide();
             }
 
             function searchFilter(page_num) {
-                var  fdate = $('#myDatepickerfrom').data('date');
-                var  tdate = $('#myDatepickerto').data('date');
-                if(typeof fdate === "undefined" || typeof tdate === "undefined"){
-                    $('#alrt').html('<div class="alert alert-danger alert-dismissible"> <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>  <strong>Error!</strong> Please fill dates.</div>');        
-                    return  true;}
-                var dateParts = (tdate).split("/");
-                var end_dt = new Date(+dateParts[2], dateParts[1] - 1, +dateParts[0]); 
-                var dateParts = (fdate).split("/");
-                var start_dt = new Date(+dateParts[2], dateParts[1] - 1, +dateParts[0]);                    
-                var date = moment(start_dt).format('ll')+" - "+moment(end_dt).format('ll');
+            var date = '';
+                var filter =$('#filter_selection').find(":selected").val();
+                if(filter == "with_vin"){
+                    date =  $('#hidden_mfdt').val();
+                    if(typeof date === "undefined" || date === ""){
+                        $('#alrt').html('<div class="alert alert-danger alert-dismissible"> <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>  <strong>Error!</strong> Please get Vin details.</div>');        
+                        return  true;}
+                } else {                    
+                    var  fdate = $('#myDatepickerfrom').data('date');
+                    var  tdate = $('#myDatepickerto').data('date');
+                    if(typeof fdate === "undefined" || typeof tdate === "undefined"){
+                        $('#alrt').html('<div class="alert alert-danger alert-dismissible"> <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>  <strong>Error!</strong> Please fill dates.</div>');        
+                        return  true;}
+                    var dateParts = (tdate).split("/");
+                    var end_dt = new Date(+dateParts[2], dateParts[1] - 1, +dateParts[0]); 
+                    var dateParts = (fdate).split("/");
+                    var start_dt = new Date(+dateParts[2], dateParts[1] - 1, +dateParts[0]);                    
+                    var date = moment(start_dt).format('ll')+" - "+moment(end_dt).format('ll');
+                    
+                }
                 var serviceable = $("input[name='serviceable']:checked").val();
                 var plant = $('#plant').select2().val();
                 /*vin_no*/
@@ -451,7 +426,7 @@ $('#loading').hide();
                 /*sku_code*/
                 
                 var sku_code = $('#skucodes').select2().val();
-                if(typeof sku_code === "undefined" || sku_code == ""){$('#alrt').html('<div class="alert alert-danger alert-dismissible"> <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>  <strong>Error!</strong> Please Select SKU code / Description.</div>');        
+               if(typeof sku_code === "undefined" || sku_code == ""){$('#alrt').html('<div class="alert alert-danger alert-dismissible"> <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>  <strong>Error!</strong> Please Select SKU code / Description.</div>');        
                     return  true}
                 /*component*/
                 var e = document.getElementById('component');
@@ -466,9 +441,13 @@ $('#loading').hide();
                 "ajax":{
                 "url" : "<?php echo base_url() . 'Sa_vin_search/Vindetails_ajax'; ?>/",
                 "type" : "POST",
-                data:function(d){ $('#loading').show();
+                data:function(d){
                     d.applications = {"page":"0","sku_code" : sku_code,"vin_no":vin_no,"month_year":date,"plant":plant,"component":component,"description":description,"serviceable":serviceable};
                 }},
+                'processing': true,
+                 'language': {
+                    'processing': '<div id="ld2" ><div class="loader"></div></div>'
+                },
                 "columns": [
                     { "data": "part_number" },
                     { "data": "part_description" },
@@ -483,24 +462,22 @@ $('#loading').hide();
                     { "data": "status" },
                     { "data": "plate",
                         "render": function(data, type, row, meta){
-
+                            var data1='';
                             if(type === 'display'){
                                 
-                                data = '<a  target="_blank" href="' + data.pl_id + '">' + data.desc + '</a>';
+                                data1 = '<a  target="_blank" href="' + data.pl_id + '">' + data.desc + '</a>';
+                                data1 += '<br><a  target="_blank" href="' + data.multiplate + '">More Plates</a>';
                                 
                             }
 
-                            return data;
+                            return data1;
                          }
                     }
                 ],
                     "bDestroy": true
     } );
-     $('#loading').hide();
-                
-              
+    
             }
-           
 
             function e7858xport() {
                 var  fdate = $('#myDatepickerfrom').data('date');
@@ -533,32 +510,132 @@ $('#loading').hide();
                 var description = e.value;
                 $('.alert').hide();
                 document.location.href = "<?php echo base_url() . 'Sa_vin_search/download_vindetails/'; ?>?sku_code=" + sku_code + '&vin_no=' + vin_no + '&month_year=' + date + '&plant=' + plant+ '&component=' + component + '&description=' + description+'&serviceable='+serviceable;
-            }
+}
         </script>
  
 
 <script type="text/javascript">
-			$(document).ready(function() {
+$(document).ready(function() {
                             <?php 
                              $dt[]= "{id:'all',text:'All'}";
                             foreach ($vin_codes as $key => $value) {
                             $dt[]= "{id:'".$value['plant_id']."',text:'".$value['description']." (".$value['plant_id'].")   '}";
+                            }
+                             $dt_model[]= "{id:'all',text:'All'}";
+                            foreach ($sub_brand as $key => $value) {
+                            $dt_model[]= "{id:'".$value['id']."',text:'".$value['sub_brand_name']."'}";
                         } ?>
-
-
-                        $('#plant').select2({data:[<?php echo implode(",",$dt ) ?>]}).on("change", function (e) { 
+    
+    $('#clrform').on('click', function(){
+    	dataTable = $('#example').dataTable();
+        dataTable.fnClearTable();  
+        call_sku_codes('all');
+        $('#myDatepickerfrom').data("DateTimePicker").clear();
+        $('#myDatepickerto').data("DateTimePicker").clear();
+        var filter_selection = $('#filter_selection :selected').val();
+        if(filter_selection == "with_vin"){ } else {
+         $('#myDatepickerto').data("DateTimePicker").defaultDate(moment(new Date()));   
+        }
+        $('#first_manufacturing_date').val('');
+        $('#component').val('');
+        $('#vin_no').val('');
+        $('#description').val('');
+        $('#allmodel').select2({data:[<?php echo implode(",",$dt_model ) ?>]});
+        $('#plant').select2({data:[<?php echo implode(",",$dt ) ?>]});
+        
+    });
+ $('#allmodel').select2({data:[<?php echo implode(",",$dt_model ) ?>]});
+ $('#plant').select2({data:[<?php echo implode(",",$dt ) ?>]});
+ $('#allmodel').on("change", function (e) { 
+      $('#plant').empty();
+        $('#plant').val('val','');
+        $('#plant').select2({data:[<?php echo implode(",",$dt ) ?>]});
+                        
                              var filter_selection = $('#filter_selection :selected').val();
                              if(filter_selection == "with_vin"){ return true;}
-//                        alert($('#country').select2().val());
+                            var  model= $('#allmodel').select2().val();
+                            
+                                $.ajax({
+                                    type: 'POST',
+                                    url: "<?php echo base_url() . 'Sa_vin_search/model_plate_sku'; ?>/?model="+model,
+                                    data: '',
+                                     contentType: "application/json",
+                                    dataType: "json",
+                                    beforeSend: function () {
+                                        //start loader 
+                                         $('#loading').show();
+                                    },
+                                    success: function (data) {
+                                        if(data.sku_status == true){
+                                            $("#skucodes").select2({disabled:false});
+                                            $("#skucodes").empty();
+                                            $("#skucodes").select2({
+                                                  data: data.sku
+                                                });
+                                            } else{
+                                                $("#skucodes").empty();                                
+                                                $('#skucodes').val('');
+                                                $('#skucodes').trigger('change');   
+                                            }
+                                        if(data.plant_status == true){
+                                            $("#plant").select2({disabled:false});
+                                            $("#plant").empty();
+                                            $("#plant").select2({
+                                                  data: data.plant
+                                                });
+                                            } else{
+                                                $("#plant").empty();                                
+                                                $('#plant').val('');
+                                                $('#plant').trigger('change');   
+                                            }
+                                                $('#loading').hide();
+                                    }
+                                });
+                                
+                            });
+                        $("#plant").on("change", function (e) { 
+//                        $('#allmodel').empty();
+//                        $('#allmodel').val('val','');
+//                        $('#allmodel').select2({data:[<?php // echo implode(",",$dt_model ) ?>]});
+                             var filter_selection = $('#filter_selection :selected').val();
+                             if(filter_selection == "with_vin"){ return true;}
                     var  plant= $('#plant').select2().val();
-                   call_sku_codes(plant);
+                    var  allmodel= $('#allmodel').select2().val();
+                   $.ajax({
+                    type: 'POST',
+                    url: "<?php echo base_url() . 'Sa_vin_search/plates_sku'; ?>/?plant="+plant+"&model="+allmodel,
+                    data: '',
+                     contentType: "application/json",
+                    dataType: "json",
+                    beforeSend: function () {
+                        //start loader 
+                         $('#loading').show();
+                    },
+                    success: function (sku_codes) {
+                        if(sku_codes.status == true){
+                            $("#skucodes").empty();
+                            $("#skucodes").select2({disabled:false});
+                            $("#skucodes").select2({
+				  data: sku_codes.sku
+				});
+                            } else{
+                                
+//                                $("#skucodes").select2({data:''});
+                                $("#skucodes").empty();                                
+                                $('#skucodes').val('').trigger('change')
+//                                $('#skucodes').trigger('change');   
+//                                $("#skucodes").select2({disabled:true});
+                            }
+                                 $('#loading').hide();
+                    }
+                });
+
                     });
-                    <?php if($select_type == "other"){ ?>
-       
-        call_sku_codes('all');
-   <?php } ?>
+                    <?php if($select_type == "other"){ ?>                 
+      call_sku_codes('all');
+   <?php } ?>   
 function call_sku_codes(plant){
-     $.ajax({
+$.ajax({
                     type: 'POST',
                     url: "<?php echo base_url() . 'Sa_vin_search/plates_sku'; ?>/?plant="+plant,
                     data: '',
@@ -570,6 +647,7 @@ function call_sku_codes(plant){
                     },
                     success: function (sku_codes) {
                         if(sku_codes.status == true){
+                            $("#skucodes").empty();
                             $("#skucodes").select2({disabled:false});
                             $("#skucodes").select2({
 				  data: sku_codes.sku
@@ -579,19 +657,16 @@ function call_sku_codes(plant){
 //                                $("#skucodes").select2({data:''});
                                 $("#skucodes").empty();                                
                                 $('#skucodes').val('').trigger('change')
-                                $('#skucodes').trigger('change');   
-                                
-                                
+//                                $('#skucodes').trigger('change');   
 //                                $("#skucodes").select2({disabled:true});
                             }
                                  $('#loading').hide();
                     }
                 });
-}
+
+     }
 			});
-                        
-                        
-                        
+
                         function isEmpty(val){
     return (val === undefined || val == null || val.length <= 0) ? true : false;
 }
@@ -614,7 +689,7 @@ var plant=$('#plant').select2().val();
                     },
                     success: function (sku_codes) {
                         if(sku_codes.status == true){
-                             $("#first_manufacturing_date").val(moment(sku_codes.sku_manufacturing_date).format('LL'));
+                             $("#first_manufacturing_date").val(moment(sku_codes.sku_manufacturing_date).format('MMMM YYYY'));
                         } else{
                              $("#first_manufacturing_date").val("");
                         }
@@ -629,12 +704,14 @@ var plant=$('#plant').select2().val();
     });
     
     $('#myDatepickerto').datetimepicker({
-        format: 'DD/MM/YYYY'
+        format: 'DD/MM/YYYY',
+        defaultDate: moment(new Date()),
     });
+    
     
 
     	</script>
-        <!-- Datatables -->
+         <!-- Datatables -->
     <script src="../assets/reports/vendors/datatables.net/js/jquery.dataTables.min.js"></script>
     <script src="../assets/reports/vendors/datatables.net-bs/js/dataTables.bootstrap.min.js"></script>
     <script src="../assets/reports/vendors/datatables.net-buttons/js/dataTables.buttons.min.js"></script>
@@ -647,7 +724,9 @@ var plant=$('#plant').select2().val();
     <script src="../assets/reports/vendors/datatables.net-responsive/js/dataTables.responsive.min.js"></script>
     <script src="../assets/reports/vendors/datatables.net-responsive-bs/js/responsive.bootstrap.js"></script>
     <script src="../assets/reports/vendors/datatables.net-scroller/js/dataTables.scroller.min.js"></script>
+        
                     <script src="../assets/reports/build/js/custom.js" type="text/javascript"></script>
         <div id="loading" ><div class="loader"></div></div>
     </body>
 </html>
+
