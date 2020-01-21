@@ -425,10 +425,11 @@ class User extends REST_Controller {
         $email_dtl[0]['subject'] = "Verify your account";
         $email_dtl[0]['message'] = str_replace(array("{user_name}", "{otp}"), array($user_name, $otp_no), $msg);
         $email_dtl[0]['to'] = $email;
-        
+        $sms_msg = str_replace(array("{otp}"),array($otp_no),"Dear EPC User, your OTP is {otp} , For any Support please email us on epcsupport@gladminds.co");
         /* send Email */
         Common::send_email($email_dtl);
-
+        /*send SMS */
+        Common::transactionSMS(array('mobile_no'=>$otp_data['phone_number'],'message'=>$sms_msg));
         $this->Common_model->insert_info('gm_otptoken', $otp_data);
     }
 

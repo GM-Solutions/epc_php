@@ -146,6 +146,37 @@ $log_email =  array();
         }
         return $log_email;
     }
+    public static function transactionSMS($sms_dtl =  array()) {
+        /*get country*/
+        $CI = & get_instance();        
+        $country = "india";
+        $sms_setting = $CI->config->item('transactionsms');        
+        switch ($country) {
+            case "india":
+                $sms_dtl['mobile_no'] =(strlen($sms_dtl['mobile_no']) == 10) ? "91".$sms_dtl['mobile_no']:$sms_dtl['mobile_no'];
+                $parameters = "key=".$sms_setting[$country]['key']."&encrpt=0&dest=".$sms_dtl['mobile_no']."&send=".$sms_setting[$country]['send']."&text=".$sms_dtl['message'];
+		$apiurl = $sms_setting[$country]['message_url'];
+		$ch = curl_init($apiurl);		
+
+		curl_setopt($ch, CURLOPT_POST,0);
+		curl_setopt($ch, CURLOPT_POSTFIELDS,$parameters);		
+
+		curl_setopt($ch, CURLOPT_FOLLOWLOCATION,1);
+		curl_setopt($ch, CURLOPT_HEADER,0);
+		// DO NOT RETURN HTTP HEADERS 
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER,TRUE);
+		// RETURN THE CONTENTS OF THE CALL
+		$return_val = curl_exec($ch);
+                
+                break;
+            
+            case "uganda":
+
+
+                break;
+        }
+        
+    }
     public static function generate_booking_no($index,$digit=6){
 $date = date("Y-m-d");
 $country_code = 'IN';
