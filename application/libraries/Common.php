@@ -153,6 +153,7 @@ $log_email =  array();
         $sms_setting = $CI->config->item('transactionsms');        
         switch ($country) {
             case "india":
+                $sms_dtl['mobile_no'] =(strlen($sms_dtl['mobile_no']) == 10) ? "91".$sms_dtl['mobile_no']:$sms_dtl['mobile_no'];
                 $parameters = "key=".$sms_setting[$country]['key']."&encrpt=0&dest=".$sms_dtl['mobile_no']."&send=".$sms_setting[$country]['send']."&text=".$sms_dtl['message'];
 		$apiurl = $sms_setting[$country]['message_url'];
 		$ch = curl_init($apiurl);		
