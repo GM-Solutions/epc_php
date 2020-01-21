@@ -57,4 +57,4 @@ $config['email1']['smtp_port']="587";
 /*sms Configuration*/
 $config['transactionsms']['india']['message_url']='https://japi.instaalerts.zone/httpapi/QueryStringReceiver?ver=1.0&';
 $config['transactionsms']['india']['key']='nfbeSuLFX5H4jPl1rGm2fw==';
-$config['transactionsms']['india']['send']='BALEP';
+$config['transactionsms']['india']['send']='BALEPC';

@@ -999,6 +999,4 @@ class User extends REST_Controller {
         }
         $this->response($op, REST_Controller::HTTP_OK);
     }
-    
-        
 }

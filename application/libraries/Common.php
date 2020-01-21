@@ -147,27 +147,24 @@ $log_email =  array();
         return $log_email;
     }
     public static function transactionSMS($sms_dtl =  array()) {
+//print_r($sms_dtl);
         /*get country*/
         $CI = & get_instance();        
         $country = "india";
         $sms_setting = $CI->config->item('transactionsms');        
         switch ($country) {
             case "india":
-                $sms_dtl['mobile_no'] =(strlen($sms_dtl['mobile_no']) == 10) ? "91".$sms_dtl['mobile_no']:$sms_dtl['mobile_no'];
-                $parameters = "key=".$sms_setting[$country]['key']."&encrpt=0&dest=".$sms_dtl['mobile_no']."&send=".$sms_setting[$country]['send']."&text=".$sms_dtl['message'];
-		$apiurl = $sms_setting[$country]['message_url'];
-		$ch = curl_init($apiurl);		
+                $sms_dtl['mobile_no'] = strlen($sms_dtl['mobile_no'])==10 ? "91".$sms_dtl['mobile_no']:$sms_dtl['mobile_no'];
+                $parameters = "key=".$sms_setting[$country]['key']."&encrpt=0&dest=".$sms_dtl['mobile_no']."&send=".$sms_setting[$country]['send']."&text=".urlencode($sms_dtl['message']);
+echo 		$apiurl = $sms_setting[$country]['message_url'].$parameters;
+		$ch = curl_init();
 
-		curl_setopt($ch, CURLOPT_POST,0);
-		curl_setopt($ch, CURLOPT_POSTFIELDS,$parameters);		
+    curl_setopt($ch, CURLOPT_URL, $apiurl);
+    curl_setopt($ch, CURLOPT_POST, 0);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 
-		curl_setopt($ch, CURLOPT_FOLLOWLOCATION,1);
-		curl_setopt($ch, CURLOPT_HEADER,0);
-		// DO NOT RETURN HTTP HEADERS 
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER,TRUE);
-		// RETURN THE CONTENTS OF THE CALL
-		$return_val = curl_exec($ch);
-                
+    $return = curl_exec ($ch);
+    curl_close ($ch); 
                 break;
             
             case "uganda":
