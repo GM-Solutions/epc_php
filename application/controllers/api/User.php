@@ -296,7 +296,7 @@ class User extends REST_Controller {
             return TRUE;
         } else {
             $this->db->trans_start();
-            if ($vertical == "Motorcycle") { /* Make Registration for Motorcycle */
+            if ($vertical == "Motorcycle" && ($user_type == "Dealer" || $user_type == "Distributor")) { /* Make Registration for Motorcycle */
                 try {
                     /* for dealer registration */
                     $allow_global_users_type = array('Members', 'Users');
@@ -359,11 +359,11 @@ class User extends REST_Controller {
                     $op['status'] = FALSE;
                     $op['message'] = $ex->getMessage();
                 }
-            } elseif ($vertical == "Commercial Vehicle") {
+           /* } elseif ($vertical == "Commercial Vehicle") {
                 
             } elseif ($vertical == "Probiking") {
                 
-            } elseif ($vertical == "International Business") {
+            } elseif ($vertical == "International Business") {*/
                 
             } else { /* User Members */
                 try {
@@ -383,7 +383,7 @@ class User extends REST_Controller {
 
                         if ($otp_dtl->token == $otp) {
                             /* allow registration */
-                            $registration_fields = $this->registration_detaiils($user_type);
+                            $registration_fields = $this->registration_detaiils($user_type,$vertical);
                             /* add data in auth */
                             $new_user_id = $this->Common_model->insert_info('auth_user', $registration_fields['auth_user']);
                             /* set user id */
@@ -436,7 +436,7 @@ class User extends REST_Controller {
     private function registration_detaiils($type, $vertical = NULL) {
         $methode_name = $this->router->fetch_method();
         $data = array();
-        if ($vertical == "Motorcycle") {
+        if ($vertical == "Motorcycle" && ($type == "Distributor" || $type == "Dealer")) {
             if ($type == 'Dealer' || $type == 'Distributor') {
                 if (empty($this->post('password')) && $methode_name != "update_profile")
                     throw new Exception('Password is empty ');
