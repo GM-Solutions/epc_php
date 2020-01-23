@@ -812,7 +812,7 @@ class User extends REST_Controller {
             unset($registration_fields['role_id']);
             }
             $this->db->trans_start();
-            if ($vertical == "Motorcycle") { /* Make Registration for Motorcycle */
+            if ($vertical == "Motorcycle" && ($type == "Distributor" || $type == "Dealer")) { /* Make Registration for Motorcycle */
                 /* for dealer data updates */
                 if($api_type == "update"){
                 $allow_global_users_type = array('Members', 'Users');
@@ -893,12 +893,12 @@ class User extends REST_Controller {
                 $op['profile'] =  $user_data;
                 }
                 
-            } elseif ($vertical == "Commercial Vehicle") {
+            /*} elseif ($vertical == "Commercial Vehicle") {
                 
             } elseif ($vertical == "Probiking") {
                 
             } elseif ($vertical == "International Business") {
-                
+              */  
             } else { /* User Members */
                 if($api_type == "update"){
 
