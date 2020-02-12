@@ -56,7 +56,7 @@ if(!empty($user_data)){
                                 <ul class="nav side-menu">
                     <?php 
                     $rol = $this->session->userdata('role');
-                    if($rol[0]['role_name'] == "Distributor" || $rol[0]['role_name'] == "Dealer"){ ?>
+                    if($rol[0]['role_name'] == "Distributor" || $rol[0]['role_name'] == "Dealer" || $rol[0]['role_name'] == "Users" || $rol[0]['role_name'] == "Members"){ ?>
                        <li>
                             <a href="<?php echo base_url() . "Sa_vin_search_dealers/Vindetails"; ?>"><i class="fa fa-file"></i>Vin Search Details</a>
                                 </li>

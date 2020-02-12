@@ -69,9 +69,9 @@ $dtl['email'] = $value['email'];
                     $dtl['logged_in']= TRUE;
 
                     $this->session->set_userdata($dtl);
-                    $rol = $this->session->userdata('role');
+                    $rol = $this->session->userdata('role');                    
                     sleep(3);
-                    if($rol[0]['role_name'] == "Distributor" OR $rol[0]['role_name'] == "Dealer"){
+                    if($rol[0]['role_name'] == "Distributor" || $rol[0]['role_name'] == "Dealer" || $rol[0]['role_name'] == "Users" || $rol[0]['role_name'] == "Members"){
                        redirect(base_url()."Sa_vin_search_dealers/Vindetails?select_type=".$filter);    
                     } else {
                        redirect(base_url()."Sa_vin_search/Vindetails?select_type=".$filter); 
