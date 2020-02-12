@@ -24,7 +24,12 @@ class Sa_vin_search_dealers extends CI_Controller {
         //$this->load->library('S3');/* for AWS S3 bucket Transactions */
 
     }
-    public function Vindetails() {
+    public function Vindetails() { 
+    if($this->session->userdata('role')){
+            $vertical =  $this->session->userdata('role')[0]['vertical_id'];
+    }else{
+        redirect('//epc.gladminds.co/verticals/1/models/');
+    }
         $data =  array();
         $catlog_url = $this->config->item('catlog');
         $data['siteurl']= $catlog_url['url'];
@@ -37,7 +42,7 @@ class Sa_vin_search_dealers extends CI_Controller {
             $this->db->join('gm_skudetails AS sk', 'sk.brand_id = pb.id', 'left');
             $this->db->join('gm_bomheader AS bh','bh.sku_code = sk.sku_code');
             $this->db->group_by('sk.sku_code');
-            $this->db->where('pb.brand_vertical_id','1');
+            $this->db->where('pb.brand_vertical_id',$vertical);
             $query = $this->db->get();
             $sku_dtl =  ($query->num_rows() > 0)? $query->result_array():FALSE;
             $data['sku_codes'] = $sku_dtl;
@@ -48,7 +53,7 @@ class Sa_vin_search_dealers extends CI_Controller {
             $this->db->join('gm_skudetails AS sk', 'sk.brand_id = pb.id', 'left');
             $this->db->join('gm_brand_subgroup  sg','sg.id= sk.sub_brand_id','left');
             $this->db->group_by('sg.id');
-            $this->db->where('pb.brand_vertical_id','1');
+            $this->db->where('pb.brand_vertical_id',$vertical);
             $query = $this->db->get();
             $sku_dtl =  ($query->num_rows() > 0)? $query->result_array():FALSE;
             $data['sub_brand'] = $sku_dtl;
@@ -58,6 +63,7 @@ class Sa_vin_search_dealers extends CI_Controller {
             $query = $this->db->get();
             $vin_codes =  ($query->num_rows() > 0)? $query->result_array():FALSE;
             $data['vin_codes'] = $vin_codes;
+            $data['vertical_id'] = $vertical;
             
         $this->load->view('sa/vin_search_dealer',$data);
 //        $this->load->view('sa/test',$data);
@@ -190,6 +196,7 @@ WHERE
         echo json_encode($op);
     }
     public function download_vindetails() {
+        $vertical_id = $this->input->get('vertical_id');
         $serviceable =$this->input->get('serviceable');
         $vin_no =$this->input->get('vin_no');
         $sku_code =$this->input->get('sku_code');
@@ -458,6 +465,7 @@ FROM
         return $query0;
     }
     public function plates_sku() {
+       $vertical_id = $this->input->get('vertical_id');
        $plant = $this->input->get('plant');
        $model = $this->input->get('model');
         $data=$op =array();
@@ -470,7 +478,7 @@ FROM
         $this->db->join('gm_bomheader AS bh','bh.sku_code = sk.sku_code','left');
 //        $this->db->join('gm_plant_details AS plant_dt','bh.plant= plant_dt.plant_id','left');
         $this->db->group_by('sk.sku_code,bh.plant');
-        $this->db->where('pb.brand_vertical_id','1');
+        $this->db->where('pb.brand_vertical_id',$vertical_id);
         (!empty($plant ) AND $plant != 'null' AND $plant != 'all') ? $this->db->where('bh.plant',$plant) : "";
         (!empty($model ) AND $model != 'null' AND $model != 'all') ? $this->db->where('sg.id',$model) : "";
         $query = $this->db->get();
@@ -502,6 +510,7 @@ FROM
     }
 	public function model_plate_sku() {
         $model = $this->input->get('model');
+        $vertical_id = $this->input->get('vertical_id');
         $data=$op =array();
         
         $this->db->select('sk.sku_code,sk.sku_description,plant_dt.plant_id,plant_dt.description');
@@ -511,7 +520,7 @@ FROM
         $this->db->join('gm_bomheader AS bh','bh.sku_code = sk.sku_code','left');
         $this->db->join('gm_plant_details AS plant_dt','bh.plant= plant_dt.plant_id','left');
         $this->db->group_by('sk.sku_code');
-         $this->db->where('pb.brand_vertical_id','1');
+         $this->db->where('pb.brand_vertical_id',$vertical_id);
         (!empty($model ) && $model != 'all') ? $this->db->where('sk.sub_brand_id',$model) : "";
         $query = $this->db->get();
         $sku_dtl =  ($query->num_rows() > 0)? $query->result_array():FALSE;
@@ -560,6 +569,7 @@ FROM
     public function sku_manufacturing_date() {
        $sku_code = $this->input->get('sku_code');
        $plant = $this->input->get('plant');
+       $vertical_id = $this->input->get('vertical_id');
         $data=$op =array();
         $this->db->select('*');
         $this->db->from("(SELECT 

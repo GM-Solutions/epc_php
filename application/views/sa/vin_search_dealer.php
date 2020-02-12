@@ -503,7 +503,7 @@ $('#loading').hide();
                 var e = document.getElementById('description');
                 var description = e.value;
                 $('.alert').hide();
-                document.location.href = "<?php echo base_url() . 'Sa_vin_search_dealers/download_vindetails/'; ?>?sku_code=" + sku_code + '&vin_no=' + vin_no + '&month_year=' + date + '&plant=' + plant + '&component=' + component + '&description=' + description+'&serviceable='+serviceable;
+                document.location.href = "<?php echo base_url() . 'Sa_vin_search_dealers/download_vindetails/'; ?>?sku_code=" + sku_code + '&vin_no=' + vin_no + '&month_year=' + date + '&plant=' + plant + '&component=' + component + '&description=' + description+'&serviceable='+serviceable+"&vertical_id="+<?php echo $vertical_id ?>;
 }
         </script>
  
@@ -551,7 +551,7 @@ $(document).ready(function() {
                             
                                 $.ajax({
                                     type: 'POST',
-                                    url: "<?php echo base_url() . 'Sa_vin_search_dealers/model_plate_sku'; ?>/?model="+model,
+                                    url: "<?php echo base_url() . 'Sa_vin_search_dealers/model_plate_sku'; ?>/?model="+model+"&vertical_id="+<?php echo $vertical_id ?>,
                                     data: '',
                                      contentType: "application/json",
                                     dataType: "json",
@@ -597,7 +597,7 @@ $(document).ready(function() {
                     var  allmodel= $('#allmodel').select2().val();
                    $.ajax({
                     type: 'POST',
-                    url: "<?php echo base_url() . 'Sa_vin_search_dealers/plates_sku'; ?>/?plant="+plant+"&model="+allmodel,
+                    url: "<?php echo base_url() . 'Sa_vin_search_dealers/plates_sku'; ?>/?plant="+plant+"&model="+allmodel+"&vertical_id="+<?php echo $vertical_id ?>,
                     data: '',
                      contentType: "application/json",
                     dataType: "json",
@@ -631,7 +631,7 @@ $(document).ready(function() {
 function call_sku_codes(plant){
 $.ajax({
                     type: 'POST',
-                    url: "<?php echo base_url() . 'Sa_vin_search_dealers/plates_sku'; ?>/?plant="+plant,
+                    url: "<?php echo base_url() . 'Sa_vin_search_dealers/plates_sku'; ?>/?plant="+plant+"&vertical_id="+<?php echo $vertical_id ?>,
                     data: '',
                      contentType: "application/json",
                     dataType: "json",
@@ -673,7 +673,7 @@ var plant=$('#plant').select2().val();
 
          $.ajax({
                     type: 'POST',
-                    url: "<?php echo base_url() . 'Sa_vin_search_dealers/sku_manufacturing_date'; ?>/?sku_code="+aa+"&plant="+plant,
+                    url: "<?php echo base_url() . 'Sa_vin_search_dealers/sku_manufacturing_date'; ?>/?sku_code="+aa+"&plant="+plant+"&vertical_id="+<?php echo $vertical_id ?>,
                     data: '',
                      contentType: "application/json",
                     dataType: "json",
