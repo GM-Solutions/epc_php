@@ -57,12 +57,17 @@ and open the template in the editor.
 	text-align: center; margin-top: 12px;
 }
 .tophadding-bg {
-	background: #0A51A1;
+	background: #646060;
 	padding: 1px 13px;
 	color: #FFF;
 	display: inline-block;
 	width: 98%;
 	margin-left: 10px;
+}
+.nav li.current-page{background: #ECECEC !important;}
+.side-menu>li>a:hover,
+.side-menu>li>a:focus {
+    background-color: red !important;
 }
 .tophadding-bg h3{font-size: 18px;}
 .usernamesid span {

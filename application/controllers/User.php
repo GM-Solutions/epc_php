@@ -75,6 +75,11 @@ class User extends CI_Controller {
                             $order_count = $this->Common_model->select_info('gm_part_order_cart',array('user_id'=>$value['user_id'],'active'=>1));
                             $dtl['cart_count']= ($order_count == FALSE) ? 0 : count($order_count);
                         }
+                        if($value['vertical_name'] == "KTM"){
+				$dtl['logo'] = "http://qa.epcpb.gladminds.co/static/epc/img/ktm-hsq.png";
+			}else{
+				$dtl['logo'] = base_url()."assets/reports/images/bajaj-logo.svg";
+			}
                     
                     }
                     $dtl['logged_in']= TRUE;

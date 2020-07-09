@@ -5,6 +5,8 @@ if(!empty($user_data)){
     $name = $user_data['first_name']." ".$user_data['last_name'];
     if(!empty($user_data['image_url'])){
         $profile_image = "http://gladminds-connect.s3.amazonaws.com/".$user_data['image_url'];
+    }else {
+        $profile_image = "http://qa.epcpb.gladminds.co/static/epc/img/profile/probike_user_logo.png";
     }
     
 }
@@ -58,7 +60,7 @@ if(!empty($user_data)){
                     $rol = $this->session->userdata('role');
                     if($rol[0]['role_name'] == "Distributor" || $rol[0]['role_name'] == "Dealer" || $rol[0]['role_name'] == "Users" || $rol[0]['role_name'] == "Members"){ ?>
                        <li>
-                            <a href="<?php echo base_url() . "Sa_vin_search_dealers/Vindetails"; ?>"><i class="fa fa-file"></i>Vin Search Details</a>
+                            <a href="<?php echo base_url() . "Sa_vin_search_dealers/Vindetails"; ?>"><i class="fa fa-search"></i>Vin Search Details</a>
                                 </li>
               <?php  } else { ?>
                        <li>
@@ -68,7 +70,7 @@ if(!empty($user_data)){
                                         <a href="<?php echo base_url() . "index.php/sa_epc_sbomb"; ?>"><i class="fa fa-file"></i>SBOM REPORT (Stand Alone)</a>
                                     </li>
                                     <li>
-                                        <a href="<?php echo base_url() . "sa_epc_reports_summary/Vindetails"; ?>"><i class="fa fa-file"></i> VIN SUMMARY REPORT (Stand Alone Report)</a>
+                                        <a href="<?php echo base_url() . "sa_epc_reports_summary/Vindetails"; ?>"><i class="fa fa-search"></i> VIN SUMMARY REPORT (Stand Alone Report)</a>
                                     </li>
                                     <li>
                                         <a href="<?php echo base_url() . "index.php/sa_epc_sbomb_summary"; ?>"><i class="fa fa-file"></i>SBOM SUMMARY (Stand Alone)</a>
@@ -77,7 +79,7 @@ if(!empty($user_data)){
                                         <a href="<?php echo base_url() . "index.php/Sa_material_servisibility_history"; ?>"><i class="fa fa-file"></i>Material Serviceability Report</a>
                                     </li>
                                     <li>
-                                        <a href="<?php echo base_url() . "Sa_vin_search/Vindetails"; ?>"><i class="fa fa-file"></i>Vin Search Details</a>
+                                        <a href="<?php echo base_url() . "Sa_vin_search/Vindetails"; ?>"><i class="fa fa-search"></i>Vin Search Details</a>
                                     </li>
                  <?php   } ?>
                                     
@@ -94,7 +96,7 @@ if(!empty($user_data)){
                                     </li>
                                     <li>-----------</li>-->
                                     <li>
-                                        <a href="<?php echo "//afterbuy.care/Thirdparty/support?".$url; ?>"><i class="fa fa-file"></i>support</a>
+                                        <a href="<?php echo "//afterbuy.care/Thirdparty/support?".$url; ?>"><i class="fa fa-bar-chart-o"></i>support</a>
                                     </li>
                                 </ul>
                             </div>

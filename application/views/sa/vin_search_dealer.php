@@ -6,7 +6,13 @@
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
+        <?php 
+        $role =$this->session->userdata('role');
+        if($role[0]['vertical_name'] == "KTM"){ ?>
+        <link rel="icon" type="image/png" sizes="16x16" href="http://qa.epcpb.gladminds.co/static/epc/img/favicon/pb-favicon.ico">
+        <?php } else { ?>
         <link rel="icon" type="image/png" sizes="16x16" href="//epc.gladminds.co/static/epc/img/favicon/favicon-16x16.png">
+        <?php } ?>        
         <title>EPC Reports</title>
 
         <!-- Bootstrap -->
@@ -53,7 +59,12 @@
         <script src="https://code.highcharts.com/highcharts.js"></script>
         <script src="https://code.highcharts.com/modules/exporting.js"></script>
         <script src="https://code.highcharts.com/modules/offline-exporting.js"></script>
+        <?php 
+        if($role[0]['vertical_name'] == "KTM"){ ?>
+        <link href="../assets/css/epccss_ktm.css" rel="stylesheet" type="text/css"/>
+        <?php } else { ?>
         <link href="../assets/css/epccss.css" rel="stylesheet" type="text/css"/>
+        <?php } ?>
         <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.1/css/select2.min.css" rel="stylesheet" />
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.1/js/select2.min.js"></script>
    
