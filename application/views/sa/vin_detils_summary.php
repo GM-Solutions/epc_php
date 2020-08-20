@@ -20,7 +20,7 @@
         <!-- bootstrap-daterangepicker -->
         <link href="../assets/reports/vendors/bootstrap-daterangepicker/daterangepicker.css" rel="stylesheet">
         <!-- bootstrap-datetimepicker -->
-        <link href="../assets/reports/vendors/bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.css" rel="stylesheet">
+        <!--<link href="../assets/reports/vendors/bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.css" rel="stylesheet">-->
 
         <!-- Custom Theme Style -->
         <link href="../assets/reports/build/css/custom.css" rel="stylesheet" type="text/css"/>
@@ -36,7 +36,7 @@
         <script src="../assets/reports/vendors/moment/min/moment.min.js"></script>
         <script src="../assets/reports/vendors/bootstrap-daterangepicker/daterangepicker.js"></script>
         <!-- bootstrap-datetimepicker -->    
-        <script src="../assets/reports/vendors/bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
+        <!--<script src="../assets/reports/vendors/bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>-->
         <link href="../assets/reports/vendors/pnotify/dist/pnotify.css" rel="stylesheet">
         <script type="text/javascript" src="http://www.google.com/jsapi"></script>
 	
@@ -205,12 +205,12 @@ jQuery(document).ready(function($) {
             $(window).load(function() {
      $('#loading').hide();
   });
-        var today = moment();
-        $('#reportrange_right').datetimepicker({
-            ignoreReadonly: true,
-            format: 'MM-YYYY',
-            defaultDate: today
-        });
+//        var today = moment();
+//        $('#reportrange_right').datetimepicker({
+//            ignoreReadonly: true,
+//            format: 'MM-YYYY',
+//            defaultDate: today
+//        });
 
         </script>
         <script>

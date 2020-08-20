@@ -97,7 +97,8 @@ class Sa_material_servisibility_history extends CI_Controller {
         
         /*------------------------*/
         $this->db->from('gm_serviceability_mtr_history AS h');
-        $this->db->join('gm_bomitem AS bi','h.material_number = bi.part_number','left');
+        $this->db->join('gm_bomitem AS bi','h.material_number = bi.part_number','');
+        $this->db->group_by('h.material_number, change_date');
         
         
         

@@ -6,7 +6,13 @@
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
+        <?php 
+        $role =$this->session->userdata('role');
+        if($role[0]['vertical_name'] == "KTM"){ ?>
+        <link rel="icon" type="image/png" sizes="16x16" href="http://qa.epcpb.gladminds.co/static/epc/img/favicon/pb-favicon.ico">
+        <?php } else { ?>
         <link rel="icon" type="image/png" sizes="16x16" href="//epc.gladminds.co/static/epc/img/favicon/favicon-16x16.png">
+        <?php } ?>        
         <title>EPC Reports</title>
 
         <!-- Bootstrap -->
@@ -509,7 +515,7 @@ $('#loading').hide();
                 var e = document.getElementById('description');
                 var description = e.value;
                 $('.alert').hide();
-                document.location.href = "<?php echo base_url() . 'Sa_vin_search/download_vindetails/'; ?>?sku_code=" + sku_code + '&vin_no=' + vin_no + '&month_year=' + date + '&plant=' + plant+ '&component=' + component + '&description=' + description+'&serviceable='+serviceable;
+                document.location.href = "<?php echo base_url() . 'Sa_vin_search/download_vindetails/'; ?>?sku_code=" + sku_code + '&vin_no=' + vin_no + '&month_year=' + date + '&plant=' + plant+ '&component=' + component + '&description=' + description+'&serviceable='+serviceable+"&vertical_id="+<?php echo $vertical_id ?>;
 }
         </script>
  
@@ -557,7 +563,7 @@ $(document).ready(function() {
                             
                                 $.ajax({
                                     type: 'POST',
-                                    url: "<?php echo base_url() . 'Sa_vin_search/model_plate_sku'; ?>/?model="+model,
+                                    url: "<?php echo base_url() . 'Sa_vin_search/model_plate_sku'; ?>/?model="+model+"&vertical_id="+<?php echo $vertical_id ?>,
                                     data: '',
                                      contentType: "application/json",
                                     dataType: "json",
@@ -603,7 +609,7 @@ $(document).ready(function() {
                     var  allmodel= $('#allmodel').select2().val();
                    $.ajax({
                     type: 'POST',
-                    url: "<?php echo base_url() . 'Sa_vin_search/plates_sku'; ?>/?plant="+plant+"&model="+allmodel,
+                    url: "<?php echo base_url() . 'Sa_vin_search/plates_sku'; ?>/?plant="+plant+"&model="+allmodel+"&vertical_id="+<?php echo $vertical_id ?>,
                     data: '',
                      contentType: "application/json",
                     dataType: "json",
@@ -637,7 +643,7 @@ $(document).ready(function() {
 function call_sku_codes(plant){
 $.ajax({
                     type: 'POST',
-                    url: "<?php echo base_url() . 'Sa_vin_search/plates_sku'; ?>/?plant="+plant,
+                    url: "<?php echo base_url() . 'Sa_vin_search/plates_sku'; ?>/?plant="+plant+"&vertical_id="+<?php echo $vertical_id ?>,
                     data: '',
                      contentType: "application/json",
                     dataType: "json",
@@ -679,7 +685,7 @@ var plant=$('#plant').select2().val();
 
          $.ajax({
                     type: 'POST',
-                    url: "<?php echo base_url() . 'Sa_vin_search/sku_manufacturing_date'; ?>/?sku_code="+aa+"&plant="+plant,
+                    url: "<?php echo base_url() . 'Sa_vin_search/sku_manufacturing_date'; ?>/?sku_code="+aa+"&plant="+plant+"&vertical_id="+<?php echo $vertical_id ?>,
                     data: '',
                      contentType: "application/json",
                     dataType: "json",

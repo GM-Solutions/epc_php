@@ -111,7 +111,7 @@ class Epc_reports extends CI_Controller {
         !empty($dates_to_from) ? $this->db->where("md.created_date  between STR_TO_DATE('".$dates_to_from[0]."', '%M %d, %Y') AND  STR_TO_DATE('".$dates_to_from[1]."', '%M %d, %Y') + INTERVAL 1 DAY ") : "";
         }
         !empty($vin_no) ? $this->db->where('md.product_id',$vin_no) : "";
-        !empty($sku_code) ?  $this->db->where('bh.sku_code',$sku_code) : "";
+        !empty($sku_code) ?  $this->db->having('sku_code',$sku_code) : "";
         !empty($plant) ?  $this->db->where('bh.plant',$plant) : "";
         (!empty($offset) || $offset == 0) ? $this->db->limit($perpage,$offset) : "";
         $query0 = $this->db->get();

@@ -3,7 +3,7 @@
 .ss_dib{display:inline-block;vertical-align:top;}
 .ss_button{margin:0;vertical-align:top;color:#595959;border: 1px solid #cbcbcb;border-radius:3px;width:250px;cursor:pointer;text-decoration:none;background:none;padding:10px;overflow:hidden;clear:both;display:inline-block;vertical-align:top;font-size:12px;font-weight:bold;word-break:break-all;}
 .ss_text{white-space:normal;text-overflow:ellipsis;text-indent:0;white-space:nowrap;overflow:hidden;}
-.ss_image{position:absolute;width:7px;height:11px;background:url('../images/google.png') no-repeat;}
+.ss_image{position:absolute;width:7px;height:11px;}
 .ss_ul{list-style:none;padding:8px 0; margin:0; margin-top:-35px;position:absolute;background:#fff;border:1px solid #ccc;-moz-box-shadow:0 1px 5px 1px rgba(0,0,0,0.1);-webkit-box-shadow:0 1px 5px 1px rgba(0,0,0,0.1);box-shadow:0 1px 5px 1px rgba(0,0,0,0.1); border-radius:3px;-moz-border-radius:3px;-webkit-border-radius:3px; display:none;overflow:auto;z-index:100;}
 .ss_ulsearch{margin:0; margin-top:-35px;position:absolute;background:#fff;border:1px solid #ccc;-moz-box-shadow:0 1px 5px 1px rgba(0,0,0,0.1);-webkit-box-shadow:0 1px 5px 1px rgba(0,0,0,0.1);box-shadow:0 1px 5px 1px rgba(0,0,0,0.1); border-radius:3px;-moz-border-radius:3px;-webkit-border-radius:3px;overflow:auto;z-index:100;display:none;}
 .ss_ulsearch .ss_ul{display:block;position:relative;margin-top:0;border:none;-moz-box-shadow:none;-webkit-box-shadow:none;box-shadow:none; border-radius:0px;-moz-border-radius:0px;-webkit-border-radius:0px;}
