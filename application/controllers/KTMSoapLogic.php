@@ -141,8 +141,11 @@ class KTMSoapLogic extends CI_Controller {
                 /*insert data*/
                 $final_ord_data =  array();
                 $i=0;
+                $duplicate_vin = array();
                 if($ord_data){
                     foreach ($ord_data as $key => $value) {
+                        /*search data in array*/
+                        if(!array_search($value['product_id'],$duplicate_vin)){
 
                         $final_ord_data[$i]['product_id'] = $value['product_id'];
                         //$final_ord_data[$i]['customer_id'] = $value['customer_id'];
@@ -159,8 +162,9 @@ class KTMSoapLogic extends CI_Controller {
                         $final_ord_data[$i]['created_date'] = date('Y-m-d H:i:s');
                         $final_ord_data[$i]['modified_date'] = date('Y-m-d H:i:s');
                         $i++;
+                        array_push($duplicate_vin,$value['product_id']);
+                        }
                     }
-                    
                     /*INSERT Data*/
                     $row_count = $this->ci->db->insert_batch('gm_productdata',$final_ord_data);
 
