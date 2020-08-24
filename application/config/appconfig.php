@@ -1,6 +1,6 @@
 <?php
 
-$setting_type = "qa"; //  $setting_type=  local  /dev / qa/ production 
+$setting_type = "production"; //  $setting_type=  local  /dev / qa/ production 
 
 $config['wsdlconf']['ordersend'] = "ALL"; // SFA / CDMS / ALL
 $config['wsdlconf']['username'] = "epc"; 

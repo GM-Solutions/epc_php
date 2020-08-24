@@ -170,9 +170,9 @@ class KTMSoapLogic extends CI_Controller {
                 }
                 /*update data*/
                 $final_new_update_order =  array();
-                if($ord_data){ //$new_update_order
+                if($update_order){ //$new_update_order
                     $i=0;
-                    foreach ($ord_data as $key => $value) {
+                    foreach ($update_order as $key => $value) {
                         $final_new_update_order[$i]['product_id'] = $value['product_id'];
                         $final_new_update_order[$i]['customer_id'] = $value['customer_id'];
                         $final_new_update_order[$i]['customer_phone_number'] = $value['customer_phone_number'];
@@ -248,8 +248,8 @@ class KTMSoapLogic extends CI_Controller {
                     }
                 }
                 if($urls){
-                $getter = new CurlAsc($urls);
-                $this->ci->db->insert_batch('gm_smslog',$sms_log);
+                //$getter = new CurlAsc($urls);
+                //$this->ci->db->insert_batch('gm_smslog',$sms_log);
                 }
             }
       
@@ -287,7 +287,7 @@ private function check_bike_type($vin){
         if(substr($vin,3,1) == 'J'){
             if(
                     (substr($vin,4,1) == 'U' || substr($vin,4,1) == 'G')
-                    || (substr($vin,4,3) == 'PEY' || substr($vin,4,3) == 'PJY' || substr($vin,4,3) == 'PJY')
+                    || (substr($vin,4,3) == 'PEY' || substr($vin,4,3) == 'PJY' || substr($vin,4,3) == 'PAY')
                     )
             {
             $is_ktm_duke = TRUE;
