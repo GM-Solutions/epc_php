@@ -191,7 +191,8 @@ class Bikemodels extends REST_Controller {
             bpp.id AS bom_plate_part_id,
             bp.id AS part_id,
             bpc.part_number,
-            bpc.description,
+            -- bpc.description,
+            bpp.material_description as description,
             bpp.quantity,
             ".$cart_select."
             bpc.href,
@@ -214,7 +215,7 @@ class Bikemodels extends REST_Controller {
             ".$cart_condition."
         where
             bpp.plate_id = ".$p_id." AND bpc.id
-        group by bpc.part_number";
+        group by bpc.part_number order by bpc.href ASC ";
         $parts_dtl = $this->db->query($sql)->result_array();
         $all_parts =  array();
         if($parts_dtl){
@@ -382,23 +383,23 @@ class Bikemodels extends REST_Controller {
             $all_prt['status'] = TRUE;
 
             foreach ($all_models_dtl as $key => $value) {
-                $all_prt_raw[$value['sku_code']]['sku_code'] = $value['sku_code'];
+                $all_prt_raw[$value['sku_code']]['sku_code'] = trim($value['sku_code']);
                 
                 if(!empty($vin_no))  $all_prt_raw[$value['sku_code']]['vehicle_off_line_date'] = $value['vehicle_off_line_date'];
                 
-                $all_prt_raw[$value['sku_code']]['sku_description'] = $value['sku_description'];
-                $all_prt_raw[$value['sku_code']]['brand_id'] = $value['brand_id'];
-                $all_prt_raw[$value['sku_code']]['brand_name'] = $value['brand_name'];
+                $all_prt_raw[$value['sku_code']]['sku_description'] = trim($value['sku_description']);
+                $all_prt_raw[$value['sku_code']]['brand_id'] = trim($value['brand_id']);
+                $all_prt_raw[$value['sku_code']]['brand_name'] = trim($value['brand_name']);
                 $all_prt_raw[$value['sku_code']]['brand_image'] = !empty($value['brand_image']) ? $img_base . $value['brand_image'] : "";
-                $all_prt_raw[$value['sku_code']]['plate'][$value['p_id']]['plate_code'] = $value['plate_code'];
-                $all_prt_raw[$value['sku_code']]['plate'][$value['p_id']]['plate_txt'] = $value['plate_txt'];
-                $all_prt_raw[$value['sku_code']]['plate'][$value['p_id']]['p_id'] = $value['p_id'];
+                $all_prt_raw[$value['sku_code']]['plate'][$value['p_id']]['plate_code'] = trim($value['plate_code']);
+                $all_prt_raw[$value['sku_code']]['plate'][$value['p_id']]['plate_txt'] = trim($value['plate_txt']);
+                $all_prt_raw[$value['sku_code']]['plate'][$value['p_id']]['p_id'] = trim($value['p_id']);
                 $all_prt_raw[$value['sku_code']]['plate'][$value['p_id']]['plate_image_with_part'] = !empty($value['plate_image_with_part']) ? $img_base . $value['plate_image_with_part'] : "";
                 
-                $all_prt_raw[$value['sku_code']]['plate'][$value['p_id']]['parts'][$key]['bom_plate_part_id'] = $value['bom_plate_part_id'];
-                $all_prt_raw[$value['sku_code']]['plate'][$value['p_id']]['parts'][$key]['part_number'] = $value['part_number'];
-                $all_prt_raw[$value['sku_code']]['plate'][$value['p_id']]['parts'][$key]['part_description'] = $value['description'];
-                $all_prt_raw[$value['sku_code']]['plate'][$value['p_id']]['parts'][$key]['part_quantity'] = $value['quantity'];
+                $all_prt_raw[$value['sku_code']]['plate'][$value['p_id']]['parts'][$key]['bom_plate_part_id'] = trim($value['bom_plate_part_id']);
+                $all_prt_raw[$value['sku_code']]['plate'][$value['p_id']]['parts'][$key]['part_number'] = trim($value['part_number']);
+                $all_prt_raw[$value['sku_code']]['plate'][$value['p_id']]['parts'][$key]['part_description'] = trim($value['description']);
+                $all_prt_raw[$value['sku_code']]['plate'][$value['p_id']]['parts'][$key]['part_quantity'] = trim($value['quantity']);
             }
             
             /* all parts and models */
@@ -457,7 +458,8 @@ class Bikemodels extends REST_Controller {
             plate.plate_txt,
             bpp.id AS bom_plate_part_id,
             bpc.part_number,
-            bpc.description,
+            -- bpc.description,
+            bpp.material_description as description,
             bpp.quantity,
             bpc.href,
             bpc.coordinates
@@ -509,7 +511,8 @@ class Bikemodels extends REST_Controller {
             plate.plate_txt,
             bpp.id AS bom_plate_part_id,
             bpc.part_number,
-            bpc.description,
+            -- bpc.description,
+            bpp.material_description as description,
             bpp.quantity,
             bpc.href,
             bpc.coordinates
@@ -564,7 +567,8 @@ class Bikemodels extends REST_Controller {
             plate.plate_txt,
             bpp.id AS bom_plate_part_id,
             bpc.part_number,
-            bpc.description,
+            -- bpc.description,
+            bpp.material_description AS description,
             bpp.quantity,
             bpc.href,
             bpc.coordinates
@@ -595,7 +599,7 @@ class Bikemodels extends REST_Controller {
             gm_bomplate AS plate ON bpp.plate_id = plate.id
                 AND `plap`.`status` = 'Approved'
         where
-            mfd.product_id = '".$vin_no."' AND ( bpc.part_number = '".$part_number."' OR bpc.description like '%".$part_number."%' )
+            mfd.product_id = '".$vin_no."' AND ( bpc.part_number = '".$part_number."' OR bpp.material_description like '%".$part_number."%' )
         group by bpc.part_number;";
         } else{
             $sql ="
@@ -611,7 +615,8 @@ class Bikemodels extends REST_Controller {
                 plate.plate_txt,
                 bpp.id AS bom_plate_part_id,
                 bpc.part_number,
-                bpc.description,
+                -- bpc.description,
+                bpp.material_description as description,
                 bpp.quantity,
                 bpc.href,
                 bpc.coordinates
@@ -639,7 +644,7 @@ class Bikemodels extends REST_Controller {
                     left join
                 gm_productbrands AS pb ON sku.brand_id = pb.id
             where
-                ( bpc.part_number = '".$part_number."' OR bpc.description like '%".$part_number."%' )
+                ( bpc.part_number = '".$part_number."' OR bpp.material_description like '%".$part_number."%' )
             group by bpc.part_number;";
         }        
         return $sql;

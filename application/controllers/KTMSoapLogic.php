@@ -170,9 +170,9 @@ class KTMSoapLogic extends CI_Controller {
                 }
                 /*update data*/
                 $final_new_update_order =  array();
-                if($ord_data){ //$new_update_order
+                if($update_order){ //$new_update_order
                     $i=0;
-                    foreach ($ord_data as $key => $value) {
+                    foreach ($update_order as $key => $value) {
                         $final_new_update_order[$i]['product_id'] = $value['product_id'];
                         $final_new_update_order[$i]['customer_id'] = $value['customer_id'];
                         $final_new_update_order[$i]['customer_phone_number'] = $value['customer_phone_number'];

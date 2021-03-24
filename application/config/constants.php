@@ -92,3 +92,6 @@ define('EMAIL_FROM_NAME','pavan.ingalkar@ascentcybersolutions.com');
 define('EMAIL_PWD','Test@123');
 define('EMAIL_PORT',587);
 define('EMAIL_SMTP_HOST','mail.ecloudsolutions.in');
+
+
+define('MOTERCYCLE',1);
