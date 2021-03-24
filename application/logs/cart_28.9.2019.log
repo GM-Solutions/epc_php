@@ -1,0 +1,35 @@
+Array
+(
+    [user_id] => 23107
+    [bom_plate_part_id] => 100152715
+    [part_number] => DH121188
+    [quantity] => 1
+)
+Array
+(
+    [user_id] => 23111
+    [bom_plate_part_id] => 100206759
+    [part_number] => JD71014R
+    [quantity] => 1
+)
+Array
+(
+    [user_id] => 23111
+    [bom_plate_part_id] => 100206759
+    [part_number] => JD71014R
+    [quantity] => 0
+)
+Array
+(
+    [user_id] => 23111
+    [bom_plate_part_id] => 100208613
+    [part_number] => DJ141008
+    [quantity] => 1
+)
+Array
+(
+    [user_id] => 23111
+    [bom_plate_part_id] => 100208613
+    [part_number] => DJ141008
+    [quantity] => 0
+)

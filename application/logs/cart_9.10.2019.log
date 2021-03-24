@@ -1,0 +1,125 @@
+Array
+(
+    [user_id] => 23201
+    [bom_plate_part_id] => 100153428
+    [part_number] => 39166005
+    [quantity] => 1
+)
+Array
+(
+    [user_id] => 23201
+    [bom_plate_part_id] => 100153428
+    [part_number] => 39166005
+    [quantity] => 0
+)
+Array
+(
+    [address_id] => 
+    [type] => Home
+    [active] => 
+    [house_no] => 302
+    [street_details] => vasuddevpuri
+    [api_type] => addnew
+    [user_id] => 22607
+    [landmark_details] => bank
+    [apartment_name] => kanchana
+)
+Array
+(
+    [city] => Jaipur
+    [active] => 
+    [apartment_name] => kanchana
+    [api_type] => addnew
+    [address_id] => 
+    [area_details] => jhotwara
+    [street_details] => vasudevpuri
+    [landmark_details] => bank
+    [pin_code] => 302012
+    [user_id] => 22607
+    [type] => Home
+    [house_no] => 302
+)
+Array
+(
+    [user_id] => 23231
+    [bom_plate_part_id] => 100152747
+    [part_number] => DH102104
+    [quantity] => 1
+)
+Array
+(
+    [user_id] => 23234
+    [bom_plate_part_id] => 100197176
+    [part_number] => JH233020
+    [quantity] => 1
+)
+Array
+(
+    [user_id] => 23234
+    [bom_plate_part_id] => 100197176
+    [part_number] => JH233020
+    [quantity] => 0
+)
+Array
+(
+    [user_id] => 23234
+    [bom_plate_part_id] => 100197176
+    [part_number] => JH233020
+    [quantity] => 0
+)
+Array
+(
+    [user_id] => 23235
+    [bom_plate_part_id] => 100080478
+    [part_number] => 39166005
+    [quantity] => 1
+)
+Array
+(
+    [user_id] => 23235
+    [bom_plate_part_id] => 100080478
+    [part_number] => 39166005
+    [quantity] => 0
+)
+Array
+(
+    [user_id] => 23194
+    [bom_plate_part_id] => 100343927
+    [part_number] => PF581264
+    [quantity] => 1
+)
+Array
+(
+    [user_id] => 23216
+    [bom_plate_part_id] => 100159456
+    [part_number] => PD131224
+    [quantity] => 1
+)
+Array
+(
+    [user_id] => 23216
+    [bom_plate_part_id] => 100269900
+    [part_number] => DG151094
+    [quantity] => 1
+)
+Array
+(
+    [user_id] => 23216
+    [bom_plate_part_id] => 100269864
+    [part_number] => DG151070
+    [quantity] => 1
+)
+Array
+(
+    [user_id] => 23216
+    [bom_plate_part_id] => 100159456
+    [part_number] => PD131224
+    [quantity] => 0
+)
+Array
+(
+    [user_id] => 23239
+    [bom_plate_part_id] => 52697
+    [part_number] => JL231600
+    [quantity] => 1
+)

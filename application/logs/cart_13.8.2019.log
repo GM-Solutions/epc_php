@@ -1,0 +1,35 @@
+Array
+(
+    [user_id] => 18717
+    [bom_plate_part_id] => 61446
+    [part_number] => DH102103
+    [quantity] => 1
+)
+Array
+(
+    [user_id] => 18717
+    [bom_plate_part_id] => 61942
+    [part_number] => 39166005
+    [quantity] => 1
+)
+Array
+(
+    [user_id] => 18717
+    [bom_plate_part_id] => 62238
+    [part_number] => DH102230
+    [quantity] => 1
+)
+Array
+(
+    [user_id] => 18717
+    [bom_plate_part_id] => 62238
+    [part_number] => DH102230
+    [quantity] => 0
+)
+Array
+(
+    [user_id] => 18717
+    [bom_plate_part_id] => 61446
+    [part_number] => DH102103
+    [quantity] => 0
+)

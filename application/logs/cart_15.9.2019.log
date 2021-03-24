@@ -1,0 +1,21 @@
+Array
+(
+    [user_id] => 22980
+    [bom_plate_part_id] => 100212568
+    [part_number] => JL401400
+    [quantity] => 1
+)
+Array
+(
+    [user_id] => 22980
+    [bom_plate_part_id] => 100214262
+    [part_number] => JL601000
+    [quantity] => 1
+)
+Array
+(
+    [user_id] => 22972
+    [bom_plate_part_id] => 100197322
+    [part_number] => PA131215
+    [quantity] => 1
+)

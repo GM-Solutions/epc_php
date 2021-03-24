@@ -1,0 +1,77 @@
+Array
+(
+    [user_id] => 23056
+    [bom_plate_part_id] => 100048054
+    [part_number] => 59040031
+    [quantity] => 1
+)
+Array
+(
+    [user_id] => 23056
+    [bom_plate_part_id] => 100048054
+    [part_number] => 59040031
+    [quantity] => 2
+)
+Array
+(
+    [user_id] => 23056
+    [bom_plate_part_id] => 100048054
+    [part_number] => 59040031
+    [quantity] => 1
+)
+Array
+(
+    [user_id] => 23056
+    [bom_plate_part_id] => 100048054
+    [part_number] => 59040031
+    [quantity] => 0
+)
+Array
+(
+    [user_id] => 23056
+    [bom_plate_part_id] => 100050154
+    [part_number] => DS191054
+    [quantity] => 1
+)
+Array
+(
+    [user_id] => 18524
+    [bom_plate_part_id] => 100154982
+    [part_number] => DK101748
+    [quantity] => 1
+)
+Array
+(
+    [user_id] => 18524
+    [bom_plate_part_id] => 100154988
+    [part_number] => DK101751
+    [quantity] => 1
+)
+Array
+(
+    [user_id] => 18524
+    [bom_plate_part_id] => 100154988
+    [part_number] => DK101751
+    [quantity] => 2
+)
+Array
+(
+    [user_id] => 23060
+    [bom_plate_part_id] => 100158544
+    [part_number] => JL401402
+    [quantity] => 1
+)
+Array
+(
+    [user_id] => 23060
+    [bom_plate_part_id] => 100158544
+    [part_number] => JL401402
+    [quantity] => 2
+)
+Array
+(
+    [user_id] => 23060
+    [bom_plate_part_id] => 100158544
+    [part_number] => JL401402
+    [quantity] => 1
+)

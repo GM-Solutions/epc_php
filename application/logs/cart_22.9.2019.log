@@ -1,0 +1,21 @@
+Array
+(
+    [user_id] => 22994
+    [bom_plate_part_id] => 100239839
+    [part_number] => DK101574
+    [quantity] => 1
+)
+Array
+(
+    [user_id] => 22994
+    [bom_plate_part_id] => 100239839
+    [part_number] => DK101574
+    [quantity] => 0
+)
+Array
+(
+    [user_id] => 23039
+    [bom_plate_part_id] => 100223634
+    [part_number] => PA113023
+    [quantity] => 1
+)

@@ -1,0 +1,28 @@
+Array
+(
+    [user_id] => 22950
+    [bom_plate_part_id] => 100239908
+    [part_number] => DK101748
+    [quantity] => 1
+)
+Array
+(
+    [user_id] => 22950
+    [bom_plate_part_id] => 100239908
+    [part_number] => DK101748
+    [quantity] => 1
+)
+Array
+(
+    [user_id] => 22950
+    [bom_plate_part_id] => 100248330
+    [part_number] => 52JN0136
+    [quantity] => 1
+)
+Array
+(
+    [user_id] => 22949
+    [bom_plate_part_id] => 100078293
+    [part_number] => 39218106
+    [quantity] => 1
+)

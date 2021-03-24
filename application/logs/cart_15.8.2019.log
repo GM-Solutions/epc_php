@@ -1,0 +1,14 @@
+Array
+(
+    [user_id] => 18717
+    [bom_plate_part_id] => 44680
+    [part_number] => PD511025
+    [quantity] => 1
+)
+Array
+(
+    [user_id] => 18717
+    [bom_plate_part_id] => 45054
+    [part_number] => 36DS1001
+    [quantity] => 1
+)

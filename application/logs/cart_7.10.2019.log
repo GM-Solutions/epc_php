@@ -1,0 +1,402 @@
+Array
+(
+    [user_id] => 23208
+    [bom_plate_part_id] => 100219155
+    [part_number] => DK151069
+    [quantity] => 1
+)
+Array
+(
+    [user_id] => 23208
+    [bom_plate_part_id] => 100219155
+    [part_number] => DK151069
+    [quantity] => 0
+)
+Array
+(
+    [user_id] => 23208
+    [bom_plate_part_id] => 100212680
+    [part_number] => JL122003
+    [quantity] => 1
+)
+Array
+(
+    [user_id] => 23209
+    [bom_plate_part_id] => 100213309
+    [part_number] => JL74015P
+    [quantity] => 1
+)
+Array
+(
+    [user_id] => 23209
+    [bom_plate_part_id] => 100105443
+    [part_number] => JL402409
+    [quantity] => 1
+)
+Array
+(
+    [user_id] => 23209
+    [bom_plate_part_id] => 100213309
+    [part_number] => JL74015P
+    [quantity] => 0
+)
+Array
+(
+    [user_id] => 23194
+    [bom_plate_part_id] => 100152785
+    [part_number] => 59200029
+    [quantity] => 1
+)
+Array
+(
+    [user_id] => 23194
+    [bom_plate_part_id] => 100152785
+    [part_number] => 59200029
+    [quantity] => 2
+)
+Array
+(
+    [user_id] => 23194
+    [bom_plate_part_id] => 100152785
+    [part_number] => 59200029
+    [quantity] => 3
+)
+Array
+(
+    [user_id] => 23194
+    [bom_plate_part_id] => 100152785
+    [part_number] => 59200029
+    [quantity] => 4
+)
+Array
+(
+    [user_id] => 23194
+    [bom_plate_part_id] => 100152785
+    [part_number] => 59200029
+    [quantity] => 5
+)
+Array
+(
+    [user_id] => 23194
+    [bom_plate_part_id] => 100152785
+    [part_number] => 59200029
+    [quantity] => 6
+)
+Array
+(
+    [user_id] => 23161
+    [bom_plate_part_id] => 100343663
+    [part_number] => JH521007
+    [quantity] => 1
+)
+Array
+(
+    [user_id] => 23161
+    [bom_plate_part_id] => 100343663
+    [part_number] => JH521007
+    [quantity] => 2
+)
+Array
+(
+    [user_id] => 23161
+    [bom_plate_part_id] => 100343663
+    [part_number] => JH521007
+    [quantity] => 1
+)
+Array
+(
+    [user_id] => 23161
+    [bom_plate_part_id] => 100343663
+    [part_number] => JH521007
+    [quantity] => 2
+)
+Array
+(
+    [user_id] => 23161
+    [bom_plate_part_id] => 100344112
+    [part_number] => 39267104
+    [quantity] => 1
+)
+Array
+(
+    [user_id] => 23205
+    [bom_plate_part_id] => 100056323
+    [part_number] => JB511206
+    [quantity] => 1
+)
+Array
+(
+    [user_id] => 23205
+    [bom_plate_part_id] => 100056323
+    [part_number] => JB511206
+    [quantity] => 0
+)
+Array
+(
+    [user_id] => 23213
+    [bom_plate_part_id] => 100165597
+    [part_number] => JE511204
+    [quantity] => 1
+)
+Array
+(
+    [user_id] => 23213
+    [bom_plate_part_id] => 100165597
+    [part_number] => JE511204
+    [quantity] => 0
+)
+Array
+(
+    [apartment_name] => 
+    [address_id] => 
+    [api_type] => addnew
+    [landmark_details] => plaza
+    [active] => 
+    [street_details] => 
+    [type] =>  Select Type
+    [house_no] => 121/122
+    [user_id] => 22607
+)
+Array
+(
+    [address_id] => 
+    [user_id] => 22607
+    [street_details] => 
+    [landmark_details] => plaza
+    [apartment_name] => 
+    [active] => 
+    [type] =>  Select Type
+    [house_no] => 121/122
+    [api_type] => addnew
+)
+Array
+(
+    [user_id] => 12909
+    [bom_plate_part_id] => 100154982
+    [part_number] => DK101748
+    [quantity] => 1
+)
+Array
+(
+    [user_id] => 12909
+    [bom_plate_part_id] => 100154988
+    [part_number] => DK101751
+    [quantity] => 1
+)
+Array
+(
+    [user_id] => 22607
+    [house_no] => 121 / 122
+    [apartment_name] => 
+    [type] =>  Select Type
+    [address_id] => 
+    [landmark_details] => plaza
+    [api_type] => addnew
+    [active] => 
+    [street_details] => 
+)
+Array
+(
+    [type] =>  Select Type
+    [house_no] => 121/122
+    [api_type] => addnew
+    [address_id] => 
+    [apartment_name] => mahalaxmi
+    [landmark_details] => plaza
+    [user_id] => 22607
+    [active] => 
+    [street_details] => kfdkfj
+)
+Array
+(
+    [apartment_name] => mahalaxmi
+    [landmark_details] => plaza
+    [type] =>  Select Type
+    [api_type] => addnew
+    [house_no] => 121/122
+    [user_id] => 22607
+    [active] => 
+    [address_id] => 
+    [street_details] => kfdkfj
+)
+Array
+(
+    [active] => 
+    [user_id] => 22607
+    [landmark_details] => plaza
+    [api_type] => addnew
+    [house_no] => 121/122
+    [type] =>  Select Type
+    [address_id] => 
+    [street_details] => kfdkfj
+    [apartment_name] => mahalaxmi
+)
+Array
+(
+    [street_details] => kfdkfj
+    [api_type] => addnew
+    [user_id] => 22607
+    [landmark_details] => plaza
+    [active] => 
+    [address_id] => 
+    [apartment_name] => mahalaxmi
+    [house_no] => 121/122
+    [type] =>  Select Type
+)
+Array
+(
+    [house_no] => 121 /122
+    [api_type] => addnew
+    [active] => 
+    [landmark_details] => plaza
+    [address_id] => 
+    [apartment_name] => maahalaxmi
+    [street_details] => devinagar
+    [user_id] => 22607
+    [type] => Home
+)
+Array
+(
+    [api_type] => addnew
+    [user_id] => 22607
+    [house_no] => dodgy
+    [address_id] => 
+    [landmark_details] => Gangnam
+    [active] => 
+    [street_details] => Goff
+    [apartment_name] => fiddle
+    [type] => Home
+)
+Array
+(
+    [user_id] => 23215
+    [bom_plate_part_id] => 100217649
+    [part_number] => JG531207
+    [quantity] => 1
+)
+Array
+(
+    [user_id] => 23215
+    [bom_plate_part_id] => 100217649
+    [part_number] => JG531207
+    [quantity] => 2
+)
+Array
+(
+    [user_id] => 23215
+    [bom_plate_part_id] => 100217649
+    [part_number] => JG531207
+    [quantity] => 1
+)
+Array
+(
+    [user_id] => 23215
+    [bom_plate_part_id] => 100212723
+    [part_number] => JL131219
+    [quantity] => 1
+)
+Array
+(
+    [user_id] => 23217
+    [bom_plate_part_id] => 100079411
+    [part_number] => DK151026
+    [quantity] => 1
+)
+Array
+(
+    [user_id] => 23217
+    [bom_plate_part_id] => 100078553
+    [part_number] => JC151010
+    [quantity] => 1
+)
+Array
+(
+    [user_id] => 23217
+    [bom_plate_part_id] => 100158581
+    [part_number] => DK151039
+    [quantity] => 1
+)
+Array
+(
+    [user_id] => 23217
+    [bom_plate_part_id] => 100337314
+    [part_number] => CZ181407
+    [quantity] => 1
+)
+Array
+(
+    [user_id] => 23217
+    [bom_plate_part_id] => 100337140
+    [part_number] => KADA0614
+    [quantity] => 1
+)
+Array
+(
+    [user_id] => 23217
+    [bom_plate_part_id] => 100337653
+    [part_number] => DD161051
+    [quantity] => 1
+)
+Array
+(
+    [user_id] => 23217
+    [bom_plate_part_id] => 100337464
+    [part_number] => 39071111
+    [quantity] => 1
+)
+Array
+(
+    [user_id] => 23217
+    [bom_plate_part_id] => 100337684
+    [part_number] => DM161009
+    [quantity] => 1
+)
+Array
+(
+    [user_id] => 23217
+    [bom_plate_part_id] => 100337608
+    [part_number] => DU161098
+    [quantity] => 1
+)
+Array
+(
+    [user_id] => 23217
+    [bom_plate_part_id] => 100337578
+    [part_number] => DU161373
+    [quantity] => 1
+)
+Array
+(
+    [user_id] => 23217
+    [bom_plate_part_id] => 100337148
+    [part_number] => KADD0818
+    [quantity] => 1
+)
+Array
+(
+    [user_id] => 23217
+    [bom_plate_part_id] => 100078102
+    [part_number] => JC101035
+    [quantity] => 1
+)
+Array
+(
+    [user_id] => 23217
+    [bom_plate_part_id] => 100154738
+    [part_number] => PD511229
+    [quantity] => 1
+)
+Array
+(
+    [user_id] => 23220
+    [bom_plate_part_id] => 100333901
+    [part_number] => 52JN0136
+    [quantity] => 1
+)
+Array
+(
+    [user_id] => 23220
+    [bom_plate_part_id] => 100333901
+    [part_number] => 52JN0136
+    [quantity] => 0
+)

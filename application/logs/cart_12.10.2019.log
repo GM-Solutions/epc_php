@@ -1,0 +1,112 @@
+Array
+(
+    [user_id] => 23286
+    [bom_plate_part_id] => 100164198
+    [part_number] => PA581226
+    [quantity] => 1
+)
+Array
+(
+    [user_id] => 23290
+    [bom_plate_part_id] => 100266347
+    [part_number] => PD591023
+    [quantity] => 1
+)
+Array
+(
+    [user_id] => 23290
+    [bom_plate_part_id] => 100266347
+    [part_number] => PD591023
+    [quantity] => 0
+)
+Array
+(
+    [user_id] => 23291
+    [bom_plate_part_id] => 100335920
+    [part_number] => DZ201038
+    [quantity] => 1
+)
+Array
+(
+    [user_id] => 23293
+    [bom_plate_part_id] => 100152307
+    [part_number] => DH121035
+    [quantity] => 1
+)
+Array
+(
+    [user_id] => 23293
+    [bom_plate_part_id] => 100152307
+    [part_number] => DH121035
+    [quantity] => 0
+)
+Array
+(
+    [user_id] => 23293
+    [bom_plate_part_id] => 100158235
+    [part_number] => JC201039
+    [quantity] => 1
+)
+Array
+(
+    [user_id] => 23294
+    [bom_plate_part_id] => 100151322
+    [part_number] => DK171006
+    [quantity] => 1
+)
+Array
+(
+    [user_id] => 23294
+    [bom_plate_part_id] => 100151322
+    [part_number] => DK171006
+    [quantity] => 0
+)
+Array
+(
+    [user_id] => 23294
+    [bom_plate_part_id] => 100080049
+    [part_number] => DK181010
+    [quantity] => 1
+)
+Array
+(
+    [user_id] => 23294
+    [bom_plate_part_id] => 100151319
+    [part_number] => DK171003
+    [quantity] => 1
+)
+Array
+(
+    [user_id] => 23294
+    [bom_plate_part_id] => 100080049
+    [part_number] => DK181010
+    [quantity] => 0
+)
+Array
+(
+    [user_id] => 16104
+    [bom_plate_part_id] => 100250652
+    [part_number] => PA121010
+    [quantity] => 1
+)
+Array
+(
+    [user_id] => 16104
+    [bom_plate_part_id] => 100250652
+    [part_number] => PA121010
+    [quantity] => 2
+)
+Array
+(
+    [user_id] => 16104
+    [bom_plate_part_id] => 100250652
+    [part_number] => PA121010
+    [quantity] => 1
+)
+Array
+(
+    [user_id] => 16104
+    [bom_plate_part_id] => 100250652
+    [part_number] => PA121010
+    [quantity] => 0
+)

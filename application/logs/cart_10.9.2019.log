@@ -1,0 +1,14 @@
+Array
+(
+    [user_id] => 16961
+    [bom_plate_part_id] => 100077650
+    [part_number] => DJ72014M
+    [quantity] => 1
+)
+Array
+(
+    [user_id] => 16961
+    [bom_plate_part_id] => 100077650
+    [part_number] => DJ72014M
+    [quantity] => 0
+)
