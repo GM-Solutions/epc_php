@@ -21,8 +21,9 @@ class Common {
         /*get country*/
         $CI = & get_instance();
         $country = !empty($CI->post('country')) ? $CI->post('country') : "india";        
-        $all_group = $CI->config->item('db_group');
-        $country = (array_key_exists($country, $all_group)) ? $country : "india";
+        $all_group =array('india');// $CI->config->item('db_group');
+
+         $country = (array_key_exists($country, $all_group)) ? $country : "india";
 
         $sms_setting = $CI->config->item('sms');
         
@@ -30,6 +31,8 @@ class Common {
             case "india":
                 $parameters = "aid=".$sms_setting[$country]['aid']."&pin=".$sms_setting[$country]['pin']."&signature=".$sms_setting[$country]['signature']."&mnumber=".$sms_dtl['mobile_no']."&message=".$sms_dtl['message'];
 		$apiurl = $sms_setting[$country]['message_url'];
+
+
 		$ch = curl_init($apiurl);		
 
 		curl_setopt($ch, CURLOPT_POST,0);

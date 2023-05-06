@@ -254,7 +254,7 @@ class User extends REST_Controller {
         $this->response($op, REST_Controller::HTTP_OK);
     }
 
-    public function user_registration_post() {
+    public function stop_240423_user_registration_post() { 
         $user_type = $this->post('user_type'); /* Dealer Distributor Member Customer */
         $vertical = $this->post('vertical'); /* Motorcycle ,Commercial Vehicle, Probiking, International Business */
         $otp = $this->post('otp');
@@ -296,6 +296,7 @@ class User extends REST_Controller {
             return TRUE;
         } else {
             $this->db->trans_start();
+
             if ($vertical == "Motorcycle") { /* Make Registration for Motorcycle */
                 try {
                     /* for dealer registration */
@@ -422,14 +423,15 @@ class User extends REST_Controller {
         $otp_data['modified_date'] = date('Y-m-d H:i:s');
         $otp_data['request_date'] = date('Y-m-d H:i:s');
 
-        $msg = "Dear EPC User,your OTP is {otp}, For any Support please email us on epcsupport@gladminds.co -Bajaj Auto Limited";
+      //  $msg = "Dear EPC User,your OTP is {otp} , For any Support please email us on epcsupport@gladminds.co -Bajaj Auto Limited";
+$msg ="Dear EPC User, your OTP is 1010, For any Support please email us on epcsupport@gladminds.co -Bajaj Auto Limited";
         $email_dtl[0]['subject'] = "Verify your account";
         $email_dtl[0]['message'] = str_replace(array("{user_name}", "{otp}"), array($user_name, $otp_no), $msg);
         $email_dtl[0]['to'] = $email;//"pvningalkar@gmail.com";
         
         /* send Email */
         Common::send_email($email_dtl);
-
+	Common::sendSMS(array("mobile_no"=>$phone_number,"message"=>$msg));
         $this->Common_model->insert_info('gm_otptoken', $otp_data);
     }
 
