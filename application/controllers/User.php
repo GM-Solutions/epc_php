@@ -21,91 +21,91 @@ class User extends CI_Controller
     {
         try {
 
-            // $fullURL = (empty($_SERVER['HTTPS']) ? 'http' : 'https') . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
-            // $url_components = parse_url($fullURL);
-            // parse_str($url_components['query'], $params);
-            // if (isset($params['cid'])) {
-            //     $cid = $params['cid'];
-            // } else {
-            //     $cid = "";
-            // }
-            // if (isset($params['login_token'])) {
-            //     $userToken = $params['login_token'];
-            // } else {
-            //     $userToken = "";
-            // }
-
-
-            // //$userToken = '6056c2ea799ec409ca5a6980c590e073191e9e57';
-            // //$this->session->set_userdata($dtl);
-            // // $useLoginDtl = array(
-            // //     'user_id' => $cid,
-            // //     'username'  => '',
-            // //     'email' => '',
-            // //     'logged_in' => FALSE,
-            // //     'userToken' => $userToken
-            // // );
-
-            // // print_r($cid);
-            // // exit();
-            // // Token Validation
-
-            // $tokenDtl = $this->db->query("select * from oauth2_accesstoken where token = '$userToken'");
-            // $tokenDtlArr = $tokenDtl->result_array();
-            // if (count($tokenDtlArr) < 1) {
-            //     http_response_code(400);
-            //     //$data['message'] = "Invalid Token";
-            //     $data['message'] = '{"code":400, "msg":"Invalid Token"}';
-            //     //$this->load->view('login', $data);
-            //     echo $data['message'];
-            //     return true;
-            // }
-            // $td = $tokenDtlArr[0];
-
-            // if ($td['user_id'] !== $cid) {
-            //     // $data['message'] = "Invalid Token Owner";
-            //     http_response_code(401);
-            //     $data['message'] = '{"code":401, "msg":"Invalid Token Owner"}';
-            //     //$this->load->view('login', $data);
-            //     echo $data['message'];
-            //     return true;
-            // }
-
-            // if (time() > strtotime($td['expires'])) {
-            //     http_response_code(401);
-            //     $data['message'] = '{"code":401, "msg":"Token Expired"}';
-            //     //$data['message'] = "Token Expire";
-            //     //$this->load->view('login', $data);
-            //     echo $data['message'];
-            //     return true;
-            // }
-
-            // //Finding username from auth_user table
-            // $usrIdFrmOthTb = $this->db->query("select * from auth_user where id = '$cid'");
-            // $usrIdFrmOthTbArr = $usrIdFrmOthTb->result_array();
-            // if (count($usrIdFrmOthTbArr) < 1) {
-            //     http_response_code(401);
-            //     $data['message'] = '{"code":401, "msg":"User Not Found"}';
-            //     //$data['message'] = "User Not Found";
-            //     //$this->load->view('login', $data);
-            //     echo $data['message'];
-            //     return true;
-            // }
-            // $username =  $usrIdFrmOthTbArr[0]['username'];
-            // // print_r($username);
-            // // // echo "Hello";
-            // // die();
-
-            // // $action = $this->input->post('submit');
-
-            $mytoken = $this->Common_model->validate_token();
-            if ($mytoken['code'] !== 200) {
-                http_response_code($mytoken['code']);
-                echo json_encode($mytoken);
-                die();
+            $fullURL = (empty($_SERVER['HTTPS']) ? 'http' : 'https') . "://$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]";
+            $url_components = parse_url($fullURL);
+            parse_str($url_components['query'], $params);
+            if (isset($params['cid'])) {
+                $cid = $params['cid'];
+            } else {
+                $cid = "";
+            }
+            if (isset($params['login_token'])) {
+                $userToken = $params['login_token'];
+            } else {
+                $userToken = "";
             }
 
-            $username =  $mytoken['username'];
+
+            //$userToken = '6056c2ea799ec409ca5a6980c590e073191e9e57';
+            //$this->session->set_userdata($dtl);
+            // $useLoginDtl = array(
+            //     'user_id' => $cid,
+            //     'username'  => '',
+            //     'email' => '',
+            //     'logged_in' => FALSE,
+            //     'userToken' => $userToken
+            // );
+
+            // print_r($cid);
+            // exit();
+            // Token Validation
+
+            $tokenDtl = $this->db->query("select * from oauth2_accesstoken where token = '$userToken'");
+            $tokenDtlArr = $tokenDtl->result_array();
+            if (count($tokenDtlArr) < 1) {
+                http_response_code(400);
+                //$data['message'] = "Invalid Token";
+                $data['message'] = '{"code":400, "msg":"Invalid Token"}';
+                //$this->load->view('login', $data);
+                echo $data['message'];
+                return true;
+            }
+            $td = $tokenDtlArr[0];
+
+            if ($td['user_id'] !== $cid) {
+                // $data['message'] = "Invalid Token Owner";
+                http_response_code(401);
+                $data['message'] = '{"code":401, "msg":"Invalid Token Owner"}';
+                //$this->load->view('login', $data);
+                echo $data['message'];
+                return true;
+            }
+
+            if (time() > strtotime($td['expires'])) {
+                http_response_code(401);
+                $data['message'] = '{"code":401, "msg":"Token Expired"}';
+                //$data['message'] = "Token Expire";
+                //$this->load->view('login', $data);
+                echo $data['message'];
+                return true;
+            }
+
+            //Finding username from auth_user table
+            $usrIdFrmOthTb = $this->db->query("select * from auth_user where id = '$cid'");
+            $usrIdFrmOthTbArr = $usrIdFrmOthTb->result_array();
+            if (count($usrIdFrmOthTbArr) < 1) {
+                http_response_code(401);
+                $data['message'] = '{"code":401, "msg":"User Not Found"}';
+                //$data['message'] = "User Not Found";
+                //$this->load->view('login', $data);
+                echo $data['message'];
+                return true;
+            }
+            $username =  $usrIdFrmOthTbArr[0]['username'];
+            // print_r($username);
+            // // echo "Hello";
+            // die();
+
+            // $action = $this->input->post('submit');
+
+            // $mytoken = $this->Common_model->validate_token();
+            // if ($mytoken['code'] !== 200) {
+            //     http_response_code($mytoken['code']);
+            //     echo json_encode($mytoken);
+            //     die();
+            // }
+
+            // $username =  $mytoken['username'];
 
             // echo $username;
             // die();

@@ -1,12 +1,13 @@
 <?php
 
 require APPPATH . 'libraries/REST_Controller.php';
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') or exit('No direct script access allowed');
 
-class User extends REST_Controller {
-
+class User extends REST_Controller
+{
     //put your code here
-    function __construct() {
+    function __construct()
+    {
         // Construct the parent class
         parent::__construct();
         $this->load->model("Common_model");
@@ -15,7 +16,8 @@ class User extends REST_Controller {
         $this->load->library('S3');
     }
 
-    public function login_post() {
+    public function login_post()
+    {
         $email = $this->post('email');
         $password = $this->post('password');
         if (empty($email) || empty($password)) {
@@ -90,7 +92,8 @@ class User extends REST_Controller {
         }
     }
 
-    public function forget_password_check_post() {
+    public function forget_password_check_post()
+    {
         /* get email id */
         $email = $this->post('email');
         $type = $this->post('type'); /* check for sent verification ,  verify  for verify otp and set password */
@@ -151,7 +154,8 @@ class User extends REST_Controller {
         $this->response($dtl, REST_Controller::HTTP_OK);
     }
 
-    private function set_password($user_info) {
+    private function set_password($user_info)
+    {
 
         $randomString = generateRandomString(12);
         $new_password = $this->post('new_password');
@@ -174,7 +178,14 @@ class User extends REST_Controller {
         }
     }
 
-    public function add_shop_post() {
+    public function add_shop_post()
+    {
+        $mytoken = $this->Common_model->validate_token();
+        if ($mytoken['code'] !== 200) {
+            http_response_code($mytoken['code']);
+            echo json_encode($mytoken);
+            die();
+        }
         $user_id = $this->post('user_id');
         $api_type = $this->post('api_type');
         $role_name = $this->post('role');
@@ -234,7 +245,7 @@ class User extends REST_Controller {
         $address_dtl = $this->Common_model->select_info('gm_epc_shop_details', $select_cond);
         if ($address_dtl) {
             $op['status'] = TRUE;
-            foreach ($address_dtl AS $key => $val) {
+            foreach ($address_dtl as $key => $val) {
 
                 $op1[$key]['address_id'] = $val['id'];
                 $op1[$key]['address'] = $val['address'];
@@ -254,7 +265,14 @@ class User extends REST_Controller {
         $this->response($op, REST_Controller::HTTP_OK);
     }
 
-    public function stop_240423_user_registration_post() { 
+    public function user_registration_post()
+    {
+        $mytoken = $this->Common_model->validate_token();
+        if ($mytoken['code'] !== 200) {
+            http_response_code($mytoken['code']);
+            echo json_encode($mytoken);
+            die();
+        }
         $user_type = $this->post('user_type'); /* Dealer Distributor Member Customer */
         $vertical = $this->post('vertical'); /* Motorcycle ,Commercial Vehicle, Probiking, International Business */
         $otp = $this->post('otp');
@@ -321,7 +339,7 @@ class User extends REST_Controller {
                     /* verify OTP and allow access */
                     if (!empty($otp)) {
                         $otp_dtl = $this->db->select('token')->from('gm_otptoken')->where("phone_number", trim($phone_number))->order_by('created_date', 'desc')->get()->row();
-                        
+
                         if (empty($otp_dtl))
                             throw new Exception('No OTP found for ' . $phone_number);
 
@@ -362,11 +380,8 @@ class User extends REST_Controller {
                     $op['message'] = $ex->getMessage();
                 }
             } elseif ($vertical == "Commercial Vehicle") {
-                
             } elseif ($vertical == "Probiking") {
-                
             } elseif ($vertical == "International Business") {
-                
             } else { /* User Members */
                 try {
                     $allow_global_users_type = array('Members', 'Users');
@@ -412,7 +427,8 @@ class User extends REST_Controller {
         $this->response($op, REST_Controller::HTTP_OK);
     }
 
-    private function generate_send_otp($phone_number, $email, $user_name) {
+    private function generate_send_otp($phone_number, $email, $user_name)
+    {
 
         $otp_no = rand(100000, 999999);
 
@@ -423,19 +439,20 @@ class User extends REST_Controller {
         $otp_data['modified_date'] = date('Y-m-d H:i:s');
         $otp_data['request_date'] = date('Y-m-d H:i:s');
 
-      //  $msg = "Dear EPC User,your OTP is {otp} , For any Support please email us on epcsupport@gladminds.co -Bajaj Auto Limited";
-$msg ="Dear EPC User, your OTP is 1010, For any Support please email us on epcsupport@gladminds.co -Bajaj Auto Limited";
+        //  $msg = "Dear EPC User,your OTP is {otp} , For any Support please email us on epcsupport@gladminds.co -Bajaj Auto Limited";
+        $msg = "Dear EPC User, your OTP is 1010, For any Support please email us on epcsupport@gladminds.co -Bajaj Auto Limited";
         $email_dtl[0]['subject'] = "Verify your account";
         $email_dtl[0]['message'] = str_replace(array("{user_name}", "{otp}"), array($user_name, $otp_no), $msg);
-        $email_dtl[0]['to'] = $email;//"pvningalkar@gmail.com";
-        
+        $email_dtl[0]['to'] = $email; //"pvningalkar@gmail.com";
+
         /* send Email */
         Common::send_email($email_dtl);
-	Common::sendSMS(array("mobile_no"=>$phone_number,"message"=>$msg));
+        Common::sendSMS(array("mobile_no" => $phone_number, "message" => $msg));
         $this->Common_model->insert_info('gm_otptoken', $otp_data);
     }
 
-    private function registration_detaiils($type, $vertical = NULL) {
+    private function registration_detaiils($type, $vertical = NULL)
+    {
         $methode_name = $this->router->fetch_method();
         $data = array();
         if ($vertical == "Motorcycle") {
@@ -454,7 +471,7 @@ $msg ="Dear EPC User, your OTP is 1010, For any Support please email us on epcsu
                     $data['gladminds_master']['latitude'] = $this->post('latitude');
                 if (!empty($this->post('longitude')))
                     $data['gladminds_master']['longitude'] = $this->post('longitude');
-                
+
                 /*gm_epc_shop_details*/
                 if (!empty($this->post('address')))
                     $data['shop_dtl']['address'] = $this->post('address');
@@ -468,7 +485,7 @@ $msg ="Dear EPC User, your OTP is 1010, For any Support please email us on epcsu
                     $data['shop_dtl']['latitude'] = $this->post('latitude');
                 if (!empty($this->post('longitude')))
                     $data['shop_dtl']['longitude'] = $this->post('longitude');
-                
+
                 $data['shop_dtl']['active'] = 1;
             }
             if ($type == 'Dealer') {
@@ -527,21 +544,21 @@ $msg ="Dear EPC User, your OTP is 1010, For any Support please email us on epcsu
 
         $data['userprofile']['created_date'] = date('Y-m-d H:i:s');
         $doc_url = "";
-        $configration = $this->config->item('aws'); 
+        $configration = $this->config->item('aws');
         /*upload media file */
-                if(!empty($_FILES['photo']['name']) && $_FILES["photo"]['error'] == 0){
-                    $array = explode('.', $_FILES['photo']['name']);
-                    $extension = end($array);
-                    $uniquesavename = str_replace(" ", "_", $array[0]);
-                    $doc_name = $uniquesavename . "_" . rand(10, 100) . '.' . $extension;
-                    $doc_url = $configration['dir'].'user/' . $doc_name;
-                    $type_ex = S3::$extenstion_type;
-                    $s3 = new S3($configration['awsAccessKey'], $configration['awsSecretKey']);
-                    if ($s3->putObjectFile($_FILES['photo']['tmp_name'], (string)$configration['bucket_agreement'], (string)$doc_url, S3::ACL_PUBLIC_READ, array(), (string)$type_ex[$extension])) {
-                        $doc_url =   $doc_url;                       
-                    }
-                }
-        if(!empty($doc_url))
+        if (!empty($_FILES['photo']['name']) && $_FILES["photo"]['error'] == 0) {
+            $array = explode('.', $_FILES['photo']['name']);
+            $extension = end($array);
+            $uniquesavename = str_replace(" ", "_", $array[0]);
+            $doc_name = $uniquesavename . "_" . rand(10, 100) . '.' . $extension;
+            $doc_url = $configration['dir'] . 'user/' . $doc_name;
+            $type_ex = S3::$extenstion_type;
+            $s3 = new S3($configration['awsAccessKey'], $configration['awsSecretKey']);
+            if ($s3->putObjectFile($_FILES['photo']['tmp_name'], (string)$configration['bucket_agreement'], (string)$doc_url, S3::ACL_PUBLIC_READ, array(), (string)$type_ex[$extension])) {
+                $doc_url =   $doc_url;
+            }
+        }
+        if (!empty($doc_url))
             $data['userprofile']['image_url'] =  $doc_url;
         /* get user profile id */
         $this->db->select('role.id AS role_id');
@@ -566,7 +583,14 @@ $msg ="Dear EPC User, your OTP is 1010, For any Support please email us on epcsu
         return $data;
     }
 
-    public function select_sku_model_list_post() {
+    public function select_sku_model_list_post()
+    {
+        $mytoken = $this->Common_model->validate_token();
+        if ($mytoken['code'] !== 200) {
+            http_response_code($mytoken['code']);
+            echo json_encode($mytoken);
+            die();
+        }
         $vertical_id = $this->post('vertical_id');
         $sku_text = $this->post('sku_text');
 
@@ -599,7 +623,14 @@ $msg ="Dear EPC User, your OTP is 1010, For any Support please email us on epcsu
         $this->response($op, REST_Controller::HTTP_OK);
     }
 
-    public function add_user_vehical_post() {
+    public function add_user_vehical_post()
+    {
+        $mytoken = $this->Common_model->validate_token();
+        if ($mytoken['code'] !== 200) {
+            http_response_code($mytoken['code']);
+            echo json_encode($mytoken);
+            die();
+        }
         $api_type = $this->post('api_type'); /* 1=> selection of vin, 2=> Add information manually */
         $user_id = $this->post('user_id');
         $product_id = $this->post('product_id');
@@ -662,7 +693,14 @@ $msg ="Dear EPC User, your OTP is 1010, For any Support please email us on epcsu
         $this->response($op, REST_Controller::HTTP_OK);
     }
 
-    public function view_vehical_list_post() {
+    public function view_vehical_list_post()
+    {
+        $mytoken = $this->Common_model->validate_token();
+        if ($mytoken['code'] !== 200) {
+            http_response_code($mytoken['code']);
+            echo json_encode($mytoken);
+            die();
+        }
         $img_base = "http://gladminds-connect.s3.amazonaws.com/";
         $user_id = $this->post('user_id');
         /* get the list off  all  register vehical address */
@@ -693,7 +731,14 @@ $msg ="Dear EPC User, your OTP is 1010, For any Support please email us on epcsu
         $this->response($op, REST_Controller::HTTP_OK);
     }
 
-    public function headquater_details_post() {
+    public function headquater_details_post()
+    {
+        $mytoken = $this->Common_model->validate_token();
+        if ($mytoken['code'] !== 200) {
+            http_response_code($mytoken['code']);
+            echo json_encode($mytoken);
+            die();
+        }
         $user_id = $this->post('user_id');
         $role_name = $this->post('role');
         $op = array();
@@ -721,7 +766,14 @@ $msg ="Dear EPC User, your OTP is 1010, For any Support please email us on epcsu
         $this->response($op, REST_Controller::HTTP_OK);
     }
 
-    public function master_data_register_get() {
+    public function master_data_register_get()
+    {
+        $mytoken = $this->Common_model->validate_token();
+        if ($mytoken['code'] !== 200) {
+            http_response_code($mytoken['code']);
+            echo json_encode($mytoken);
+            die();
+        }
         /* Vertical list and roles */
         $this->db->select('*');
         $this->db->from('gm_brandvertical');
@@ -747,10 +799,10 @@ $msg ="Dear EPC User, your OTP is 1010, For any Support please email us on epcsu
 
         if ($state_city) {
             foreach ($state_city as $key => $value) {
-                $state_city_raw [$value['state_id']]['state_id'] = $value['state_id'];
-                $state_city_raw [$value['state_id']]['state_name'] = $value['state_name'];
-                $state_city_raw [$value['state_id']]['city'][$value['city_id']]['city_id'] = $value['city_id'];
-                $state_city_raw [$value['state_id']]['city'][$value['city_id']]['city_name'] = $value['city'];
+                $state_city_raw[$value['state_id']]['state_id'] = $value['state_id'];
+                $state_city_raw[$value['state_id']]['state_name'] = $value['state_name'];
+                $state_city_raw[$value['state_id']]['city'][$value['city_id']]['city_id'] = $value['city_id'];
+                $state_city_raw[$value['state_id']]['city'][$value['city_id']]['city_name'] = $value['city'];
             }
             $i = 0;
             foreach ($state_city_raw as $key => $value) {
@@ -771,14 +823,22 @@ $msg ="Dear EPC User, your OTP is 1010, For any Support please email us on epcsu
         $this->response($op, REST_Controller::HTTP_OK);
     }
 
-    public function update_profile_post() {
+    public function update_profile_post()
+    {
+        $mytoken = $this->Common_model->validate_token();
+        if ($mytoken['code'] !== 200) {
+            http_response_code($mytoken['code']);
+            echo json_encode($mytoken);
+            die();
+        }
+        // $user_id = $this->post('user_id');
+        // echo $user_id;
+        // die();
         $op = array();
         $api_type = $this->post('api_type'); /* Dealer Distributor Member Customer */
         $user_type = $this->post('user_type'); /* Dealer Distributor Member Customer */
         $vertical = $this->post('vertical'); /* Motorcycle ,Commercial Vehicle, Probiking, International Business */
-
         $user_id = $this->post('user_id');
-
         $first_name = $this->post('first_name');
         $last_name = $this->post('last_name');
         $email = $this->post('email');
@@ -788,55 +848,55 @@ $msg ="Dear EPC User, your OTP is 1010, For any Support please email us on epcsu
             if (empty($user_id))
                 throw new Exception('Sorry you are not authorise user');
             /* check  for duplicate phone number */
-            if($api_type == "update"){
-            $user_dtl = $this->db->select('phone_number')->from('gm_userprofile')->where('user_id !=', $user_id, FALSE)->like("phone_number", trim($phone_number))->get()->row();
-//            echo $this->db->last_query();
-            if (!empty($user_dtl)) {
+            if ($api_type == "update") {
+                $user_dtl = $this->db->select('phone_number')->from('gm_userprofile')->where('user_id !=', $user_id, FALSE)->like("phone_number", trim($phone_number))->get()->row();
+                //            echo $this->db->last_query();
+                if (!empty($user_dtl)) {
 
-                throw new Exception('Mobile Number is already register please, use diffrent number');
-            } else {
-                $phone_number = "";
-                $_POST['phone_number'] = "";
-            }
-            $registration_fields = $this->registration_detaiils($user_type, $vertical);
-            /* list of unset data */
-            unset($registration_fields['userprofile']['user_id']);
-            unset($registration_fields['userprofile']['created_date']);
+                    throw new Exception('Mobile Number is already register please, use diffrent number');
+                } else {
+                    $phone_number = "";
+                    $_POST['phone_number'] = "";
+                }
+                $registration_fields = $this->registration_detaiils($user_type, $vertical);
+                /* list of unset data */
+                unset($registration_fields['userprofile']['user_id']);
+                unset($registration_fields['userprofile']['created_date']);
 
-            unset($registration_fields['auth_user']['username']);
-            unset($registration_fields['auth_user']['email']);
-            unset($registration_fields['auth_user']['is_active']);
-            unset($registration_fields['auth_user']['date_joined']);
-            unset($registration_fields['auth_user']['is_staff']);
+                unset($registration_fields['auth_user']['username']);
+                unset($registration_fields['auth_user']['email']);
+                unset($registration_fields['auth_user']['is_active']);
+                unset($registration_fields['auth_user']['date_joined']);
+                unset($registration_fields['auth_user']['is_staff']);
 
-            unset($registration_fields['gladminds_master']['dealer_code']);
-            unset($registration_fields['gladminds_master']['email']);
+                unset($registration_fields['gladminds_master']['dealer_code']);
+                unset($registration_fields['gladminds_master']['email']);
 
-            unset($registration_fields['role_data']);
-            unset($registration_fields['role_id']);
+                unset($registration_fields['role_data']);
+                unset($registration_fields['role_id']);
             }
             $this->db->trans_start();
             if ($vertical == "Motorcycle") { /* Make Registration for Motorcycle */
                 /* for dealer data updates */
-                if($api_type == "update"){
-                $allow_global_users_type = array('Members', 'Users');
-                if (in_array($user_type, $allow_global_users_type))
-                    throw new Exception('Invalid User type');
-                /* update data in auth */
-                if(count($registration_fields['auth_user']))                
-                    $this->Common_model->update_info('auth_user', $registration_fields['auth_user'], array('id' => $user_id));
+                if ($api_type == "update") {
+                    $allow_global_users_type = array('Members', 'Users');
+                    if (in_array($user_type, $allow_global_users_type))
+                        throw new Exception('Invalid User type');
+                    /* update data in auth */
+                    if (count($registration_fields['auth_user']))
+                        $this->Common_model->update_info('auth_user', $registration_fields['auth_user'], array('id' => $user_id));
 
-                /* update userprofile data */
-                if(count($registration_fields['userprofile']))
-                $this->Common_model->update_info('gm_userprofile', $registration_fields['userprofile'], array('user_id' => $user_id));
-                /* Update gm_epc_shop_details data */                
-                $this->Common_model->update_info('gm_epc_shop_details', $registration_fields['shop_dtl'], array('user_id' => $user_id));
-                /* update MC dealer profile */
-                if ($user_type == "Dealer" && count($registration_fields['gladminds_master']))
-                    $this->Common_model->update_info('gm_mc_dealer', $registration_fields['gladminds_master'], array('user_id' => $user_id));
-                /* update MC Distributor profile */
-                if ($user_type == "Distributor" && count($registration_fields['gladminds_master']))
-                    $this->Common_model->update_info('gm_sfa_mc_distributor', $registration_fields['gladminds_master'], array('user_id' => $user_id));
+                    /* update userprofile data */
+                    if (count($registration_fields['userprofile']))
+                        $this->Common_model->update_info('gm_userprofile', $registration_fields['userprofile'], array('user_id' => $user_id));
+                    /* Update gm_epc_shop_details data */
+                    $this->Common_model->update_info('gm_epc_shop_details', $registration_fields['shop_dtl'], array('user_id' => $user_id));
+                    /* update MC dealer profile */
+                    if ($user_type == "Dealer" && count($registration_fields['gladminds_master']))
+                        $this->Common_model->update_info('gm_mc_dealer', $registration_fields['gladminds_master'], array('user_id' => $user_id));
+                    /* update MC Distributor profile */
+                    if ($user_type == "Distributor" && count($registration_fields['gladminds_master']))
+                        $this->Common_model->update_info('gm_sfa_mc_distributor', $registration_fields['gladminds_master'], array('user_id' => $user_id));
                 }
                 /*get data from tables*/
                 $this->db->select('au.id AS user_id,
@@ -853,7 +913,7 @@ $msg ="Dear EPC User, your OTP is 1010, For any Support please email us on epcsu
                     bv.name AS vertical_name,
                     bv.id AS vertical_id');
                 $this->db->from('auth_user AS au');
-                $this->db->join('gm_userprofile  AS profile','profile.user_id=au.id','left');
+                $this->db->join('gm_userprofile  AS profile', 'profile.user_id=au.id', 'left');
                 $this->db->join('gm_epcuserprofileroles AS up', 'up.userprofile_id = au.id', 'left');
                 $this->db->join('gm_epcroles AS role', 'role.id = up.role_id', 'left');
                 $this->db->join('gm_brandvertical AS bv', 'bv.id = role.vertical_id', 'left');
@@ -861,63 +921,59 @@ $msg ="Dear EPC User, your OTP is 1010, For any Support please email us on epcsu
                 $this->db->where('au.id', $user_id);
                 $query = $this->db->get();
                 $user_info = ($query->num_rows() > 0) ? $query->row() : FALSE;
-                if($user_info){
-                    $configration = $this->config->item('aws'); 
+                if ($user_info) {
+                    $configration = $this->config->item('aws');
                     $user_data['email'] = $user_info->email;
-                    
+
                     $user_data['first_name'] = $user_info->first_name;
                     $user_data['last_name'] = $user_info->last_name;
-                    $user_data['photo'] = !empty($user_info->image_url) ? $configration['host']."/".$user_info->image_url : "" ;
-                   $op['profile'] =  $user_data;
+                    $user_data['photo'] = !empty($user_info->image_url) ? $configration['host'] . "/" . $user_info->image_url : "";
+                    $op['profile'] =  $user_data;
                 }
-                if ($user_type == "Dealer"){
-                $dealer_dtl = $this->db->select('*')->from('gm_mc_dealer')->where('user_id', $user_id)->get()->row();
-                $user_data['dealer_id'] = $dealer_dtl->dealer_code;
-                $user_data['phone_number'] = $dealer_dtl->mobile1;
-                $user_data['land_line'] = $dealer_dtl->mobile2;
-                $user_data['address'] = $dealer_dtl->shop_address;
-                $user_data['city'] = $dealer_dtl->city;
-                $user_data['state'] = $dealer_dtl->state;
-                $user_data['pincode'] = $dealer_dtl->pin_code;
-                $user_data['latitude'] = $dealer_dtl->latitude;
-                $user_data['longitude'] = $dealer_dtl->longitude;
-                $op['profile'] =  $user_data;
+                if ($user_type == "Dealer") {
+                    $dealer_dtl = $this->db->select('*')->from('gm_mc_dealer')->where('user_id', $user_id)->get()->row();
+                    $user_data['dealer_id'] = $dealer_dtl->dealer_code;
+                    $user_data['phone_number'] = $dealer_dtl->mobile1;
+                    $user_data['land_line'] = $dealer_dtl->mobile2;
+                    $user_data['address'] = $dealer_dtl->shop_address;
+                    $user_data['city'] = $dealer_dtl->city;
+                    $user_data['state'] = $dealer_dtl->state;
+                    $user_data['pincode'] = $dealer_dtl->pin_code;
+                    $user_data['latitude'] = $dealer_dtl->latitude;
+                    $user_data['longitude'] = $dealer_dtl->longitude;
+                    $op['profile'] =  $user_data;
                 }
-                if ($user_type == "Distributor"){
-                $dealer_dtl = $this->db->select('*')->from('gm_sfa_mc_distributor')->where('user_id', $user_id)->get()->row();
-                $user_data['dealer_id'] = $dealer_dtl->dealer_code;
-                $user_data['phone_number'] = $dealer_dtl->mobile1;
-                $user_data['land_line'] = $dealer_dtl->mobile2;
-                $user_data['address'] = $dealer_dtl->shop_address;
-                $user_data['city'] = $dealer_dtl->city;
-                $user_data['state'] = $dealer_dtl->state;
-                $user_data['pincode'] = $dealer_dtl->pin_code;
-                $user_data['latitude'] = $dealer_dtl->latitude;
-                $user_data['longitude'] = $dealer_dtl->longitude;
-                $op['profile'] =  $user_data;
+                if ($user_type == "Distributor") {
+                    $dealer_dtl = $this->db->select('*')->from('gm_sfa_mc_distributor')->where('user_id', $user_id)->get()->row();
+                    $user_data['dealer_id'] = $dealer_dtl->dealer_code;
+                    $user_data['phone_number'] = $dealer_dtl->mobile1;
+                    $user_data['land_line'] = $dealer_dtl->mobile2;
+                    $user_data['address'] = $dealer_dtl->shop_address;
+                    $user_data['city'] = $dealer_dtl->city;
+                    $user_data['state'] = $dealer_dtl->state;
+                    $user_data['pincode'] = $dealer_dtl->pin_code;
+                    $user_data['latitude'] = $dealer_dtl->latitude;
+                    $user_data['longitude'] = $dealer_dtl->longitude;
+                    $op['profile'] =  $user_data;
                 }
-                
             } elseif ($vertical == "Commercial Vehicle") {
-                
             } elseif ($vertical == "Probiking") {
-                
             } elseif ($vertical == "International Business") {
-                
             } else { /* User Members */
-                if($api_type == "update"){
+                if ($api_type == "update") {
 
-                $allow_global_users_type = array('Members', 'Users');
-                if (!in_array($user_type, $allow_global_users_type))
-                    throw new Exception('Invalid User type');
-                /* update data in auth */
-              
-                if(count($registration_fields['auth_user']))
-                $this->Common_model->update_info('auth_user', $registration_fields['auth_user'], array('id' => $user_id));
-                    
-                /* update userprofile data */
-                if(count($registration_fields['userprofile']))
-                $this->Common_model->update_info('gm_userprofile', $registration_fields['userprofile'], array('user_id' => $user_id));
-//                echo $this->db->last_query();
+                    $allow_global_users_type = array('Members', 'Users');
+                    if (!in_array($user_type, $allow_global_users_type))
+                        throw new Exception('Invalid User type');
+                    /* update data in auth */
+
+                    if (count($registration_fields['auth_user']))
+                        $this->Common_model->update_info('auth_user', $registration_fields['auth_user'], array('id' => $user_id));
+
+                    /* update userprofile data */
+                    if (count($registration_fields['userprofile']))
+                        $this->Common_model->update_info('gm_userprofile', $registration_fields['userprofile'], array('user_id' => $user_id));
+                    //                echo $this->db->last_query();
                 }
                 /*get data from tables*/
                 $this->db->select('au.id AS user_id,
@@ -939,7 +995,7 @@ $msg ="Dear EPC User, your OTP is 1010, For any Support please email us on epcsu
                     bv.name AS vertical_name,
                     bv.id AS vertical_id');
                 $this->db->from('auth_user AS au');
-                $this->db->join('gm_userprofile  AS profile','profile.user_id=au.id','left');
+                $this->db->join('gm_userprofile  AS profile', 'profile.user_id=au.id', 'left');
                 $this->db->join('gm_epcuserprofileroles AS up', 'up.userprofile_id = au.id', 'left');
                 $this->db->join('gm_epcroles AS role', 'role.id = up.role_id', 'left');
                 $this->db->join('gm_brandvertical AS bv', 'bv.id = role.vertical_id', 'left');
@@ -947,8 +1003,8 @@ $msg ="Dear EPC User, your OTP is 1010, For any Support please email us on epcsu
                 $this->db->where('au.id', $user_id);
                 $query = $this->db->get();
                 $user_info = ($query->num_rows() > 0) ? $query->row() : FALSE;
-                if($user_info){
-                    $configration = $this->config->item('aws'); 
+                if ($user_info) {
+                    $configration = $this->config->item('aws');
                     $user_data['email'] = $user_info->email;
                     $user_data['phone_number'] = $user_info->phone_number;
                     $user_data['first_name'] = $user_info->first_name;
@@ -958,9 +1014,9 @@ $msg ="Dear EPC User, your OTP is 1010, For any Support please email us on epcsu
                     $user_data['state'] = $user_info->state;
                     $user_data['pincode'] = $user_info->pincode;
                     $user_data['gender'] = $user_info->gender;
-                    $user_data['photo'] = !empty($user_info->image_url) ? $configration['host']."/".$user_info->image_url : "" ;
-                    
-                   $op['profile'] =  $user_data;
+                    $user_data['photo'] = !empty($user_info->image_url) ? $configration['host'] . "/" . $user_info->image_url : "";
+
+                    $op['profile'] =  $user_data;
                 }
             }
             $this->db->trans_complete();
@@ -982,28 +1038,33 @@ $msg ="Dear EPC User, your OTP is 1010, For any Support please email us on epcsu
         }
         $this->response($op, REST_Controller::HTTP_OK);
     }
-    public function user_profile_get() {
+    public function user_profile_get()
+    {
+        $mytoken = $this->Common_model->validate_token();
+        if ($mytoken['code'] !== 200) {
+            http_response_code($mytoken['code']);
+            echo json_encode($mytoken);
+            die();
+        }
+        //$user_id = $mytoken['username'];
         $user_id = $this->get('user_id');
-        $configration = $this->config->item('aws'); 
+        $configration = $this->config->item('aws');
         $op =  array();
         try {
-            if(empty($user_id))
-                throw new Exception('Empty User ID');
-            
+            if (empty($user_id))
+                throw new Exception('Empty User ID mks');
+
             $user_info = $this->db->select('*')->from('gm_userprofile')->where('user_id', $user_id)->get()->row();
             if (empty($user_info))
                 throw new Exception('Invalid User Detaiils');
-            
-             $data['photo'] = !empty($user_info->image_url) ? $configration['host']."/".$user_info->image_url : "" ;
-             $op['data'] = $data;
-             $op['status'] = TRUE;
+
+            $data['photo'] = !empty($user_info->image_url) ? $configration['host'] . "/" . $user_info->image_url : "";
+            $op['data'] = $data;
+            $op['status'] = TRUE;
         } catch (Exception $exc) {
             $op['status'] = False;
             $op['message'] = $exc->getMessage();
         }
         $this->response($op, REST_Controller::HTTP_OK);
     }
-    
-        
 }
-
