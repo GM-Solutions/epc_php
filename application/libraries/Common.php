@@ -120,7 +120,7 @@ class Common
         foreach ($email_dtl as $key => $value) {
 
             $CI->email->to($value['to']);
-            $CI->email->cc('manendrarathore301@gmail.com, chaitanya@gladminds.co');
+            $CI->email->cc('epcsupport@gladminds.co');
             $CI->email->subject($value['subject']);
             $CI->email->message($value['message']);
             $CI->email->set_newline("\r\n");
