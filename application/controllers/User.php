@@ -115,14 +115,14 @@ class User extends CI_Controller
             if ($action == "token_validate") {
                 // $password = $this->input->post('password');
                 $this->db->select('au.id AS user_id,
-            au.first_name,
-            au.last_name,
-            au.password,
-            au.username,
-            role.name AS role_name,
-            role.id AS role_id,
-            bv.name AS vertical_name,
-            bv.id AS vertical_id');
+                au.first_name,
+                au.last_name,
+                au.password,
+                au.username,
+                role.name AS role_name,
+                role.id AS role_id,
+                bv.name AS vertical_name,
+                bv.id AS vertical_id');
                 $this->db->from('auth_user AS au');
                 $this->db->join('gm_epcuserprofileroles AS up', 'up.userprofile_id = au.id', 'left');
                 $this->db->join('gm_epcroles AS role', 'role.id = up.role_id', 'left');
@@ -184,14 +184,14 @@ class User extends CI_Controller
                 $username = $this->input->post('username');
                 $password = $this->input->post('password');
                 $this->db->select('au.id AS user_id,
-            au.first_name,
-            au.last_name,
-            au.password,
-            au.username,
-            role.name AS role_name,
-            role.id AS role_id,
-            bv.name AS vertical_name,
-            bv.id AS vertical_id');
+                au.first_name,
+                au.last_name,
+                au.password,
+                au.username,
+                role.name AS role_name,
+                role.id AS role_id,
+                bv.name AS vertical_name,
+                bv.id AS vertical_id');
                 $this->db->from('auth_user AS au');
                 $this->db->join('gm_epcuserprofileroles AS up', 'up.userprofile_id = au.id', 'left');
                 $this->db->join('gm_epcroles AS role', 'role.id = up.role_id', 'left');
