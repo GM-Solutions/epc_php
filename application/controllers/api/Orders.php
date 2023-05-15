@@ -1,71 +1,79 @@
 <?php
 require APPPATH . 'libraries/REST_Controller.php';
-defined('BASEPATH') OR exit('No direct script access allowed');
+defined('BASEPATH') or exit('No direct script access allowed');
 
-class Orders extends REST_Controller {
-
+class Orders extends REST_Controller
+{
     //put your code here
-    function __construct() {
+    function __construct()
+    {
         // Construct the parent class
         parent::__construct();
-	$this->load->database();
+        $this->load->database();
         $this->load->model("Common_model");
     }
 
-    public function user_address_post() {
+    public function user_address_post()
+    {
+
+        $mytoken = $this->Common_model->validate_token();
+        if ($mytoken['code'] !== 200) {
+            http_response_code($mytoken['code']);
+            echo json_encode($mytoken);
+            die();
+        }
+
         $user_id = $this->post('user_id');
         $api_type = $this->post('api_type');
-        $default_address = $this->post('default_address'); 
-        
+        $default_address = $this->post('default_address');
+
 
         $add_address = array();
-        if(!empty($this->post('house_no'))) $add_address['house_no'] = $this->post('house_no');
-        
-        if(!empty($this->post('apartment_name'))) $add_address['apartment_name'] = $this->post('apartment_name');
-        
-        if(!empty($this->post('street_details'))) $add_address['street_details'] = $this->post('street_details');
-        
-        if(!empty($this->post('landmark_details'))) $add_address['landmark_details'] = $this->post('landmark_details');
-        
-        if(!empty($this->post('area_details'))) $add_address['area_details'] = $this->post('area_details');
-        
-        if(!empty($this->post('city'))) $add_address['city'] = $this->post('city');
-        
-        if(!empty($this->post('pin_code'))) $add_address['pin_code'] = $this->post('pin_code');
-        
-        if(!empty($this->post('type'))) $add_address['type'] = $this->post('type'); /* 'home','office','other' */
-        
-        if(!empty($this->post('default_address'))) $add_address['default_address'] = $this->post('default_address');
-        
-        
+        if (!empty($this->post('house_no'))) $add_address['house_no'] = $this->post('house_no');
+
+        if (!empty($this->post('apartment_name'))) $add_address['apartment_name'] = $this->post('apartment_name');
+
+        if (!empty($this->post('street_details'))) $add_address['street_details'] = $this->post('street_details');
+
+        if (!empty($this->post('landmark_details'))) $add_address['landmark_details'] = $this->post('landmark_details');
+
+        if (!empty($this->post('area_details'))) $add_address['area_details'] = $this->post('area_details');
+
+        if (!empty($this->post('city'))) $add_address['city'] = $this->post('city');
+
+        if (!empty($this->post('pin_code'))) $add_address['pin_code'] = $this->post('pin_code');
+
+        if (!empty($this->post('type'))) $add_address['type'] = $this->post('type'); /* 'home','office','other' */
+
+        if (!empty($this->post('default_address'))) $add_address['default_address'] = $this->post('default_address');
+
+
         $add_address['active'] = ($this->post('active') === 0) ?  0 : 1;
         if ($api_type == "addnew") {
             $add_address['active'] = 1;
             /* update all address as not default */
-            $this->Common_model->update_info('gm_user_address_details',array('default_address'=>0),array('user_id'=>$user_id));
+            $this->Common_model->update_info('gm_user_address_details', array('default_address' => 0), array('user_id' => $user_id));
             $add_address['default_address'] = 1;
-            
+
             $add_address['user_id'] = $user_id;
-            $this->Common_model->insert_info('gm_user_address_details', $add_address);           
-            
-           
+            $this->Common_model->insert_info('gm_user_address_details', $add_address);
         } elseif ($api_type == "update") {
             $up_cond['id'] = $this->post('address_id');
             $this->Common_model->update_info('gm_user_address_details', $add_address, $up_cond);
             if ($default_address == 1) {
                 /*update all address as not default*/
-                $this->Common_model->update_info('gm_user_address_details',array('default_address'=>0),array('user_id'=>$user_id));
+                $this->Common_model->update_info('gm_user_address_details', array('default_address' => 0), array('user_id' => $user_id));
                 /* update this address as default*/
-                $this->Common_model->update_info('gm_user_address_details',array('default_address'=>1),$up_cond);
+                $this->Common_model->update_info('gm_user_address_details', array('default_address' => 1), $up_cond);
             }
         }
 
         /* send address details */
         $op = array();
-        $address_dtl = $this->Common_model->select_info('gm_user_address_details', array('active' => 1,'user_id'=>$user_id));
+        $address_dtl = $this->Common_model->select_info('gm_user_address_details', array('active' => 1, 'user_id' => $user_id));
         if ($address_dtl) {
             $op['status'] = TRUE;
-            foreach ($address_dtl AS $key => $val) {
+            foreach ($address_dtl as $key => $val) {
 
                 $op['address'][$key]['address_id'] = $val['id'];
                 $op['address'][$key]['house_no'] = $val['house_no'];
@@ -82,27 +90,36 @@ class Orders extends REST_Controller {
             $op['status'] = FALSE;
             $op['message'] = "Sorry No Address available";
         }
-        
-        $this->response($op, REST_Controller::HTTP_OK); 
+
+        $this->response($op, REST_Controller::HTTP_OK);
     }
 
-    public function select_roq_list_post() {
+    public function select_roq_list_post()
+    {
+
+        $mytoken = $this->Common_model->validate_token();
+        if ($mytoken['code'] !== 200) {
+            http_response_code($mytoken['code']);
+            echo json_encode($mytoken);
+            die();
+        }
+
         $vertical_id = $this->post('vertical_id');
         $range = $this->post('range'); /* cover kilometers */
         $latitude = $this->post('latitude');
         $longitude = $this->post('longitude');
         /* 1= MC
-         * 2=CV
-         * 3=PB
-         * 4=IB
-         * 
-         * CV => Distributor and User     
-         * 
-         *  
-         */
-//        $vertical_id = !empty($vertical_id) ?  $vertical_id : MOTERCYCLE;
-        $dtl =$op=  array();
-	$this->db->select('sd.address');
+            * 2=CV
+            * 3=PB
+            * 4=IB
+            * 
+            * CV => Distributor and User     
+            * 
+            *  
+            */
+        //        $vertical_id = !empty($vertical_id) ?  $vertical_id : MOTERCYCLE;
+        $dtl = $op =  array();
+        $this->db->select('sd.address');
         $this->db->select('sd.id AS shop_address_id');
         $this->db->select('sd.city');
         $this->db->select('dlr.id AS epc_mc_dealer_id');
@@ -120,49 +137,59 @@ class Orders extends REST_Controller {
             role.id AS role_id,
             bv.name AS vertical_name,
             bv.id AS vertical_id');
-           $this->db->select('(((acos(sin(("'.$latitude.'"*pi()/180)) * sin((sd.latitude*pi()/180))+cos(("'.$latitude.'"*pi()/180)) * cos((sd.latitude*pi()/180)) * cos((("'.$longitude.'" - sd.longitude)*pi()/180))))*180/pi())*60*1.1515*1609.344) AS 1000ance');
-          $this->db->from('gm_epc_shop_details AS sd');
-          $this->db->join('auth_user AS au','sd.user_id = au.id','left');
-        $this->db->join('gm_epcuserprofileroles AS up','up.userprofile_id = au.id', 'left');
-        $this->db->join('gm_epcroles AS role','role.id = up.role_id', 'left');
-        $this->db->join('gm_brandvertical AS bv','bv.id = role.vertical_id', 'left');
-        
-        $this->db->join('gm_mc_dealer AS dlr','sd.user_id=dlr.user_id','left');
-        $this->db->where('sd.active','1');
+        $this->db->select('(((acos(sin(("' . $latitude . '"*pi()/180)) * sin((sd.latitude*pi()/180))+cos(("' . $latitude . '"*pi()/180)) * cos((sd.latitude*pi()/180)) * cos((("' . $longitude . '" - sd.longitude)*pi()/180))))*180/pi())*60*1.1515*1609.344) AS 1000ance');
+        $this->db->from('gm_epc_shop_details AS sd');
+        $this->db->join('auth_user AS au', 'sd.user_id = au.id', 'left');
+        $this->db->join('gm_epcuserprofileroles AS up', 'up.userprofile_id = au.id', 'left');
+        $this->db->join('gm_epcroles AS role', 'role.id = up.role_id', 'left');
+        $this->db->join('gm_brandvertical AS bv', 'bv.id = role.vertical_id', 'left');
+
+        $this->db->join('gm_mc_dealer AS dlr', 'sd.user_id=dlr.user_id', 'left');
+        $this->db->where('sd.active', '1');
         $this->db->where('sd.address_type is null');
-        $this->db->having('1000ance  <= '.$range);
+        $this->db->having('1000ance  <= ' . $range);
         $query = $this->db->get();
-        $shopdetails = ($query->num_rows() > 0)? $query->result_array():FALSE;
+        $shopdetails = ($query->num_rows() > 0) ? $query->result_array() : FALSE;
 
-        if($shopdetails){
+        if ($shopdetails) {
             foreach ($shopdetails as $key => $value) {
-                    $dtl[$key]['name']= !empty($value['first_name']) ? $value['first_name'] ." ".$value['last_name'] : "";
-                    $dtl[$key]['shop_address_id']= $value['shop_address_id'];                  
-		    $dtl[$key]['email']= $value['email'];
-                    $dtl[$key]['dealer_id']= $value['epc_mc_dealer_id'];                  
-                    $dtl[$key]['role_name']= $value['role_name'];                  
-                    $dtl[$key]['vertical_id']= $value['vertical_id'];                  
-                    $dtl[$key]['vertical_name']= $value['vertical_name'];                  
-                    $dtl[$key]['address']= $value['address'];
-                    $dtl[$key]['city']= $value['city'];
-                    $dtl[$key]['state']= $value['state'];
-                    $dtl[$key]['pin_code']= $value['pin_code'];
-                    $dtl[$key]['latitude']= $value['latitude'];
-                    $dtl[$key]['longitude']= $value['longitude'];
-                    $dtl[$key]['distance']= "1 Km";
+                $dtl[$key]['name'] = !empty($value['first_name']) ? $value['first_name'] . " " . $value['last_name'] : "";
+                $dtl[$key]['shop_address_id'] = $value['shop_address_id'];
+                $dtl[$key]['email'] = $value['email'];
+                $dtl[$key]['dealer_id'] = $value['epc_mc_dealer_id'];
+                $dtl[$key]['role_name'] = $value['role_name'];
+                $dtl[$key]['vertical_id'] = $value['vertical_id'];
+                $dtl[$key]['vertical_name'] = $value['vertical_name'];
+                $dtl[$key]['address'] = $value['address'];
+                $dtl[$key]['city'] = $value['city'];
+                $dtl[$key]['state'] = $value['state'];
+                $dtl[$key]['pin_code'] = $value['pin_code'];
+                $dtl[$key]['latitude'] = $value['latitude'];
+                $dtl[$key]['longitude'] = $value['longitude'];
+                $dtl[$key]['distance'] = "1 Km";
             }
-        } 
-
-        if($dtl){
-            $op['status']=TRUE;
-            $op['data']=$dtl;
-        }else{
-            $op['status']=FALSE;
-            $op['message']="No Shop Found";
         }
-        $this->response($op, REST_Controller::HTTP_OK); 
+
+        if ($dtl) {
+            $op['status'] = TRUE;
+            $op['data'] = $dtl;
+        } else {
+            $op['status'] = FALSE;
+            $op['message'] = "No Shop Found";
+        }
+        $this->response($op, REST_Controller::HTTP_OK);
     }
-    private function distance($lat1, $lon1, $lat2, $lon2, $unit) {$theta = $lon1 - $lon2;
+    private function distance($lat1, $lon1, $lat2, $lon2, $unit)
+    {
+
+        $mytoken = $this->Common_model->validate_token();
+        if ($mytoken['code'] !== 200) {
+            http_response_code($mytoken['code']);
+            echo json_encode($mytoken);
+            die();
+        }
+
+        $theta = $lon1 - $lon2;
         $dist = sin(deg2rad($lat1)) * sin(deg2rad($lat2)) +  cos(deg2rad($lat1)) * cos(deg2rad($lat2)) * cos(deg2rad($theta));
         $dist = acos($dist);
         $dist = rad2deg($dist);
@@ -170,20 +197,28 @@ class Orders extends REST_Controller {
         $unit = strtoupper($unit);
 
         if ($unit == "K") {
-          return ($miles * 1.609344);
+            return ($miles * 1.609344);
         } else if ($unit == "N") {
             return ($miles * 0.8684);
-          } else {
-              return $miles;
-            }  
-            /*
+        } else {
+            return $miles;
+        }
+        /*
              * echo distance(32.9697, -96.80322, 29.46786, -98.53506, "M") . " Miles<br>";
                 echo distance(32.9697, -96.80322, 29.46786, -98.53506, "K") . " Kilometers<br>";
                 echo distance(32.9697, -96.80322, 29.46786, -98.53506, "N") . " Nautical Miles<br>";
              */
     }
-    
-    public function create_order_post() {
+
+    public function create_order_post()
+    {
+        $mytoken = $this->Common_model->validate_token();
+        if ($mytoken['code'] !== 200) {
+            http_response_code($mytoken['code']);
+            echo json_encode($mytoken);
+            die();
+        }
+
         $role = $this->post('role');
         $vertical_id = $this->post('vertical_id');
         $user_id = $this->post('user_id');
@@ -193,7 +228,7 @@ class Orders extends REST_Controller {
         $longitude = $this->post('longitude');
         $address_id = $this->post('address_id');
         $shop_address_id = $this->post('shop_address_id');
-//        gm_orderpart_details
+        //        gm_orderpart_details
         $part_dtl = $this->post('part_dtl');
         /* generate order number */
         $dtl_info = array();
@@ -202,7 +237,7 @@ class Orders extends REST_Controller {
         $order_no = Common::generate_booking_no($index->nxt);
         /* gm_orderpart */
         $orderpart['order_number'] = $order_no;
-/*        $orderpart['distributor_id'] = $distributor_id;
+        /*        $orderpart['distributor_id'] = $distributor_id;
         $orderpart['mc_dealer_id'] = $dealer_id;*/
         $orderpart['order_placed_user_id'] = $user_id;
         $orderpart['order_placed_from'] = '1'; /* 1= App,2=Web */
@@ -219,7 +254,7 @@ class Orders extends REST_Controller {
         $order_dtl = $this->Common_model->insert_info('gm_orderpart', $orderpart);
         $order_part_dtl = array();
         if ($order_dtl) {
-            foreach ($part_dtl AS $key => $value) {
+            foreach ($part_dtl as $key => $value) {
                 $order_part_dtl[$key]['order_id'] = $order_dtl;
                 $order_part_dtl[$key]['bom_plate_part_id'] = $value['bom_plate_part_id'];
                 $order_part_dtl[$key]['part_number'] = $value['part_number'];
@@ -235,7 +270,7 @@ class Orders extends REST_Controller {
 
         $this->Common_model->insert_batch_record('gm_orderpart_details', $order_part_dtl);
         /*make empty gm_part_order_cart */
-        $this->Common_model->update_info('gm_part_order_cart',array('active'=>0,'modified_date'=>date("Y-m-d h:i:s")),array('user_id'=>$user_id));
+        $this->Common_model->update_info('gm_part_order_cart', array('active' => 0, 'modified_date' => date("Y-m-d h:i:s")), array('user_id' => $user_id));
         $this->db->trans_complete();
         if ($this->db->trans_status() === FALSE) {
             $op['status'] = FALSE;
@@ -243,81 +278,104 @@ class Orders extends REST_Controller {
         } else {
             $op['status'] = TRUE;
             $op['order_no'] = $order_no;
-            $op['cart_count']= 0;
+            $op['cart_count'] = 0;
         }
-        $this->response($op, REST_Controller::HTTP_OK); 
+        $this->response($op, REST_Controller::HTTP_OK);
     }
-    
-    public function view_order_details_post() {
+
+    public function view_order_details_post()
+    {
+        $mytoken = $this->Common_model->validate_token();
+        if ($mytoken['code'] !== 200) {
+            http_response_code($mytoken['code']);
+            echo json_encode($mytoken);
+            die();
+        }
+
+
         $dealer_id = $this->input->post('dealer_id');
-        if(empty($dealer_id)){
+        if (empty($dealer_id)) {
             $op['status'] = FALSE;
-            $op['message'] = "something went wrong"; 
-            $this->response($op, REST_Controller::HTTP_OK); 
+            $op['message'] = "something went wrong";
+            $this->response($op, REST_Controller::HTTP_OK);
             return TRUE;
         }
-        
     }
-    public function add_to_cart_post() {
-        file_put_contents(APPPATH.'logs/cart_' . date("j.n.Y") . '.log', print_r($this->post(),true), FILE_APPEND);
+    public function add_to_cart_post()
+    {
+
+        $mytoken = $this->Common_model->validate_token();
+        if ($mytoken['code'] !== 200) {
+            http_response_code($mytoken['code']);
+            echo json_encode($mytoken);
+            die();
+        }
+
+        file_put_contents(APPPATH . 'logs/cart_' . date("j.n.Y") . '.log', print_r($this->post(), true), FILE_APPEND);
         $bom_plate_part_id = $this->post('bom_plate_part_id');
         $part_number = $this->post('part_number');
         $quantity = $this->post('quantity');
         $op =  array();
-        $user_id = $this->post('user_id');        
+        $user_id = $this->post('user_id');
         /*store order again user in one cart gm_part_order_cart */
-        $update_count =  $add_count =0;
+        $update_count =  $add_count = 0;
         $this->db->trans_start();
-        $order_cart = $this->Common_model->select_info('gm_part_order_cart',array('part_number'=>$part_number,'user_id'=>$user_id,'active'=>1));
-        if($order_cart){ /* is already there order then update it */
-            $update['bom_plate_part_id']= $bom_plate_part_id;
-            $update['quantity']= $quantity;
-            $update['modified_date']= date("Y-m-d h:i:s");
-            if($quantity == 0){
+        $order_cart = $this->Common_model->select_info('gm_part_order_cart', array('part_number' => $part_number, 'user_id' => $user_id, 'active' => 1));
+        if ($order_cart) { /* is already there order then update it */
+            $update['bom_plate_part_id'] = $bom_plate_part_id;
+            $update['quantity'] = $quantity;
+            $update['modified_date'] = date("Y-m-d h:i:s");
+            if ($quantity == 0) {
                 $update['active'] = 0;
             }
-            $upcond['id']= $order_cart[0]['id'];
-            
-            $id =$this->Common_model->update_info('gm_part_order_cart',$update,$upcond);
-            if($id){
-                $update_count ++;
+            $upcond['id'] = $order_cart[0]['id'];
+
+            $id = $this->Common_model->update_info('gm_part_order_cart', $update, $upcond);
+            if ($id) {
+                $update_count++;
             }
-            
         } else { /* add new record in cart */
-            $add_rec['bom_plate_part_id']= $bom_plate_part_id;
-            $add_rec['part_number']= $part_number;
-            $add_rec['quantity']= $quantity;
-            $add_rec['active']= 1;
-            $add_rec['user_id']= $user_id;
-            $add_rec['created_date']= date("Y-m-d h:i:s");
-            $add_rec['modified_date']= date("Y-m-d h:i:s");
-            
-            $ud = $this->Common_model->insert_info('gm_part_order_cart',$add_rec);            
-            if($ud){
+            $add_rec['bom_plate_part_id'] = $bom_plate_part_id;
+            $add_rec['part_number'] = $part_number;
+            $add_rec['quantity'] = $quantity;
+            $add_rec['active'] = 1;
+            $add_rec['user_id'] = $user_id;
+            $add_rec['created_date'] = date("Y-m-d h:i:s");
+            $add_rec['modified_date'] = date("Y-m-d h:i:s");
+
+            $ud = $this->Common_model->insert_info('gm_part_order_cart', $add_rec);
+            if ($ud) {
                 $add_count++;
             }
         }
-        
+
         $this->db->trans_complete();
-        if ($this->db->trans_status() === FALSE)
-        {
-        $op['status']= FALSE;
-        $op['message']= "something went wrong";
+        if ($this->db->trans_status() === FALSE) {
+            $op['status'] = FALSE;
+            $op['message'] = "something went wrong";
         } else {
-        $order_count = $this->Common_model->select_info('gm_part_order_cart',array('user_id'=>$user_id,'active'=>1));
-        $op['status']= TRUE;
-        $op['cart_count']= count($order_count);
-        $op['message'] =  !empty($add_count) ? " part added " : " part updated ";
-        
+            $order_count = $this->Common_model->select_info('gm_part_order_cart', array('user_id' => $user_id, 'active' => 1));
+            $op['status'] = TRUE;
+            $op['cart_count'] = count($order_count);
+            $op['message'] =  !empty($add_count) ? " part added " : " part updated ";
         }
-        
-        $this->response($op, REST_Controller::HTTP_OK); 
+
+        $this->response($op, REST_Controller::HTTP_OK);
     }
-    
-    public function view_cart_post() {
+
+    public function view_cart_post()
+    {
+
+        $mytoken = $this->Common_model->validate_token();
+        if ($mytoken['code'] !== 200) {
+            http_response_code($mytoken['code']);
+            echo json_encode($mytoken);
+            die();
+        }
+
         $user_id = $this->post('user_id');
-        $op =$ordtl = array();
-        $op['user_id']= $user_id;
+        $op = $ordtl = array();
+        $op['user_id'] = $user_id;
         /*sub query*/
         $this->db->select('cart.bom_plate_part_id');
         $this->db->select('cart.part_number');
@@ -325,39 +383,47 @@ class Orders extends REST_Controller {
         $this->db->select('cart.line_total');
         $this->db->select('bpc.description');
         $this->db->from('gm_part_order_cart AS cart');
-        $this->db->join('gm_bomplatepart AS bpp','cart.bom_plate_part_id = bpp.id','left');
-        $this->db->join('gm_bompart AS bp','bpp.part_id = bp.id','left');
-        $this->db->join('gm_partcoordinates AS bpc','bp.part_number = bpc.part_number','left');
-         $this->db->join('(select 
+        $this->db->join('gm_bomplatepart AS bpp', 'cart.bom_plate_part_id = bpp.id', 'left');
+        $this->db->join('gm_bompart AS bp', 'bpp.part_id = bp.id', 'left');
+        $this->db->join('gm_partcoordinates AS bpc', 'bp.part_number = bpc.part_number', 'left');
+        $this->db->join('(select 
                 max(id) as id
             from
                 gm_partcoordinates
-            group by part_number)  AS a','a.id = bpc.id','inner');
-        $this->db->where('user_id',$user_id);
-        $this->db->where('active',1);
+            group by part_number)  AS a', 'a.id = bpc.id', 'inner');
+        $this->db->where('user_id', $user_id);
+        $this->db->where('active', 1);
         $query = $this->db->get();
-        $order = ($query->num_rows() > 0)? $query->result_array():FALSE;
-        
-        if($order){
+        $order = ($query->num_rows() > 0) ? $query->result_array() : FALSE;
+
+        if ($order) {
             $op['status'] =  TRUE;
             foreach ($order as $key => $value) {
-                $ordtl[$key]['bom_plate_part_id']= $value['bom_plate_part_id'];
-                $ordtl[$key]['part_number']= $value['part_number'];
-                $ordtl[$key]['quantity']= !empty($value['quantity']) ? $value['quantity'] : 0;
-                $ordtl[$key]['line_total']= !empty($value['line_total']) ? $value['line_total'] : 0;
-                $ordtl[$key]['description']= !empty($value['description']) ? $value['description'] : '';
+                $ordtl[$key]['bom_plate_part_id'] = $value['bom_plate_part_id'];
+                $ordtl[$key]['part_number'] = $value['part_number'];
+                $ordtl[$key]['quantity'] = !empty($value['quantity']) ? $value['quantity'] : 0;
+                $ordtl[$key]['line_total'] = !empty($value['line_total']) ? $value['line_total'] : 0;
+                $ordtl[$key]['description'] = !empty($value['description']) ? $value['description'] : '';
             }
-            $order_count = $this->Common_model->select_info('gm_part_order_cart',array('user_id'=>$user_id,'active'=>1));
-            $op['cart_count']= count($order_count);
+            $order_count = $this->Common_model->select_info('gm_part_order_cart', array('user_id' => $user_id, 'active' => 1));
+            $op['cart_count'] = count($order_count);
             $op['order_details'] = $ordtl;
-        } else{
+        } else {
             $op['status'] =  FALSE;
             $op['message'] =  "No Items availabl in cart";
         }
-        $this->response($op, REST_Controller::HTTP_OK); 
+        $this->response($op, REST_Controller::HTTP_OK);
     }
-    public function my_roq_post() {
-        
+    public function my_roq_post()
+    {
+
+        $mytoken = $this->Common_model->validate_token();
+        if ($mytoken['code'] !== 200) {
+            http_response_code($mytoken['code']);
+            echo json_encode($mytoken);
+            die();
+        }
+
         $user_id = $this->post('user_id');
         $distributor_id  = $this->post('distributor_id');
         $vertical_id = $this->post('vertical_id');
@@ -366,15 +432,15 @@ class Orders extends REST_Controller {
         $filter_status = $this->post('filter_status'); /* All, Approved, Pending Reject*/
         $search_text = $this->post('search_text');
         $new_date = '';
-        if(!empty($filter)){
-            $date = date_create(date('Y-m-d')); 
-            date_sub($date, date_interval_create_from_date_string($filter.' months'));
+        if (!empty($filter)) {
+            $date = date_create(date('Y-m-d'));
+            date_sub($date, date_interval_create_from_date_string($filter . ' months'));
             $new_date = date_format($date, 'Y-m-01');
         }
-        
-        $op = $data=$data_raw=  array();
-        if($role == "Users"){
-        
+
+        $op = $data = $data_raw =  array();
+        if ($role == "Users") {
+
             $this->db->select('*');
             $this->db->select('order.order_number');
             $this->db->select('order.order_date');
@@ -389,31 +455,35 @@ class Orders extends REST_Controller {
             $this->db->select('profile.phone_number');
             $this->db->select('shop.latitude');
             $this->db->select('shop.longitude');
-        $this->db->from('gm_orderpart AS order');
-        $this->db->join('gm_orderpart_details AS od','order.id=od.order_id','left');        
-        
-        $this->db->join('gm_epc_shop_details AS shop','order.shop_address_id=shop.id','left');
-        $this->db->join('auth_user AS au','shop.user_id=au.id','left');
-        $this->db->join('gm_userprofile AS profile','profile.user_id=au.id','left');
-        
-        $this->db->join('gm_sfa_mc_distributor AS sfa_mc_dist','au.id=sfa_mc_dist.user_id','left');
-        $this->db->join('gm_mc_dealer AS mc_deaaler','au.id=mc_deaaler.user_id','left');
-        
-//        $this->db->join('gm_epc_shop_details AS sfa_mc_dist_shop','order.shop_address_id=sfa_mc_dist_shop.id','left');
-        $this->db->where('order.order_placed_user_id',$user_id);
-        if(!empty($filter_status) && $filter_status != 'All') { $this->db->where('order.status',$filter_status);}
-        if(!empty($new_date)) {$this->db->where('order_date BETWEEN "'. date('Y-m-d',strtotime($new_date)). '" and "'. date('Y-m-d').'"'); }
-        if(!empty($search_text)){
-            $this->db->where('( profile.phone_number like "%'.$search_text.'%" OR '
-                    . 'au.email like "%'.$search_text.'%" OR '
-                    . 'od.part_number like "%'.$search_text.'%" )');
-        }
-        $this->db->order_by("order_date","DESC");
-        $query = $this->db->get();
-        $order_details = ($query->num_rows() > 0)? $query->result_array():FALSE;
-        
-            if($order_details){
-                foreach ($order_details as $key => $value) {                    
+            $this->db->from('gm_orderpart AS order');
+            $this->db->join('gm_orderpart_details AS od', 'order.id=od.order_id', 'left');
+
+            $this->db->join('gm_epc_shop_details AS shop', 'order.shop_address_id=shop.id', 'left');
+            $this->db->join('auth_user AS au', 'shop.user_id=au.id', 'left');
+            $this->db->join('gm_userprofile AS profile', 'profile.user_id=au.id', 'left');
+
+            $this->db->join('gm_sfa_mc_distributor AS sfa_mc_dist', 'au.id=sfa_mc_dist.user_id', 'left');
+            $this->db->join('gm_mc_dealer AS mc_deaaler', 'au.id=mc_deaaler.user_id', 'left');
+
+            //        $this->db->join('gm_epc_shop_details AS sfa_mc_dist_shop','order.shop_address_id=sfa_mc_dist_shop.id','left');
+            $this->db->where('order.order_placed_user_id', $user_id);
+            if (!empty($filter_status) && $filter_status != 'All') {
+                $this->db->where('order.status', $filter_status);
+            }
+            if (!empty($new_date)) {
+                $this->db->where('order_date BETWEEN "' . date('Y-m-d', strtotime($new_date)) . '" and "' . date('Y-m-d') . '"');
+            }
+            if (!empty($search_text)) {
+                $this->db->where('( profile.phone_number like "%' . $search_text . '%" OR '
+                    . 'au.email like "%' . $search_text . '%" OR '
+                    . 'od.part_number like "%' . $search_text . '%" )');
+            }
+            $this->db->order_by("order_date", "DESC");
+            $query = $this->db->get();
+            $order_details = ($query->num_rows() > 0) ? $query->result_array() : FALSE;
+
+            if ($order_details) {
+                foreach ($order_details as $key => $value) {
                     $data_raw[$value['order_number']]['order_number'] =  $value['order_number'];
                     $data_raw[$value['order_number']]['order_date'] =  $value['order_date'];
                     $data_raw[$value['order_number']]['order_status'] =  !empty($value['order_status']) ? $value['order_status'] : "Pending";
@@ -422,401 +492,425 @@ class Orders extends REST_Controller {
                     $data_raw[$value['order_number']]['order_to']['email'] =  $value['email'];
                     $data_raw[$value['order_number']]['order_to']['shop_latitude'] =  $value['latitude'];
                     $data_raw[$value['order_number']]['order_to']['shop_longitude'] =  $value['longitude'];
-                    $data_raw[$value['order_number']]['order_dtl'][$key]['part_number']=  $value['part_number'];
-                    $data_raw[$value['order_number']]['order_dtl'][$key]['part_quantity']=  $value['quantity'];
-                    $data_raw[$value['order_number']]['order_dtl'][$key]['part_line_total']=  $value['line_total'];
-                    $data_raw[$value['order_number']]['order_dtl'][$key]['part_quoted_price']=  $value['quoted_price'];
-                    $data_raw[$value['order_number']]['order_dtl'][$key]['part_status']=  !empty($value['part_status']) ? "Available": "Not Available";
+                    $data_raw[$value['order_number']]['order_dtl'][$key]['part_number'] =  $value['part_number'];
+                    $data_raw[$value['order_number']]['order_dtl'][$key]['part_quantity'] =  $value['quantity'];
+                    $data_raw[$value['order_number']]['order_dtl'][$key]['part_line_total'] =  $value['line_total'];
+                    $data_raw[$value['order_number']]['order_dtl'][$key]['part_quoted_price'] =  $value['quoted_price'];
+                    $data_raw[$value['order_number']]['order_dtl'][$key]['part_status'] =  !empty($value['part_status']) ? "Available" : "Not Available";
                 }
-                
+
                 /* refine array again */
-                    $i=0;
-                    foreach ($data_raw as $key => $value) {                        
-                        $data[$i]['order_number'] = $value['order_number'];
-                        $data[$i]['order_date'] = $value['order_date'];
-                        $data[$i]['order_status'] = $value['order_status'];
-                        $data[$i]['order_to']['name'] = $value['order_to']['name'];
-                        $data[$i]['order_to']['phone_number'] =  $value['order_to']['phone_number'];
-                        $data[$i]['order_to']['email'] =  $value['order_to']['email'];
-                        $data[$i]['order_to']['shop_latitude'] = $value['order_to']['shop_latitude'];
-                        $data[$i]['order_to']['shop_longitude'] = $value['order_to']['shop_longitude'] ;
-                        $j = 0;
-                        $price = 0;
-                        foreach ($value['order_dtl'] AS $key_1 => $value_1){
-                            $data[$i]['order_dtl'][$j]['part_number'] = $value_1['part_number'];
-                            $data[$i]['order_dtl'][$j]['part_quantity']=  $value_1['part_quantity'];
-                            $data[$i]['order_dtl'][$j]['part_line_total']=  $value_1['part_line_total'];
-                            $data[$i]['order_dtl'][$j]['part_quoted_price']=  $value_1['part_quoted_price'];
-                            $data[$i]['order_dtl'][$j]['part_status']=  !empty($value_1['part_status']) ? "Available": "Not Available";
-                            $price += !empty($value_1['part_line_total']) ? $value_1['part_line_total'] :0;
-                            
-                            $j++;
-                        }
-                        $data[$i]['quotation'] = $price;
-                        $i++;
+                $i = 0;
+                foreach ($data_raw as $key => $value) {
+                    $data[$i]['order_number'] = $value['order_number'];
+                    $data[$i]['order_date'] = $value['order_date'];
+                    $data[$i]['order_status'] = $value['order_status'];
+                    $data[$i]['order_to']['name'] = $value['order_to']['name'];
+                    $data[$i]['order_to']['phone_number'] =  $value['order_to']['phone_number'];
+                    $data[$i]['order_to']['email'] =  $value['order_to']['email'];
+                    $data[$i]['order_to']['shop_latitude'] = $value['order_to']['shop_latitude'];
+                    $data[$i]['order_to']['shop_longitude'] = $value['order_to']['shop_longitude'];
+                    $j = 0;
+                    $price = 0;
+                    foreach ($value['order_dtl'] as $key_1 => $value_1) {
+                        $data[$i]['order_dtl'][$j]['part_number'] = $value_1['part_number'];
+                        $data[$i]['order_dtl'][$j]['part_quantity'] =  $value_1['part_quantity'];
+                        $data[$i]['order_dtl'][$j]['part_line_total'] =  $value_1['part_line_total'];
+                        $data[$i]['order_dtl'][$j]['part_quoted_price'] =  $value_1['part_quoted_price'];
+                        $data[$i]['order_dtl'][$j]['part_status'] =  !empty($value_1['part_status']) ? "Available" : "Not Available";
+                        $price += !empty($value_1['part_line_total']) ? $value_1['part_line_total'] : 0;
+
+                        $j++;
                     }
-                    
+                    $data[$i]['quotation'] = $price;
+                    $i++;
+                }
+
                 $op['status'] =  TRUE;
                 $op['data'] =  $data;
             } else {
                 $op['status'] =  FALSE;
                 $op['message'] =  "Sorry No ROQ available";
             }
-            
-                    
-        } elseif(!empty($vertical_id)) {/* 1=>  MC*/  
-            if($vertical_id === MOTERCYCLE && !empty($distributor_id)){ 
+        } elseif (!empty($vertical_id)) {/* 1=>  MC*/
+            if ($vertical_id === MOTERCYCLE && !empty($distributor_id)) {
                 $this->db->select('*,sfa_mc_dist.name AS sfa_mc_distributor_name,order.status AS order_status,'
-                . 'sfa_mc_dist.phone_number AS sfa_mc_distributor_phone_number,sfa_mc_dist.email_bajaj AS sfa_mc_dist_bajaj_email,'
-                        . 'au.first_name,au.last_name,au.email AS user_email,up.phone_number AS user_phone_number,od.id AS orderpart_details_id');
+                    . 'sfa_mc_dist.phone_number AS sfa_mc_distributor_phone_number,sfa_mc_dist.email_bajaj AS sfa_mc_dist_bajaj_email,'
+                    . 'au.first_name,au.last_name,au.email AS user_email,up.phone_number AS user_phone_number,od.id AS orderpart_details_id');
                 $this->db->from('gm_orderpart AS order');
-                $this->db->join('gm_orderpart_details AS od','order.id=od.order_id','left');
-                $this->db->join('gm_sfa_mc_distributor AS sfa_mc_dist','order.distributor_id=sfa_mc_dist.id','left');
-                $this->db->join('gm_epc_shop_details AS sfa_mc_dist_shop','order.shop_address_id=sfa_mc_dist_shop.id','left');
-                $this->db->join('auth_user AS au','au.id=order.order_placed_user_id','left');
-                $this->db->join('gm_userprofile AS up','au.id=up.user_id','left');
-                $this->db->where('order.distributor_id',$distributor_id);  
+                $this->db->join('gm_orderpart_details AS od', 'order.id=od.order_id', 'left');
+                $this->db->join('gm_sfa_mc_distributor AS sfa_mc_dist', 'order.distributor_id=sfa_mc_dist.id', 'left');
+                $this->db->join('gm_epc_shop_details AS sfa_mc_dist_shop', 'order.shop_address_id=sfa_mc_dist_shop.id', 'left');
+                $this->db->join('auth_user AS au', 'au.id=order.order_placed_user_id', 'left');
+                $this->db->join('gm_userprofile AS up', 'au.id=up.user_id', 'left');
+                $this->db->where('order.distributor_id', $distributor_id);
                 $query = $this->db->get();
-                $order_details = ($query->num_rows() > 0)? $query->result_array():FALSE;
-            if($order_details){
-                foreach ($order_details as $key => $value) {
-                    $data_raw[$value['order_number']]['order_number'] =  $value['order_number'];
-                    $data_raw[$value['order_number']]['order_date'] =  $value['order_date'];
-                    $data_raw[$value['order_number']]['order_status'] =  !empty($value['order_status']) ? $value['order_status'] : "Pending";
-                    $data_raw[$value['order_number']]['order_from']['name'] =  $value['first_name'] ." ". $value['last_name'];
-                    $data_raw[$value['order_number']]['order_from']['phone_number'] =  $value['user_phone_number'];
-                    $data_raw[$value['order_number']]['order_from']['email'] =  $value['user_email'];                    
-                    $data_raw[$value['order_number']]['order_dtl'][$key]['orderpart_details_id']=  $value['orderpart_details_id'];
-                    $data_raw[$value['order_number']]['order_dtl'][$key]['part_number']=  $value['part_number'];
-                    $data_raw[$value['order_number']]['order_dtl'][$key]['part_quantity']=  $value['quantity'];
-                    $data_raw[$value['order_number']]['order_dtl'][$key]['part_line_total']=  $value['line_total'];
-                    $data_raw[$value['order_number']]['order_dtl'][$key]['part_quoted_price']=  $value['quoted_price'];
-                    $data_raw[$value['order_number']]['order_dtl'][$key]['part_status']=  !empty($value['part_status']) ? "Available": "Not Available";
-                }
+                $order_details = ($query->num_rows() > 0) ? $query->result_array() : FALSE;
+                if ($order_details) {
+                    foreach ($order_details as $key => $value) {
+                        $data_raw[$value['order_number']]['order_number'] =  $value['order_number'];
+                        $data_raw[$value['order_number']]['order_date'] =  $value['order_date'];
+                        $data_raw[$value['order_number']]['order_status'] =  !empty($value['order_status']) ? $value['order_status'] : "Pending";
+                        $data_raw[$value['order_number']]['order_from']['name'] =  $value['first_name'] . " " . $value['last_name'];
+                        $data_raw[$value['order_number']]['order_from']['phone_number'] =  $value['user_phone_number'];
+                        $data_raw[$value['order_number']]['order_from']['email'] =  $value['user_email'];
+                        $data_raw[$value['order_number']]['order_dtl'][$key]['orderpart_details_id'] =  $value['orderpart_details_id'];
+                        $data_raw[$value['order_number']]['order_dtl'][$key]['part_number'] =  $value['part_number'];
+                        $data_raw[$value['order_number']]['order_dtl'][$key]['part_quantity'] =  $value['quantity'];
+                        $data_raw[$value['order_number']]['order_dtl'][$key]['part_line_total'] =  $value['line_total'];
+                        $data_raw[$value['order_number']]['order_dtl'][$key]['part_quoted_price'] =  $value['quoted_price'];
+                        $data_raw[$value['order_number']]['order_dtl'][$key]['part_status'] =  !empty($value['part_status']) ? "Available" : "Not Available";
+                    }
                     /* refine array again */
-                    $i=0;
-                    foreach ($data_raw as $key => $value) {                        
+                    $i = 0;
+                    foreach ($data_raw as $key => $value) {
                         $data[$i]['order_number'] = $value['order_number'];
                         $data[$i]['order_date'] = $value['order_date'];
                         $data[$i]['order_status'] = $value['order_status'];
                         $data[$i]['order_from']['name'] = $value['order_from']['name'];
                         $data[$i]['order_from']['phone_number'] = $value['order_from']['phone_number'];
                         $data[$i]['order_from']['email'] = $value['order_from']['email'];
-                        $j=0;
+                        $j = 0;
                         foreach ($value['order_dtl'] as $key_1 => $value_1) {
                             $data[$i]['order_dtl'][$j]['orderpart_details_id'] = $value_1['orderpart_details_id'];
                             $data[$i]['order_dtl'][$j]['part_number'] = $value_1['part_number'];
-                            $data[$i]['order_dtl'][$j]['part_quantity']=  $value_1['part_quantity'];
-                            $data[$i]['order_dtl'][$j]['part_line_total']=  $value_1['part_line_total'];
-                            $data[$i]['order_dtl'][$j]['part_quoted_price']=  $value_1['part_quoted_price'];
-                            $data[$i]['order_dtl'][$j]['part_status']=  !empty($value_1['part_status']) ? "Available": "Not Available";
+                            $data[$i]['order_dtl'][$j]['part_quantity'] =  $value_1['part_quantity'];
+                            $data[$i]['order_dtl'][$j]['part_line_total'] =  $value_1['part_line_total'];
+                            $data[$i]['order_dtl'][$j]['part_quoted_price'] =  $value_1['part_quoted_price'];
+                            $data[$i]['order_dtl'][$j]['part_status'] =  !empty($value_1['part_status']) ? "Available" : "Not Available";
                             $j++;
                         }
                         $i++;
-                        
                     }
-                
-                $op['status'] =  TRUE;
-                $op['data'] =  $data;
-            } else {
-                $op['status'] =  FALSE;
-                $op['message'] =  "Sorry No ROQ available";
+
+                    $op['status'] =  TRUE;
+                    $op['data'] =  $data;
+                } else {
+                    $op['status'] =  FALSE;
+                    $op['message'] =  "Sorry No ROQ available";
+                }
             }
-            }
-                      
         }
-        $this->response($op, REST_Controller::HTTP_OK); 
+        $this->response($op, REST_Controller::HTTP_OK);
     }
 
-    public function update_order_post() {
+    public function update_order_post()
+    {
+
+        $mytoken = $this->Common_model->validate_token();
+        if ($mytoken['code'] !== 200) {
+            http_response_code($mytoken['code']);
+            echo json_encode($mytoken);
+            die();
+        }
+
         $order_number = $this->post('order_number');
         $api_type = $this->post('api_type');/*order_status / order_dtl*/
         /* start transaction*/
-        $this->db->trans_start();   
-        if($api_type == "order_status"){ /* change status of order Aprove / Reject*/
+        $this->db->trans_start();
+        if ($api_type == "order_status") { /* change status of order Aprove / Reject*/
             $order_status = $this->post('order_status');
             $comments = $this->post('comments');
-            if(!empty($order_status)){
-                $update_dtl['status']= $order_status;
-                $update_dtl['comments']= !empty($comments) ? $comments : "";
+            if (!empty($order_status)) {
+                $update_dtl['status'] = $order_status;
+                $update_dtl['comments'] = !empty($comments) ? $comments : "";
                 $updt_cond['order_number'] = $order_number;
-                
-                
-                $this->Common_model->update_info('gm_orderpart',$update_dtl,$updt_cond);
-            }else{/* send error to send order status*/
-                
+
+
+                $this->Common_model->update_info('gm_orderpart', $update_dtl, $updt_cond);
+            } else {/* send error to send order status*/
             }
-        } elseif ($api_type == "order_dtl" ) {
-            
+        } elseif ($api_type == "order_dtl") {
+
             $order_dtl = $this->post('order_dtl');
             $update_order =  array();
             if ($order_dtl) {
-            foreach ($order_dtl AS $key => $value) {
-                $update_order_dtl[$key]['id']= $value['orderpart_details_id'];
-                $update_order_dtl[$key]['part_status']= $value['part_status'];
-                $update_order_dtl[$key]['quoted_price']= $value['quoted_price'];
+                foreach ($order_dtl as $key => $value) {
+                    $update_order_dtl[$key]['id'] = $value['orderpart_details_id'];
+                    $update_order_dtl[$key]['part_status'] = $value['part_status'];
+                    $update_order_dtl[$key]['quoted_price'] = $value['quoted_price'];
+                }
+                $this->db->update_batch('gm_orderpart_details', $update_order_dtl, 'id');
             }
-            $this->db->update_batch('gm_orderpart_details',$update_order_dtl,'id');
+        }
+        $this->db->trans_complete();
+        if ($this->db->trans_status() === FALSE) {
+            $op['status'] = FALSE;
+            $op['message'] = "something went wrong";
+        } else {
+            $op['status'] = TRUE;
+        }
+        $this->response($op, REST_Controller::HTTP_OK);
     }
-        
-    }
-    $this->db->trans_complete();
-    if ($this->db->trans_status() === FALSE)
+
+    public function view_rfq_dlt_distrubutor_post()
     {
-    $op['status']= FALSE;
-    $op['message']= "something went wrong";
-    } else {
-    $op['status']= TRUE;
-    }
-    $this->response($op, REST_Controller::HTTP_OK); 
-    }
-    
-    public function view_rfq_dlt_distrubutor_post() {
-        $distributor_id  = $this->post('distributor_id'); 
+
+        $mytoken = $this->Common_model->validate_token();
+        if ($mytoken['code'] !== 200) {
+            http_response_code($mytoken['code']);
+            echo json_encode($mytoken);
+            die();
+        }
+
+        $distributor_id  = $this->post('distributor_id');
         $dealer_id  = $this->post('dealer_id');
-        
-        $user_id = $this->post('user_id');        
-        $vertical_id = $this->post('vertical_id'); 
+
+        $user_id = $this->post('user_id');
+        $vertical_id = $this->post('vertical_id');
         $role = $this->post('role'); /*If role is User will write conditions for users */
         $filter = $this->post('filter_month'); /* 0= Clear, 1 =  last one month, 3= last 3 month,6 =>last Six month */
         $filter_status = $this->post('filter_status'); /* All, Approved, Pending Reject*/
         $search_text = $this->post('search_text');
         $new_date = '';
-        if(!empty($filter)){
-            $date = date_create(date('Y-m-d')); 
-            date_sub($date, date_interval_create_from_date_string($filter.' months'));
+        if (!empty($filter)) {
+            $date = date_create(date('Y-m-d'));
+            date_sub($date, date_interval_create_from_date_string($filter . ' months'));
             $new_date = date_format($date, 'Y-m-01');
         }
-        
-        $final_order = $op=  array();
-        
-        /* 1=>  MC*/  
-            if($vertical_id == MOTERCYCLE && !empty($distributor_id)){  
-                $this->db->select('*,sfa_mc_dist.name AS sfa_mc_distributor_name,order.status AS order_status,'
+
+        $final_order = $op =  array();
+
+        /* 1=>  MC*/
+        if ($vertical_id == MOTERCYCLE && !empty($distributor_id)) {
+            $this->db->select('*,sfa_mc_dist.name AS sfa_mc_distributor_name,order.status AS order_status,'
                 . 'sfa_mc_dist.phone_number AS sfa_mc_distributor_phone_number,sfa_mc_dist.email_bajaj AS sfa_mc_dist_bajaj_email,'
-                        . 'au.first_name,au.last_name,au.email AS user_email,up.phone_number AS user_phone_number,od.id AS orderpart_details_id');
-                $this->db->from('gm_orderpart AS order');
-                $this->db->join('gm_orderpart_details AS od','order.id=od.order_id','left');
-               $this->db->join('gm_epc_shop_details AS sfa_mc_dist_shop','order.shop_address_id = sfa_mc_dist_shop.id','left');
-                $this->db->join('gm_sfa_mc_distributor AS sfa_mc_dist','sfa_mc_dist_shop.user_id=sfa_mc_dist.user_id','left');
-                
-                $this->db->join('auth_user AS au','au.id=order.order_placed_user_id','left');
-                $this->db->join('gm_userprofile AS up','au.id=up.user_id','left');
-                                
-                if(!empty($new_date)) {$this->db->where('order.order_date BETWEEN "'. date('Y-m-d',strtotime($new_date)). '" and "'. date('Y-m-d').'"'); }
-                
-                $this->db->where('sfa_mc_dist.id',$distributor_id); 
-                $query = $this->db->get();
-                $order_details = ($query->num_rows() > 0)? $query->result_array():FALSE;
-            if($order_details){
+                . 'au.first_name,au.last_name,au.email AS user_email,up.phone_number AS user_phone_number,od.id AS orderpart_details_id');
+            $this->db->from('gm_orderpart AS order');
+            $this->db->join('gm_orderpart_details AS od', 'order.id=od.order_id', 'left');
+            $this->db->join('gm_epc_shop_details AS sfa_mc_dist_shop', 'order.shop_address_id = sfa_mc_dist_shop.id', 'left');
+            $this->db->join('gm_sfa_mc_distributor AS sfa_mc_dist', 'sfa_mc_dist_shop.user_id=sfa_mc_dist.user_id', 'left');
+
+            $this->db->join('auth_user AS au', 'au.id=order.order_placed_user_id', 'left');
+            $this->db->join('gm_userprofile AS up', 'au.id=up.user_id', 'left');
+
+            if (!empty($new_date)) {
+                $this->db->where('order.order_date BETWEEN "' . date('Y-m-d', strtotime($new_date)) . '" and "' . date('Y-m-d') . '"');
+            }
+
+            $this->db->where('sfa_mc_dist.id', $distributor_id);
+            $query = $this->db->get();
+            $order_details = ($query->num_rows() > 0) ? $query->result_array() : FALSE;
+            if ($order_details) {
                 foreach ($order_details as $key => $value) {
                     $data_raw[$value['order_number']]['order_number'] =  $value['order_number'];
                     $data_raw[$value['order_number']]['order_date'] =  $value['order_date'];
                     $data_raw[$value['order_number']]['order_status'] =  !empty($value['order_status']) ? $value['order_status'] : "Pending";
                     $data_raw[$value['order_number']]['order_comments'] =  !empty($value['comments']) ? $value['comments'] : "Pending";
-                    $data_raw[$value['order_number']]['order_from']['name'] =  $value['first_name'] ." ". $value['last_name'];
+                    $data_raw[$value['order_number']]['order_from']['name'] =  $value['first_name'] . " " . $value['last_name'];
                     $data_raw[$value['order_number']]['order_from']['phone_number'] =  $value['user_phone_number'];
-                    $data_raw[$value['order_number']]['order_from']['email'] =  $value['user_email'];                    
-                    $data_raw[$value['order_number']]['order_dtl'][$key]['orderpart_details_id']=  $value['orderpart_details_id'];
-                    $data_raw[$value['order_number']]['order_dtl'][$key]['part_number']=  $value['part_number'];
-                    $data_raw[$value['order_number']]['order_dtl'][$key]['part_quantity']=  $value['quantity'];
-                    $data_raw[$value['order_number']]['order_dtl'][$key]['part_line_total']=  $value['line_total'];
-                    $data_raw[$value['order_number']]['order_dtl'][$key]['part_quoted_price']=  $value['quoted_price'];
-                    $data_raw[$value['order_number']]['order_dtl'][$key]['part_status']=  !empty($value['part_status']) ? "Available": "Not Available";
+                    $data_raw[$value['order_number']]['order_from']['email'] =  $value['user_email'];
+                    $data_raw[$value['order_number']]['order_dtl'][$key]['orderpart_details_id'] =  $value['orderpart_details_id'];
+                    $data_raw[$value['order_number']]['order_dtl'][$key]['part_number'] =  $value['part_number'];
+                    $data_raw[$value['order_number']]['order_dtl'][$key]['part_quantity'] =  $value['quantity'];
+                    $data_raw[$value['order_number']]['order_dtl'][$key]['part_line_total'] =  $value['line_total'];
+                    $data_raw[$value['order_number']]['order_dtl'][$key]['part_quoted_price'] =  $value['quoted_price'];
+                    $data_raw[$value['order_number']]['order_dtl'][$key]['part_status'] =  !empty($value['part_status']) ? "Available" : "Not Available";
                 }
-                    /* refine array again */
-                    
-                    foreach ($data_raw as $key => $value) {                        
-                        $data['order_number'] = $value['order_number'];
-                        $data['order_date'] = $value['order_date'];
-                        $data['order_status'] = $value['order_status'];
-                        $data['order_comments'] = $value['order_comments'];
-                        $data['order_from']['name'] = $value['order_from']['name'];
-                        $data['order_from']['phone_number'] = $value['order_from']['phone_number'];
-                        $data['order_from']['email'] = $value['order_from']['email'];
-                        $data['order_total'] = 0;
-                        $j=0;
-                        foreach ($value['order_dtl'] as $key_1 => $value_1) {
-                            $data['order_dtl'][$j]['orderpart_details_id'] = $value_1['orderpart_details_id'];
-                            $data['order_dtl'][$j]['part_number'] = $value_1['part_number'];
-                            $data['order_dtl'][$j]['part_quantity']=  $value_1['part_quantity'];
-                            $data['order_dtl'][$j]['part_line_total']=  $value_1['part_line_total'];
-                            $data['order_dtl'][$j]['part_quoted_price']=  $value_1['part_quoted_price'];
-                            $data['order_dtl'][$j]['part_status']=  !empty($value_1['part_status']) ? "Available": "Not Available";
-                            $data['order_total'] += $data['order_dtl'][$j]['part_line_total'];
-                            $j++;
-                        }
-                        
-                        if($data['order_status'] == "Pending")
+                /* refine array again */
+
+                foreach ($data_raw as $key => $value) {
+                    $data['order_number'] = $value['order_number'];
+                    $data['order_date'] = $value['order_date'];
+                    $data['order_status'] = $value['order_status'];
+                    $data['order_comments'] = $value['order_comments'];
+                    $data['order_from']['name'] = $value['order_from']['name'];
+                    $data['order_from']['phone_number'] = $value['order_from']['phone_number'];
+                    $data['order_from']['email'] = $value['order_from']['email'];
+                    $data['order_total'] = 0;
+                    $j = 0;
+                    foreach ($value['order_dtl'] as $key_1 => $value_1) {
+                        $data['order_dtl'][$j]['orderpart_details_id'] = $value_1['orderpart_details_id'];
+                        $data['order_dtl'][$j]['part_number'] = $value_1['part_number'];
+                        $data['order_dtl'][$j]['part_quantity'] =  $value_1['part_quantity'];
+                        $data['order_dtl'][$j]['part_line_total'] =  $value_1['part_line_total'];
+                        $data['order_dtl'][$j]['part_quoted_price'] =  $value_1['part_quoted_price'];
+                        $data['order_dtl'][$j]['part_status'] =  !empty($value_1['part_status']) ? "Available" : "Not Available";
+                        $data['order_total'] += $data['order_dtl'][$j]['part_line_total'];
+                        $j++;
+                    }
+
+                    if ($data['order_status'] == "Pending")
                         $final_order['pending'][] = $data;
-                        
-                        if($data['order_status'] == "Rejected")
+
+                    if ($data['order_status'] == "Rejected")
                         $final_order['rejected'][] = $data;
-                        
-                        if($data['order_status'] == "Approved")
+
+                    if ($data['order_status'] == "Approved")
                         $final_order['approved'][] = $data;
                     unset($data);
-                    }
-                
+                }
+
                 $op['status'] =  TRUE;
-                $op['rejected_count'] = array_key_exists("rejected",$final_order) ? count($final_order['rejected']) : 0;
-                $op['pending_count'] = array_key_exists("pending",$final_order) ? count($final_order['pending']) : 0;
-                $op['approved_count'] = array_key_exists("approved",$final_order) ? count($final_order['approved']) : 0;
+                $op['rejected_count'] = array_key_exists("rejected", $final_order) ? count($final_order['rejected']) : 0;
+                $op['pending_count'] = array_key_exists("pending", $final_order) ? count($final_order['pending']) : 0;
+                $op['approved_count'] = array_key_exists("approved", $final_order) ? count($final_order['approved']) : 0;
                 $op['data'] =  $final_order;
-                
             } else {
                 $op['status'] =  FALSE;
                 $op['message'] =  "Sorry No ROQ available";
             }
-            } elseif($vertical_id == MOTERCYCLE && !empty($dealer_id)){
-                 
-                $this->db->select('*,sfa_mc_dist.dealer_name AS sfa_mc_distributor_name,order.status AS order_status,'
+        } elseif ($vertical_id == MOTERCYCLE && !empty($dealer_id)) {
+
+            $this->db->select('*,sfa_mc_dist.dealer_name AS sfa_mc_distributor_name,order.status AS order_status,'
                 . 'sfa_mc_dist.mobile1 AS sfa_mc_distributor_phone_number,sfa_mc_dist.email AS sfa_mc_dist_bajaj_email,'
-                        . 'au.first_name,au.last_name,au.email AS user_email,up.phone_number AS user_phone_number,od.id AS orderpart_details_id');
-                $this->db->from('gm_orderpart AS order');
-                $this->db->join('gm_orderpart_details AS od','order.id=od.order_id','left');
-               
-                $this->db->join('gm_epc_shop_details AS sfa_mc_dist_shop','order.shop_address_id = sfa_mc_dist_shop.id','left');
-                
-                 $this->db->join('gm_mc_dealer AS sfa_mc_dist','sfa_mc_dist_shop.user_id = sfa_mc_dist.user_id','left');
-                
-                $this->db->join('auth_user AS au','au.id=order.order_placed_user_id','left');
-                $this->db->join('gm_userprofile AS up','au.id=up.user_id','left');
-                
-                if(!empty($new_date)) {$this->db->where('order.order_date BETWEEN "'. date('Y-m-d',strtotime($new_date)). '" and "'. date('Y-m-d').'"'); }
-                
-                $this->db->where('sfa_mc_dist.id',$dealer_id);  
-                $query = $this->db->get();
-                $order_details = ($query->num_rows() > 0)? $query->result_array():FALSE;
-            if($order_details){
+                . 'au.first_name,au.last_name,au.email AS user_email,up.phone_number AS user_phone_number,od.id AS orderpart_details_id');
+            $this->db->from('gm_orderpart AS order');
+            $this->db->join('gm_orderpart_details AS od', 'order.id=od.order_id', 'left');
+
+            $this->db->join('gm_epc_shop_details AS sfa_mc_dist_shop', 'order.shop_address_id = sfa_mc_dist_shop.id', 'left');
+
+            $this->db->join('gm_mc_dealer AS sfa_mc_dist', 'sfa_mc_dist_shop.user_id = sfa_mc_dist.user_id', 'left');
+
+            $this->db->join('auth_user AS au', 'au.id=order.order_placed_user_id', 'left');
+            $this->db->join('gm_userprofile AS up', 'au.id=up.user_id', 'left');
+
+            if (!empty($new_date)) {
+                $this->db->where('order.order_date BETWEEN "' . date('Y-m-d', strtotime($new_date)) . '" and "' . date('Y-m-d') . '"');
+            }
+
+            $this->db->where('sfa_mc_dist.id', $dealer_id);
+            $query = $this->db->get();
+            $order_details = ($query->num_rows() > 0) ? $query->result_array() : FALSE;
+            if ($order_details) {
                 foreach ($order_details as $key => $value) {
                     $data_raw[$value['order_number']]['order_number'] =  $value['order_number'];
                     $data_raw[$value['order_number']]['order_date'] =  $value['order_date'];
                     $data_raw[$value['order_number']]['order_status'] =  !empty($value['order_status']) ? $value['order_status'] : "Pending";
                     $data_raw[$value['order_number']]['order_comments'] =  !empty($value['comments']) ? $value['comments'] : "";
-                    $data_raw[$value['order_number']]['order_from']['name'] =  $value['first_name'] ." ". $value['last_name'];
+                    $data_raw[$value['order_number']]['order_from']['name'] =  $value['first_name'] . " " . $value['last_name'];
                     $data_raw[$value['order_number']]['order_from']['phone_number'] =  $value['user_phone_number'];
-                    $data_raw[$value['order_number']]['order_from']['email'] =  $value['user_email'];                    
-                    $data_raw[$value['order_number']]['order_dtl'][$key]['orderpart_details_id']=  $value['orderpart_details_id'];
-                    $data_raw[$value['order_number']]['order_dtl'][$key]['part_number']=  $value['part_number'];
-                    $data_raw[$value['order_number']]['order_dtl'][$key]['part_quantity']=  $value['quantity'];
-                    $data_raw[$value['order_number']]['order_dtl'][$key]['part_line_total']=  $value['line_total'];
-                    $data_raw[$value['order_number']]['order_dtl'][$key]['part_quoted_price']=  $value['quoted_price'];
-                    $data_raw[$value['order_number']]['order_dtl'][$key]['part_status']=  !empty($value['part_status']) ? "Available": "Not Available";
+                    $data_raw[$value['order_number']]['order_from']['email'] =  $value['user_email'];
+                    $data_raw[$value['order_number']]['order_dtl'][$key]['orderpart_details_id'] =  $value['orderpart_details_id'];
+                    $data_raw[$value['order_number']]['order_dtl'][$key]['part_number'] =  $value['part_number'];
+                    $data_raw[$value['order_number']]['order_dtl'][$key]['part_quantity'] =  $value['quantity'];
+                    $data_raw[$value['order_number']]['order_dtl'][$key]['part_line_total'] =  $value['line_total'];
+                    $data_raw[$value['order_number']]['order_dtl'][$key]['part_quoted_price'] =  $value['quoted_price'];
+                    $data_raw[$value['order_number']]['order_dtl'][$key]['part_status'] =  !empty($value['part_status']) ? "Available" : "Not Available";
                 }
-                    /* refine array again */
-                    
-                    foreach ($data_raw as $key => $value) {                        
-                        $data['order_number'] = $value['order_number'];
-                        $data['order_date'] = $value['order_date'];
-                        $data['order_status'] = $value['order_status'];
-                        $data['order_comments'] = $value['order_comments'];
-                        $data['order_from']['name'] = $value['order_from']['name'];
-                        $data['order_from']['phone_number'] = $value['order_from']['phone_number'];
-                        $data['order_from']['email'] = $value['order_from']['email'];
-                        $data['order_total'] = 0;
-                        $j=0;
-                        foreach ($value['order_dtl'] as $key_1 => $value_1) {
-                            $data['order_dtl'][$j]['orderpart_details_id'] = $value_1['orderpart_details_id'];
-                            $data['order_dtl'][$j]['part_number'] = $value_1['part_number'];
-                            $data['order_dtl'][$j]['part_quantity']=  $value_1['part_quantity'];
-                            $data['order_dtl'][$j]['part_line_total']=  $value_1['part_line_total'];
-                            $data['order_dtl'][$j]['part_quoted_price']=  $value_1['part_quoted_price'];
-                            $data['order_dtl'][$j]['part_status']=  !empty($value_1['part_status']) ? "Available": "Not Available";
-			    $data['order_total'] += $data['order_dtl'][$j]['part_line_total'];
-                            $j++;
-                        }
-                        if($data['order_status'] == "Pending")
-                        $final_order['pending'][] = $data;
-                        
-                        if($data['order_status'] == "Rejected")
-                        $final_order['rejected'][] = $data;
-                        
-                        if($data['order_status'] == "Approved")
-                        $final_order['approved'][] = $data;
-                        
+                /* refine array again */
+
+                foreach ($data_raw as $key => $value) {
+                    $data['order_number'] = $value['order_number'];
+                    $data['order_date'] = $value['order_date'];
+                    $data['order_status'] = $value['order_status'];
+                    $data['order_comments'] = $value['order_comments'];
+                    $data['order_from']['name'] = $value['order_from']['name'];
+                    $data['order_from']['phone_number'] = $value['order_from']['phone_number'];
+                    $data['order_from']['email'] = $value['order_from']['email'];
+                    $data['order_total'] = 0;
+                    $j = 0;
+                    foreach ($value['order_dtl'] as $key_1 => $value_1) {
+                        $data['order_dtl'][$j]['orderpart_details_id'] = $value_1['orderpart_details_id'];
+                        $data['order_dtl'][$j]['part_number'] = $value_1['part_number'];
+                        $data['order_dtl'][$j]['part_quantity'] =  $value_1['part_quantity'];
+                        $data['order_dtl'][$j]['part_line_total'] =  $value_1['part_line_total'];
+                        $data['order_dtl'][$j]['part_quoted_price'] =  $value_1['part_quoted_price'];
+                        $data['order_dtl'][$j]['part_status'] =  !empty($value_1['part_status']) ? "Available" : "Not Available";
+                        $data['order_total'] += $data['order_dtl'][$j]['part_line_total'];
+                        $j++;
                     }
-                
+                    if ($data['order_status'] == "Pending")
+                        $final_order['pending'][] = $data;
+
+                    if ($data['order_status'] == "Rejected")
+                        $final_order['rejected'][] = $data;
+
+                    if ($data['order_status'] == "Approved")
+                        $final_order['approved'][] = $data;
+                }
+
                 $op['status'] =  TRUE;
-                $op['rejected_count'] = array_key_exists("rejected",$final_order) ? count($final_order['rejected']) : 0;
-                $op['pending_count'] = array_key_exists("pending",$final_order) ? count($final_order['pending']) : 0;
-                $op['approved_count'] = array_key_exists("approved",$final_order) ? count($final_order['approved']) : 0;
+                $op['rejected_count'] = array_key_exists("rejected", $final_order) ? count($final_order['rejected']) : 0;
+                $op['pending_count'] = array_key_exists("pending", $final_order) ? count($final_order['pending']) : 0;
+                $op['approved_count'] = array_key_exists("approved", $final_order) ? count($final_order['approved']) : 0;
                 $op['data'] =  $final_order;
-                
             } else {
                 $op['status'] =  FALSE;
                 $op['message'] =  "Sorry No ROQ available";
             }
-            
-            }
-            
-        $this->response($op, REST_Controller::HTTP_OK); 
+        }
+
+        $this->response($op, REST_Controller::HTTP_OK);
     }
-    
-    public function dlt_distributor_approve_rfq_post() {
+
+    public function dlt_distributor_approve_rfq_post()
+    {
+        $mytoken = $this->Common_model->validate_token();
+        if ($mytoken['code'] !== 200) {
+            http_response_code($mytoken['code']);
+            echo json_encode($mytoken);
+            die();
+        }
+
+        $mytoken = $this->Common_model->validate_token();
+        if ($mytoken['code'] !== 200) {
+            http_response_code($mytoken['code']);
+            echo json_encode($mytoken);
+            die();
+        }
+
         $distributor_id  = $this->post('distributor_id');
         $dealer_id  = $this->post('dealer_id');
-        
-        $user_id = $this->post('user_id');        
+
+        $user_id = $this->post('user_id');
         $vertical_id = $this->post('vertical_id');
-        $role = $this->post('role'); 
-        
+        $role = $this->post('role');
+
         $order_number = $this->post('order_number');
         $status = $this->post('status');
         $comments = $this->post('comments');
-        
+
         $order_dtl = $this->post('order_dtl');
-        
-        $this->db->trans_start(); 
+
+        $this->db->trans_start();
         /* change status to approve and make ready for send to CDMS */
-        $order_details = $this->Common_model->select_info('gm_orderpart',array('order_number'=>$order_number));
+        $order_details = $this->Common_model->select_info('gm_orderpart', array('order_number' => $order_number));
         $order_part_dtl_request = array();
-        
-        if($order_details){
-            if($order_details[0]['status'] != 'Approved' && $status == "Approved"){ /*change status and mark for  CDMS as pending*/                
-                /*retrive details of order_dtl orderpart_details_id ,part_line_total , part_status*/ 
-                if($order_dtl){
+
+        if ($order_details) {
+            if ($order_details[0]['status'] != 'Approved' && $status == "Approved") { /*change status and mark for  CDMS as pending*/
+                /*retrive details of order_dtl orderpart_details_id ,part_line_total , part_status*/
+                if ($order_dtl) {
                     foreach ($order_dtl as $key => $value) {
-                        $order_part_dtl_request[$key]['id']  =$value['orderpart_details_id'];
-                        $order_part_dtl_request[$key]['line_total']  =$value['part_line_total'];
-                        $order_part_dtl_request[$key]['quoted_price']  =$value['part_quoted_price'];                        
-                        $order_part_dtl_request[$key]['part_status']  =($value['part_status'] == "Available") ? 1 : 0;
+                        $order_part_dtl_request[$key]['id']  = $value['orderpart_details_id'];
+                        $order_part_dtl_request[$key]['line_total']  = $value['part_line_total'];
+                        $order_part_dtl_request[$key]['quoted_price']  = $value['part_quoted_price'];
+                        $order_part_dtl_request[$key]['part_status']  = ($value['part_status'] == "Available") ? 1 : 0;
                     }
-                    
-                    $this->db->update_batch('gm_orderpart_details',$order_part_dtl_request,'id');
-                    
+
+                    $this->db->update_batch('gm_orderpart_details', $order_part_dtl_request, 'id');
+
                     /*update status of order */
                     /*update order status to Approve and mark as send to CDMS */
-                    $up_datail_cond['id']= $order_details[0]['id'];
-                    $up_datail['status']= 'Approved';
-                    $up_datail['send_to_cdms']= 'pending';
-                    $up_datail['comments']= $comments;
-                    $this->Common_model->update_info('gm_orderpart',$up_datail,$up_datail_cond);
-                    $op['message']= "Order Approved Successfully";
+                    $up_datail_cond['id'] = $order_details[0]['id'];
+                    $up_datail['status'] = 'Approved';
+                    $up_datail['send_to_cdms'] = 'pending';
+                    $up_datail['comments'] = $comments;
+                    $this->Common_model->update_info('gm_orderpart', $up_datail, $up_datail_cond);
+                    $op['message'] = "Order Approved Successfully";
                 }
-            }elseif($status == "Rejected"){
-                $up_datail_cond['id']= $order_details[0]['id'];
-                $up_datail['status']= 'Rejected';
-                $this->Common_model->update_info('gm_orderpart',$up_datail,$up_datail_cond);
-                
-                $op['message']= "Order Rejected Successfully";
-            } elseif($order_details[0]['status'] == 'Approved'){
-               $op['message'] ="Order Already Approved";
+            } elseif ($status == "Rejected") {
+                $up_datail_cond['id'] = $order_details[0]['id'];
+                $up_datail['status'] = 'Rejected';
+                $this->Common_model->update_info('gm_orderpart', $up_datail, $up_datail_cond);
+
+                $op['message'] = "Order Rejected Successfully";
+            } elseif ($order_details[0]['status'] == 'Approved') {
+                $op['message'] = "Order Already Approved";
             } else {
-                 $op['message'] ="No Action Perform";
+                $op['message'] = "No Action Perform";
             }
         } else {
-            $op['message'] ="Sorry No order available With this Order Number ".$order_number;
+            $op['message'] = "Sorry No order available With this Order Number " . $order_number;
         }
         $this->db->trans_complete();
-        if ($this->db->trans_status() === FALSE)
-        {
-        $op['status']= FALSE;
-        $op['message']= "something went wrong";
+        if ($this->db->trans_status() === FALSE) {
+            $op['status'] = FALSE;
+            $op['message'] = "something went wrong";
         } else {
-        $op['status']= TRUE;
+            $op['status'] = TRUE;
         }
-        $this->response($op, REST_Controller::HTTP_OK); 
+        $this->response($op, REST_Controller::HTTP_OK);
     }
 }
-?>
