@@ -1,5 +1,7 @@
 <?php
 
+use PHPMailer\PHPMailer\PHPMailer;
+
 require APPPATH . 'libraries/REST_Controller.php';
 //defined('BASEPATH') or exit('No direct script access allowed');
 
@@ -118,18 +120,18 @@ class User extends REST_Controller
         $this->db->from('auth_user AS au');
         $this->db->join('auth_user_groups AS g', 'au.id=g.user_id', 'left');
         $this->db->join('auth_group AS group', 'group.id=g.group_id', 'left');
-
         $this->db->where('au.username', $email);
         $this->db->or_where('au.email', $email);
         $query = $this->db->get();
+
         $user_info = ($query->num_rows() > 0) ? $query->result_array() : FALSE;
+        //$user_info[0]['email'] = "";
 
         if ($query->num_rows() > 1) { /* more than one record */
             $dtl['status'] = FALSE;
             $dtl['message'] = "Sorry, Can not process your request please contact help desk.";
             $this->response($dtl, REST_Controller::HTTP_OK);
         }
-
 
         if ($user_info) {
             if ($type == "set_pwd") {
@@ -166,14 +168,6 @@ class User extends REST_Controller
 
     private function set_password($user_info)
     {
-
-        $mytoken = $this->Common_model->validate_token();
-        if ($mytoken['code'] !== 200) {
-            http_response_code($mytoken['code']);
-            echo json_encode($mytoken);
-            die();
-        }
-
         $randomString = generateRandomString(12);
         $new_password = $this->post('new_password');
         if (empty($new_password)) {
@@ -450,14 +444,6 @@ class User extends REST_Controller
 
     private function generate_send_otp($phone_number, $email, $user_name)
     {
-
-        $mytoken = $this->Common_model->validate_token();
-        if ($mytoken['code'] !== 200) {
-            http_response_code($mytoken['code']);
-            echo json_encode($mytoken);
-            die();
-        }
-
         $otp_no = rand(100000, 999999);
 
         $otp_data['token'] = $otp_no;
@@ -1116,5 +1102,14 @@ class User extends REST_Controller
             $op['message'] = $exc->getMessage();
         }
         $this->response($op, REST_Controller::HTTP_OK);
+    }
+    public function test_email_post()
+    {
+        $phone_number = 9835708476;
+        $email = "manjeetshandilya146@gmail.com";
+        $first_name = "Manjeet";
+        $last_name = "Shandilya";
+        $p = $this->generate_send_otp($phone_number, $email, trim($first_name . " " . $last_name));
+        print_r($p);
     }
 }

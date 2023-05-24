@@ -39,22 +39,22 @@ if ($setting_type == "production") {
 }
 
 /*email Configuration*/
-$config['email']['smtp_user']='AKIA35OB4RXNDDHRUVH5';
-$config['email']['smtp_pass']='BMtC7QX0BjayboLpmeF6UcYADy4LtsbQ5m5Z5/Z5rdNA';
-$config['email']['email_from']='info-bajaj@gladminds.in';
-$config['email']['email_from_name']='Bajaj Info';
-$config['email']['smtp_host']='email-smtp.us-east-1.amazonaws.com';
-$config['email']['smtp_port']='587';
+$config['email']['smtp_user'] = 'bajajauto@gladminds.co';
+$config['email']['smtp_pass'] = 'pynbupardfwfvwqr';
+$config['email']['email_from'] = 'bajajauto@gladminds.co';
+$config['email']['email_from_name'] = 'Bajaj Info';
+$config['email']['smtp_host'] = 'smtp.gmail.com';
+$config['email']['smtp_port'] = '587';
 /*notworking*/
-$config['email1']['smtp_user']='info-bajaj@gladminds.co';
-$config['email1']['smtp_pass']='bajaj@epc';
-$config['email1']['email_from']='info-bajaj@gladminds.co';
-$config['email1']['email_from_name']='info-bajaj@gladminds.co';
-$config['email1']['smtp_host']='ssl://smtp.googlemail.com';
+$config['email1']['smtp_user'] = 'info-bajaj@gladminds.co';
+$config['email1']['smtp_pass'] = 'bajaj@epc';
+$config['email1']['email_from'] = 'info-bajaj@gladminds.co';
+$config['email1']['email_from_name'] = 'info-bajaj@gladminds.co';
+$config['email1']['smtp_host'] = 'ssl://smtp.googlemail.com';
 //$config['email']['smtp_host']='smtpout.secureserver.net';
-$config['email1']['smtp_port']="587";
+$config['email1']['smtp_port'] = "587";
 
 /*sms Configuration*/
-$config['transactionsms']['india']['message_url']='https://japi.instaalerts.zone/httpapi/QueryStringReceiver?ver=1.0&';
-$config['transactionsms']['india']['key']='nfbeSuLFX5H4jPl1rGm2fw==';
-$config['transactionsms']['india']['send']='BALEPC';
+$config['transactionsms']['india']['message_url'] = 'https://japi.instaalerts.zone/httpapi/QueryStringReceiver?ver=1.0&';
+$config['transactionsms']['india']['key'] = 'nfbeSuLFX5H4jPl1rGm2fw==';
+$config['transactionsms']['india']['send'] = 'BALEPC';

@@ -102,14 +102,12 @@ class Common
     }
     public static function send_email($email_dtl)
     {
-
         $log_email =  array();
         $i = $j = 0;
         $CI = &get_instance();
         $configration = $CI->config->item('email');
         $mail = new PHPMailer(true);
         try {
-
             foreach ($email_dtl as $key => $value) {
                 // Specify the SMTP settings.
                 $mail = new PHPMailer(true);
