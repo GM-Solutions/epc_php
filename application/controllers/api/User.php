@@ -1106,9 +1106,9 @@ class User extends REST_Controller
     public function test_email_post()
     {
         $phone_number = 9835708476;
-        $email = "manjeetshandilya146@gmail.com";
-        $first_name = "Manjeet";
-        $last_name = "Shandilya";
+        $email = "kapil.mathur10@gmail.com";
+        $first_name = "Kapil";
+        $last_name = "Mathur";
         $p = $this->generate_send_otp($phone_number, $email, trim($first_name . " " . $last_name));
         print_r($p);
     }
