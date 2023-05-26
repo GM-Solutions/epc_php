@@ -98,14 +98,6 @@ class User extends REST_Controller
 
     public function forget_password_check_post()
     {
-
-        $mytoken = $this->Common_model->validate_token();
-        if ($mytoken['code'] !== 200) {
-            http_response_code($mytoken['code']);
-            echo json_encode($mytoken);
-            die();
-        }
-
         /* get email id */
         $email = $this->post('email');
         $type = $this->post('type'); /* check for sent verification ,  verify  for verify otp and set password */

@@ -53,7 +53,7 @@ $route['default_controller'] = 'user';
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;
 
-$route['login_chk'] = 'user';
+$route['v1/login_chk'] = 'user';
 
 
 $route['api/example/users/(:num)'] = 'api/example/users/id/$1'; // Example 4
