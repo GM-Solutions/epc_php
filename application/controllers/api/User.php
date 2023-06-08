@@ -272,14 +272,6 @@ class User extends REST_Controller
 
     public function user_registration_post()
     {
-
-        $mytoken = $this->Common_model->validate_token();
-        if ($mytoken['code'] !== 200) {
-            http_response_code($mytoken['code']);
-            echo json_encode($mytoken);
-            die();
-        }
-
         $user_type = $this->post('user_type'); /* Dealer Distributor Member Customer */
         $vertical = $this->post('vertical'); /* Motorcycle ,Commercial Vehicle, Probiking, International Business */
         $otp = $this->post('otp');
@@ -445,7 +437,7 @@ class User extends REST_Controller
         $otp_data['modified_date'] = date('Y-m-d H:i:s');
         $otp_data['request_date'] = date('Y-m-d H:i:s');
 
-        $msg = "Dear Mr {user_name} <br/>Use OTP: {otp} to complete your registration process.<br/>Regards<br/>Bajaj Auto<br/><br/><br/><br/>Power By Gladminds";
+        $msg = "Dear Mr {user_name} <br/>Use OTP: {otp} to complete your registration process.<br/>Regards<br/><br/>Bajaj Auto<br/><br/><br/><br/>Powered By Gladminds";
         $email_dtl[0]['subject'] = "Verify your account";
         $email_dtl[0]['message'] = str_replace(array("{user_name}", "{otp}"), array($user_name, $otp_no), $msg);
         $email_dtl[0]['to'] = $email;
@@ -459,14 +451,6 @@ class User extends REST_Controller
 
     private function registration_detaiils($type, $vertical = NULL)
     {
-
-        $mytoken = $this->Common_model->validate_token();
-        if ($mytoken['code'] !== 200) {
-            http_response_code($mytoken['code']);
-            echo json_encode($mytoken);
-            die();
-        }
-
         $methode_name = $this->router->fetch_method();
         $data = array();
         if ($vertical == "Motorcycle" && ($type == "Distributor" || $type == "Dealer")) {

@@ -122,7 +122,7 @@ class Common
                 //               $mail->addCustomHeader('X-SES-CONFIGURATION-SET', $configurationSet);
                 // Specify the message recipients.
                 $mail->addAddress($value['to']);
-                $mail->addBCC('chaitanya@gladminds.co');
+                $mail->addBCC('epcsupport@gladminds.co');
                 // You can also add CC, BCC, and additional To recipients here.
                 // Specify the content of the message.
                 $mail->isHTML(true);

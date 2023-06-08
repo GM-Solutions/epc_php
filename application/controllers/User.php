@@ -247,7 +247,7 @@ class User extends CI_Controller
     }
     public function email_test()
     {
-        $email_dtl[0]['to'] = 'pavaningalkar@gladminds.co';
+        $email_dtl[0]['to'] = 'kapil@gladminds.co';
         $email_dtl[0]['subject'] = 'Its a testing mail';
         $email_dtl[0]['message'] = '<h1>Its a testing mail</h1>';
         Common::send_email($email_dtl);
