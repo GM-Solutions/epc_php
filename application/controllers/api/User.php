@@ -772,14 +772,6 @@ class User extends REST_Controller
 
     public function master_data_register_get()
     {
-
-        $mytoken = $this->Common_model->validate_token();
-        if ($mytoken['code'] !== 200) {
-            http_response_code($mytoken['code']);
-            echo json_encode($mytoken);
-            die();
-        }
-
         /* Vertical list and roles */
         $this->db->select('*');
         $this->db->from('gm_brandvertical');
